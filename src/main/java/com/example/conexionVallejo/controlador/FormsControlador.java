@@ -13,4 +13,10 @@ public class FormsControlador {
 		return "index";
 	}
 	
+	@GetMapping ("/foro")
+	public String foro () {
+		
+		return "foro";
+	}
+	
 }
