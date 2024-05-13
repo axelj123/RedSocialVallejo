@@ -19,4 +19,13 @@ public class FormsControlador {
 		return "foro";
 	}
 	
+	@GetMapping ("/posts/ask")
+	public String ask() {
+		return "ask";
+	}
+	@GetMapping("/home")
+	public String home() {
+		return "home";
+	}
+	
 }
