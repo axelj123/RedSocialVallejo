@@ -23,21 +23,26 @@
 <body>
 	<header>
 		<div class="header-content">
+			<div class="fa fa-bars" id="menu-icon"></div>
+
 			<a href="index.html" class="logo"> <img src="/assets/logo03.png"
 				alt="Conexión Vallejo Logo"> <span class="logo-text">Conexión
 					<strong>Vallejo</strong>
 			</span>
 			</a>
-			<div class="search-container">
-				<input type="text" placeholder="Buscar en la comunidad">
-				<button type="submit">Buscar</button>
+			<div class="search-icon" id="search-icon">
+				<i class="fas fa-search"></i>
 			</div>
+			   <div class="search-container" id="search-container">
+            <input type="text" placeholder="Buscar en la comunidad">
+            <button type="submit">Buscar</button>
+        </div>
 			<div class="actions">
 				<a href="/mi-perfil" class="profile-btn"> <img
 					src="/assets/profile.png" alt="Foto de perfil">
 				</a> <a href="#" class="notifications-btn"> <i class="fas fa-bell"></i>
 					<span id="notification-count" class="notification-count">0</span>
-				</a> <a href="#" class="settings-btn"> <i class="fas fa-cog"></i> <!-- Icono de configuración -->
+				</a> <a href="#" class="settings-btn"> <i class="fas fa-cog"></i>
 				</a>
 			</div>
 
@@ -61,16 +66,19 @@
 					</ul>
 				</nav>
 
-
-
-
 			</div>
 
 
 		</div>
 
 		<div id="content-center">
-			<div id="mainbar"></div>
+			<div id="mainbar">
+				<div id="d-flex">
+					<h1>Preguntas Top</h1>
+					<a class="ask-questions">Pregunta</a>
+
+				</div>
+			</div>
 
 
 		</div>
@@ -97,5 +105,33 @@
 								.add('active');
 
 					});
+	let menu = document.querySelector('#menu-icon');
+	let navbar = document.querySelector('.sidebar');
+
+	menu.onclick = () => {
+	    menu.classList.toggle('fa-times'); // Cambia el ícono de las barras a la cruz
+	    navbar.classList.toggle('open'); // Abre o cierra la barra lateral
+	}
+	document.addEventListener('DOMContentLoaded', function() {
+	    const searchIcon = document.getElementById('search-icon');
+	    const searchContainer = document.getElementById('search-container');
+
+	    // Inicialmente ocultar el contenedor de búsqueda
+	    searchContainer.style.display = 'none';
+
+	    // Agregar un controlador de eventos al icono de búsqueda
+	    searchIcon.addEventListener('click', function() {
+	        // Alternar la visibilidad del contenedor de búsqueda
+	        if (searchContainer.style.display === 'none') {
+	            searchContainer.style.display = 'flex';
+	        } else {
+	            searchContainer.style.display = 'none';
+	        }
+	    });
+	});
+
+
+
+
 </script>
 </html>

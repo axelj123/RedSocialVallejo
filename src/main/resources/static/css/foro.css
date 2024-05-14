@@ -16,17 +16,7 @@
 	list-style: none;
 }
 
-body {
-	padding: 0;
-	margin: 0;
-	box-sizing: border-box;
-	text-decoration: none;
-	list-style: none;
-}
-
-	/*HEADER */
-
-
+/*HEADER */
 header {
 	padding-top: 0;
 	padding-bottom: 0;
@@ -121,55 +111,56 @@ header {
 	padding: 8px;
 	color: var(--line-color);
 }
+
 .notifications-btn {
-    position: relative; /* Asegura que el elemento padre tenga posición relativa */
+	position: relative;
+	/* Asegura que el elemento padre tenga posición relativa */
 }
 
 .notification-count {
-    position: absolute; /* Establece la posición absoluta para el contador */
-    top: -5px; /* Ajusta la posición vertical */
-    right: -8px; /* Ajusta la posición horizontal */
-    background-color: #ff3f3f;
-    color: white;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 2px 6px;
-    border-radius: 50%;
+	position: absolute;
+	/* Establece la posición absoluta para el contador */
+	top: -5px; /* Ajusta la posición vertical */
+	right: -8px; /* Ajusta la posición horizontal */
+	background-color: #ff3f3f;
+	color: white;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 2px 6px;
+	border-radius: 50%;
 }
 
-
-	/*CONTAINER */
-
+/*CONTAINER */
 .container {
-	width: 1264px; /* Cambia el valor según tus necesidades */
+	width: 1264px;;
 	height: 1264px;
 	position: relative;
 	top: 62px;
 	margin: 0 auto;
-	align-items: center; /* Centra verticalmente el contenido */
-	justify-content: center; /* Centra horizontalmente el contenido */
+	align-items: center; 
+	justify-content: center;
 	display: flex;
 }
 
 .sidebar {
-	width: 164px;
-	height: 100%;
+	width:162px;
+	height: 100%;	
 	border-right: 1px solid var(--line-color);
-	/* Añade una línea en el borde derecho de la barra lateral */
-	margin-right: 1100px; /* Ajusta el valor según sea necesario */
+
+	
 	background: white;
+	
 }
 
 .sidebar-content {
 	height: 400px;
-	margin-top: 20px;
-	/* Cambia el valor según sea necesario para ajustar la distancia desde la parte superior */
+padding-top: 20px;
+	width:162px;
 }
 
-.sidebar-content nav {
+nav {
 	position: fixed;
 	display: flex;
-	flex-direction: column; /* Cambia la dirección del flexbox a columna */
 }
 
 nav ul li.active {
@@ -195,14 +186,8 @@ nav #active a {
 	font-weight: bold;
 }
 
-nav ul {
-	list-style: none;
-	padding: 0;
-	margin: 0;
-}
-
 nav li {
-	width: 163px;
+	width: 161px;
 	border-radius: 5px;
 	margin: 7px 0;
 	padding: 10px;
@@ -217,7 +202,8 @@ nav a {
 	text-decoration: none;
 	color: #3b4045;
 	font-size: 14px;
-	font-weight: 400; transition : all .50s ease;
+	font-weight: 400;
+	transition: all .50s ease;
 	position: relative;
 	display: block;
 	transition: all .50s ease;
@@ -226,4 +212,173 @@ nav a {
 nav a i {
 	margin-right: 5px;
 	color: var(--main-color);
+}
+
+/* Contenido principal */
+#content-center {
+	width: 100%;
+	height: 100%;
+	top: 0;
+	padding:20px;
+}
+
+#mainbar {
+	width: 100%;
+	height: 98%;
+	margin: 0;
+}
+
+#d-flex {
+	width: 100%;
+	height: auto;
+	display: flex;
+	align-items: flex-start; /* Cambiado de center a flex-start */
+}
+
+#d-flex h1 {
+	font-weight: 300;
+	font-size: 25px;
+	width:80%;
+}
+
+.ask-questions {
+	background-color: var(--main-color); /* Color de fondo */
+	border: 2px solid var(--main-color); /* Borde */
+	color: var(--bg-color);
+	padding: 10px ;
+	text-align: center;
+	text-decoration: none;
+	font-size: 16px;
+	transition-duration: 0.4s;
+	cursor: pointer;
+	border-radius: 5px;
+}
+.ask-questions:hover{
+		background-color: #603EDE; /* Color de fondo */
+			border: 2px solid var(--bg-color); /* Borde */
+		
+
+}
+
+#menu-icon {
+	display: none;
+}
+
+#search-icon {
+	display: none;
+}
+
+nav.open {
+	right: 20px;
+}
+
+@media ( max-width : 480px) {
+	#menu-icon {
+		font-size: 20px;
+		color: var(--text-color);
+		cursor: pointer;
+		z-index: 10001;
+		margin: 14px;
+		right: 0;
+		/* Ajusta la posición del ícono del menú al extremo derecho */
+		display: flex;
+		justify-content: center;
+	}
+	#search-icon {
+		display: flex;
+		position: absolute;
+		right: 50%; /* Ajusta la posición izquierda del ícono */
+	}
+	/* Estilos para la barra lateral */
+	.sidebar {
+		width: 200px; /* Ajusta el ancho según sea necesario */
+		height: 100%;
+		border-right: 1px solid var(--line-color);
+		background: white;
+		position: fixed; /* Hace que la barra lateral sea fija */
+		left: -200px; /* Oculta la barra lateral por defecto */
+		top: 0; /* Ajusta la posición de la barra lateral */
+		transition: left 0.5s ease;
+		/* Agrega transición para que aparezca suavemente */
+		z-index: 999;
+		/* Asegura que la barra lateral esté por encima del contenido */
+		padding: 20px;
+	}
+	.sidebar.open {
+		left: 0; /* Muestra la barra lateral completamente */
+	}
+	.sidebar-content {
+		height: 100%; /* Ajusta la altura al 100% del contenedor */
+		padding-top: 20px; /* Agrega relleno superior */
+	}
+	.sidebar-content nav {
+		display: flex;
+		flex-direction: column; /* Cambia la dirección del diseño a columna */
+	}
+	.logo img {
+		width: 40px;
+	}
+	.logo span {
+		display: none;
+	}
+	header {
+		position: fixed; /* Mantiene el encabezado fijo */
+		margin: 0;
+		width: 100%;
+	}
+	.header-content {
+		width: 100%;
+		justify-content: flex-start; /* Alinea el contenido al inicio */
+		box-sizing: border-box;
+	}
+	.actions {
+		position: absolute;
+		right: 10px;
+		top: 50%;
+		transform: translate(-20%, -50%);
+	}
+	.search-icon {
+		display: flex;
+		position: fixed;
+		top: 20px;
+		right: 40px;
+		transform: translate(300%, -30%);
+		z-index: 1001;
+	}
+	.search-container {
+		display: flex;
+		position: fixed;
+		top: 40px;
+		left: 0;
+		width: 100%;
+		z-index: 1000;
+	}
+
+	
+	#d-flex h1 {
+		font-size: 20px;
+	}
+	.ask-questions {
+		font-size: 10px;
+		width: 100px;
+		padding:2px;
+	}
+	.container {
+		width: auto;
+		top: 50px; /* Ajusta la posición vertical del contenedor */
+		margin: 0;
+		left: 0;
+		right: 0;
+	}
+	#content-center {
+		width: 100%; /* Ocupa todo el ancho del contenedor */
+		left: 0; /* Ajusta la posición del lado izquierdo del elemento */
+		margin: 0; /* Centra el elemento horizontalmente */
+		height: 100%; /* Ajusta la altura automáticamente */
+		padding: 20px; /* Agrega espacio interno */
+	}
+	#mainbar{
+		width: auto; /* Ajusta el ancho automáticamente */
+		height: auto; /* Ajusta la altura automáticamente */
+	}
 }

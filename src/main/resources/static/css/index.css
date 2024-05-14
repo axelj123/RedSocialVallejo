@@ -130,14 +130,14 @@ nav a:hover::after {
 }
 
 
-
-#menu-icon {
-    font-size: 35px;
-    color: var(--text-color);
-    cursor: pointer;
-    z-index: 10001;
-    display: none;
-}
+		
+		#menu-icon {
+		    font-size: 35px;
+		    color: var(--text-color);
+		    cursor: pointer;
+		    z-index: 10001;
+		    display: none;
+		}
 
 
 
