@@ -28,18 +28,18 @@ header {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	/* Alinea horizontalmente los elementos del header */
 	background: rgb(255, 255, 255);
 	transition: all .50s ease;
 	border-bottom: 1px solid var(--line-color);
 }
 
 .header-content {
-	width: 1254px; /* Ancho del contenido del encabezado */
-	margin: 0 auto; /* Centra horizontalmente el contenido */
+	width: 1254px; 
+	margin: 0 auto;
 	display: flex;
+	height:50px;
 	text-align: center;;
-	justify-content: space-between; /* Espacio entre los elementos */
+	justify-content: space-between;
 }
 
 .logo {
@@ -58,10 +58,10 @@ header {
 	color: #3b4045;
 	font-size: 18px;
 	font-weight: 400;
-	letter-spacing: -2px; /* Ajusta el espaciado de las letras */
+	letter-spacing: -2px; 
 }
 
-/* Contenedor de búsqueda */
+
 .search-container {
 	display: flex;
 	align-items: center;
@@ -107,21 +107,19 @@ header {
 }
 
 .actions a i {
-	font-size: 17px; /* Tamaño deseado para los iconos */
+	font-size: 17px;
 	padding: 8px;
 	color: var(--line-color);
 }
 
 .notifications-btn {
 	position: relative;
-	/* Asegura que el elemento padre tenga posición relativa */
 }
 
 .notification-count {
 	position: absolute;
-	/* Establece la posición absoluta para el contador */
-	top: -5px; /* Ajusta la posición vertical */
-	right: -8px; /* Ajusta la posición horizontal */
+	top: -5px; 
+	right: -8px; 
 	background-color: #ff3f3f;
 	color: white;
 	font-size: 12px;
@@ -276,11 +274,18 @@ nav.open {
 #content-listas{
 width: auto;
 height: 100%;
-background: var(--bg-color);	
+background: var(--main-color);	
 border-top: 1px solid var(--line-color);
 
 margin-left:0;
 
+	
+}
+#flex-questions{
+	width: auto;
+	margin:20px;
+	height: 100%;
+	background: red;
 	
 }
 
