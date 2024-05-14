@@ -233,6 +233,7 @@ nav a i {
 	height: auto;
 	display: flex;
 	align-items: flex-start; /* Cambiado de center a flex-start */
+	margin-bottom:20px;
 }
 
 #d-flex h1 {
@@ -272,7 +273,19 @@ nav.open {
 	right: 20px;
 }
 
-@media ( max-width : 480px) {
+#content-listas{
+width: auto;
+height: 100%;
+background: var(--bg-color);	
+border-top: 1px solid var(--line-color);
+
+margin-left:0;
+
+	
+}
+
+
+@media ( max-width : 636px) {
 	#menu-icon {
 		font-size: 20px;
 		color: var(--text-color);
@@ -287,7 +300,7 @@ nav.open {
 	#search-icon {
 		display: flex;
 		position: absolute;
-		right: 50%; /* Ajusta la posición izquierda del ícono */
+		right: 120%; /* Ajusta la posición izquierda del ícono */
 	}
 	/* Estilos para la barra lateral */
 	.sidebar {
@@ -315,8 +328,9 @@ nav.open {
 		display: flex;
 		flex-direction: column; /* Cambia la dirección del diseño a columna */
 	}
+
 	.logo img {
-		width: 40px;
+		width: 50px;
 	}
 	.logo span {
 		display: none;
@@ -337,14 +351,7 @@ nav.open {
 		top: 50%;
 		transform: translate(-20%, -50%);
 	}
-	.search-icon {
-		display: flex;
-		position: fixed;
-		top: 20px;
-		right: 40px;
-		transform: translate(300%, -30%);
-		z-index: 1001;
-	}
+	
 	.search-container {
 		display: flex;
 		position: fixed;
@@ -359,9 +366,9 @@ nav.open {
 		font-size: 20px;
 	}
 	.ask-questions {
-		font-size: 10px;
+		font-size: 14px;
 		width: 100px;
-		padding:2px;
+		padding:1px;
 	}
 	.container {
 		width: auto;
@@ -380,5 +387,13 @@ nav.open {
 	#mainbar{
 		width: auto; /* Ajusta el ancho automáticamente */
 		height: auto; /* Ajusta la altura automáticamente */
+	}
+	#content-listas{
+	width: auto;;
+
+	height: 200px;
+	background: red;
+	
+	
 	}
 }
