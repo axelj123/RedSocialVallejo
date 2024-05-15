@@ -116,6 +116,7 @@
 								.add('active');
 
 					});
+	
 	let menu = document.querySelector('#menu-icon');
 	let navbar = document.querySelector('.sidebar');
 
@@ -123,12 +124,11 @@
 	    menu.classList.toggle('fa-times'); // Cambia el ícono de las barras a la cruz
 	    navbar.classList.toggle('open'); // Abre o cierra la barra lateral
 	}
+	
+	// JavaScript para mostrar y ocultar el contenedor de búsqueda al hacer clic en el icono
 	document.addEventListener('DOMContentLoaded', function() {
 	    const searchIcon = document.getElementById('search-icon');
 	    const searchContainer = document.getElementById('search-container');
-
-	    // Inicialmente ocultar el contenedor de búsqueda
-	    searchContainer.style.display = 'none';
 
 	    // Agregar un controlador de eventos al icono de búsqueda
 	    searchIcon.addEventListener('click', function() {

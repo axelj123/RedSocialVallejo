@@ -28,18 +28,18 @@ header {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	/* Alinea horizontalmente los elementos del header */
 	background: rgb(255, 255, 255);
 	transition: all .50s ease;
 	border-bottom: 1px solid var(--line-color);
 }
 
 .header-content {
-	width: 1254px; 
-	margin: 0 auto;
+	width: 1264px; /* Ancho del contenido del encabezado */
+	margin: 0 auto; /* Centra horizontalmente el contenido */
 	display: flex;
-	height:50px;
 	text-align: center;;
-	justify-content: space-between;
+	justify-content: space-between; /* Espacio entre los elementos */
 }
 
 .logo {
@@ -58,10 +58,10 @@ header {
 	color: #3b4045;
 	font-size: 18px;
 	font-weight: 400;
-	letter-spacing: -2px; 
+	letter-spacing: -2px; /* Ajusta el espaciado de las letras */
 }
 
-
+/* Contenedor de búsqueda */
 .search-container {
 	display: flex;
 	align-items: center;
@@ -107,19 +107,21 @@ header {
 }
 
 .actions a i {
-	font-size: 17px;
+	font-size: 17px; /* Tamaño deseado para los iconos */
 	padding: 8px;
 	color: var(--line-color);
 }
 
 .notifications-btn {
 	position: relative;
+	/* Asegura que el elemento padre tenga posición relativa */
 }
 
 .notification-count {
 	position: absolute;
-	top: -5px; 
-	right: -8px; 
+	/* Establece la posición absoluta para el contador */
+	top: -5px; /* Ajusta la posición vertical */
+	right: -8px; /* Ajusta la posición horizontal */
 	background-color: #ff3f3f;
 	color: white;
 	font-size: 12px;
@@ -128,24 +130,25 @@ header {
 	border-radius: 50%;
 }
 
-/*CONTAINER */
 .container {
-	width: 1264px;;
-	height: 1264px;
-	position: relative;
-	top: 62px;
-	margin: 0 auto;
-	align-items: center; 
-	justify-content: center;
-	display: flex;
+    width: auto; /* Ancho del header-content */
+    max-width:1264px;
+    height: auto; /* Ajusta la altura según su contenido */
+    position: relative;
+    top: 61px; /* Ajusta según el espacio del header */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto; /* Centra horizontalmente el contenedor */
 }
+
+
 
 .sidebar {
 	width:162px;
 	height: 100%;	
 	border-right: 1px solid var(--line-color);
 
-	
 	background: white;
 	
 }
@@ -231,7 +234,6 @@ nav a i {
 	height: auto;
 	display: flex;
 	align-items: flex-start; /* Cambiado de center a flex-start */
-	margin-bottom:20px;
 }
 
 #d-flex h1 {
@@ -271,26 +273,7 @@ nav.open {
 	right: 20px;
 }
 
-#content-listas{
-width: auto;
-height: 100%;
-background: var(--main-color);	
-border-top: 1px solid var(--line-color);
-
-margin-left:0;
-
-	
-}
-#flex-questions{
-	width: auto;
-	margin:20px;
-	height: 100%;
-	background: red;
-	
-}
-
-
-@media ( max-width : 636px) {
+@media ( max-width : 480px) {
 	#menu-icon {
 		font-size: 20px;
 		color: var(--text-color);
@@ -305,7 +288,7 @@ margin-left:0;
 	#search-icon {
 		display: flex;
 		position: absolute;
-		right: 120%; /* Ajusta la posición izquierda del ícono */
+		right: 50%; /* Ajusta la posición izquierda del ícono */
 	}
 	/* Estilos para la barra lateral */
 	.sidebar {
@@ -333,9 +316,8 @@ margin-left:0;
 		display: flex;
 		flex-direction: column; /* Cambia la dirección del diseño a columna */
 	}
-
 	.logo img {
-		width: 50px;
+		width: 40px;
 	}
 	.logo span {
 		display: none;
@@ -356,9 +338,16 @@ margin-left:0;
 		top: 50%;
 		transform: translate(-20%, -50%);
 	}
-	
-	.search-container {
+	.search-icon {
 		display: flex;
+		position: fixed;
+		top: 20px;
+		right: 20px;
+		transform: translate(-200%, -50%);
+		z-index: 1001;
+	}
+	.search-container {
+		display: none;
 		position: fixed;
 		top: 40px;
 		left: 0;
@@ -371,9 +360,9 @@ margin-left:0;
 		font-size: 20px;
 	}
 	.ask-questions {
-		font-size: 14px;
+		font-size: 10px;
 		width: 100px;
-		padding:1px;
+		padding:2px;
 	}
 	.container {
 		width: auto;
@@ -392,13 +381,5 @@ margin-left:0;
 	#mainbar{
 		width: auto; /* Ajusta el ancho automáticamente */
 		height: auto; /* Ajusta la altura automáticamente */
-	}
-	#content-listas{
-	width: auto;;
-
-	height: 200px;
-	background: red;
-	
-	
 	}
 }
