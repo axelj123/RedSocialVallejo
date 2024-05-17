@@ -21,5 +21,29 @@ public class Tag {
     @Column(name = "tag_description")
     private String tagDescription;
 
-    // Getters and setters
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getTagName() {
+		return tagName;
+	}
+
+	public void setTagName(String tagName) {
+		this.tagName = tagName;
+	}
+
+	public String getTagDescription() {
+		return tagDescription;
+	}
+
+	public void setTagDescription(String tagDescription) {
+		this.tagDescription = tagDescription;
+	}
+
+
 }

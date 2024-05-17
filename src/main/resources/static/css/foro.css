@@ -5,6 +5,10 @@
 	--main-color: #4117db;
 	--line-color: #ccc;
 	--font-text: sans-serif;
+	    --background: #D8E3FA;
+    --gray: #EAEAEC;
+    --primary: #29283F;
+    --primary-violet: #7370F4;
 }
 
 * {
@@ -133,7 +137,7 @@ header {
 .container {
     width: auto; /* Ancho del header-content */
     max-width:1264px;
-    height: auto; /* Ajusta la altura según su contenido */
+    height: 1200px; /* Ajusta la altura según su contenido */
     position: relative;
     top: 61px; /* Ajusta según el espacio del header */
     display: flex;
@@ -217,11 +221,13 @@ nav a i {
 
 /* Contenido principal */
 #content-center {
-	width: 100%;
-	height: 100%;
-	top: 0;
-	padding:20px;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    margin-top: 0; /* Ajusta el margen superior negativo para mover hacia arriba */
+    
 }
+
 
 #mainbar {
 	width: 100%;
@@ -234,6 +240,16 @@ nav a i {
 	height: auto;
 	display: flex;
 	align-items: flex-start; /* Cambiado de center a flex-start */
+	padding-bottom: 20px;
+	
+}
+
+#content-listas{
+	
+	margin-left: -21px;
+		border-top: 1px solid var(--line-color);
+		
+
 }
 
 #d-flex h1 {
@@ -273,6 +289,130 @@ nav.open {
 	right: 20px;
 }
 
+
+.question-summary{
+	
+padding:20px;
+	border-bottom: 1px solid var(--line-color);
+	
+}
+ /* DIVS PREGUNTAS*/
+ 
+.card {
+    display: flex;
+    justify-content: space-between; /* Distribuye los elementos horizontalmente */
+    align-items: center; /* Centra verticalmente los elementos */
+    background-color: white;
+    overflow: hidden;
+    transition: all 0.3s;
+    max-width: 100%;
+    min-width: 50%;
+    min-height: 20%;
+  	border-bottom: 1px solid var(--line-color);
+
+}
+
+
+
+.background {
+	width: 20%;;
+	height: 20%;
+}
+.background span{
+	font-size: 12px;
+	padding:2px;
+	display: flex;
+}
+
+
+.content {
+    flex: 3 1 22rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    padding: 1rem;
+}
+
+
+.content > p {
+    font-size: 14px;;
+    font-weight: 400;
+    margin: 0.4rem 0;
+}
+
+.content a {
+    color: var(--primary-violet);
+}
+
+.chips {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    list-style-type: none;
+    padding: 0.75rem 0px 1rem 0px;
+}
+
+.chip {
+    border-radius: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 10px;
+    background-color: var(--gray);
+    transition: all 0.3s;
+    font-weight: 500;
+}
+
+.chip:hover {
+    background-color: var(
+        --primary-violet);
+    color: var(--gray)
+}
+.background img{
+	width:50px;
+	height: 50px;
+}
+.action-buttons {
+    display: flex; /* Hace que los botones se muestren en línea */
+    align-items: center; /* Centra verticalmente los botones */
+}
+.action-buttons a {
+    background-color: var(
+        --primary);
+    color: white;
+    padding: 2px;
+    text-decoration: none;
+    border-radius: 0.75rem;
+    outline: none;
+    border: none;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1 0 15rem;
+    max-width: 20%;
+}
+
+.action-buttons a:hover {
+    text-decoration: underline;
+}
+
+.action-buttons a.secondary {
+    background-color: inherit;
+    color: var(--primary);
+    border: 1px solid var(
+        --primary);
+    flex: 1 0 5rem;
+}
+.question-meta {
+    font-size: 12px;
+    color: #999; /* Color de texto gris */
+    margin-bottom: 10px; /* Espacio inferior */
+}
+
+.question-meta span {
+    font-weight: bold; /* Texto en negrita */
+    color: #333; /* Color de texto oscuro */
+}
+ 
 @media ( max-width : 480px) {
 	#menu-icon {
 		font-size: 20px;
@@ -288,11 +428,11 @@ nav.open {
 	#search-icon {
 		display: flex;
 		position: absolute;
-		right: 50%; /* Ajusta la posición izquierda del ícono */
+		right: 120%; /* Ajusta la posición izquierda del ícono */
 	}
 	/* Estilos para la barra lateral */
 	.sidebar {
-		width: 200px; /* Ajusta el ancho según sea necesario */
+		width: 182px; /* Ajusta el ancho según sea necesario */
 		height: 100%;
 		border-right: 1px solid var(--line-color);
 		background: white;
@@ -338,14 +478,7 @@ nav.open {
 		top: 50%;
 		transform: translate(-20%, -50%);
 	}
-	.search-icon {
-		display: flex;
-		position: fixed;
-		top: 20px;
-		right: 20px;
-		transform: translate(-200%, -50%);
-		z-index: 1001;
-	}
+
 	.search-container {
 		display: none;
 		position: fixed;
@@ -353,6 +486,8 @@ nav.open {
 		left: 0;
 		width: 100%;
 		z-index: 1000;
+	padding:10px;
+    box-shadow: 3px 4px 10px rgba(0, 0, 0, 0.1);
 	}
 
 	
@@ -360,26 +495,28 @@ nav.open {
 		font-size: 20px;
 	}
 	.ask-questions {
-		font-size: 10px;
+		font-size: 14px;
 		width: 100px;
 		padding:2px;
 	}
 	.container {
 		width: auto;
-		top: 50px; /* Ajusta la posición vertical del contenedor */
+		top: 50px; 
 		margin: 0;
 		left: 0;
 		right: 0;
 	}
 	#content-center {
-		width: 100%; /* Ocupa todo el ancho del contenedor */
-		left: 0; /* Ajusta la posición del lado izquierdo del elemento */
-		margin: 0; /* Centra el elemento horizontalmente */
-		height: 100%; /* Ajusta la altura automáticamente */
-		padding: 20px; /* Agrega espacio interno */
+		width: 100%;
+		left: 0; 
+		margin: 0; 
+		height: 100%;
+		padding: 20px;
 	}
 	#mainbar{
 		width: auto; /* Ajusta el ancho automáticamente */
 		height: auto; /* Ajusta la altura automáticamente */
 	}
+	
+
 }
