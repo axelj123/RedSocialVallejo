@@ -10,7 +10,11 @@
     --primary: #29283F;
     --primary-violet: #7370F4;
 }
-
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-color);
+}
 * {
 	padding: 0;
 	margin: 0;
@@ -42,7 +46,6 @@ header {
 	width: 1264px; /* Ancho del contenido del encabezado */
 	margin: 0 auto; /* Centra horizontalmente el contenido */
 	display: flex;
-	text-align: center;;
 	justify-content: space-between; /* Espacio entre los elementos */
 }
 
@@ -53,16 +56,11 @@ header {
 	justify-content: center;
 }
 
-.logo img {
-	width: 30px;
-	height: auto;
-}
 
 .logo span {
 	color: #3b4045;
-	font-size: 18px;
-	font-weight: 400;
-	letter-spacing: -2px; /* Ajusta el espaciado de las letras */
+	font-size: 28px;
+	font-weight: 800;
 }
 
 /* Contenedor de búsqueda */
@@ -103,6 +101,7 @@ header {
 	align-items: center;
 	justify-content: center;
 	width: 100px;
+	
 }
 
 .profile-btn img {
@@ -115,12 +114,18 @@ header {
 	padding: 8px;
 	color: var(--line-color);
 }
+.actions a:hover i {
+    /* Estilos que se aplicarán al icono cuando el cursor esté sobre el enlace */
+    color: var(--main-color); /* Cambia el color del icono a rojo */
+    transform: scale(1.2); /* Aumenta ligeramente el tamaño del icono */
+}
 
 .notifications-btn {
 	position: relative;
-	/* Asegura que el elemento padre tenga posición relativa */
 }
-
+.notifications-btn a:hover{
+	background: red;
+}
 .notification-count {
 	position: absolute;
 	/* Establece la posición absoluta para el contador */
@@ -133,33 +138,32 @@ header {
 	padding: 2px 6px;
 	border-radius: 50%;
 }
-
-.container {
-    width: auto; /* Ancho del header-content */
-    max-width:1264px;
-    height: 1200px; /* Ajusta la altura según su contenido */
-    position: relative;
-    top: 61px; /* Ajusta según el espacio del header */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto; /* Centra horizontalmente el contenedor */
+.notifications-btn:hover .notification-count {
+    background-color: #ff5f5f; /* Cambia el color de fondo del contador de notificaciones al pasar el mouse */
 }
 
+.container {
+    width: 100%;
+    max-width: 1264px;
+    height: auto;
+    position: relative;
+    top: 61px;
+    display: flex;
+    margin: 0 auto;
+    flex-grow: 1; /* Permite que el contenedor crezca */
+}
 
 
 .sidebar {
-	width:162px;
-	height: 100%;	
-	border-right: 1px solid var(--line-color);
-
-	background: white;
-	
+    width: 162px;
+    border-right: 1px solid var(--line-color);
+    background: white;
+    display: flex;
+    flex-direction: column;
 }
-
 .sidebar-content {
-	height: 400px;
-padding-top: 20px;
+	height: 1900px;
+	padding-top:20px;
 	width:162px;
 }
 
@@ -244,13 +248,13 @@ nav a i {
 	
 }
 
-#content-listas{
-	
-	margin-left: -21px;
-		border-top: 1px solid var(--line-color);
-		
-
+#content-listas {
+    border-top: 1px solid var(--line-color);
+    margin: 0;
+    margin-left: -20px; /* Ajusta el margen izquierdo */
+    width: calc(100% + 40px); /* Ajusta el ancho para compensar el margen */
 }
+
 
 #d-flex h1 {
 	font-weight: 300;
@@ -290,26 +294,14 @@ nav.open {
 }
 
 
-.question-summary{
-	
-padding:20px;
-	border-bottom: 1px solid var(--line-color);
-	
-}
+
  /* DIVS PREGUNTAS*/
  
 .card {
     display: flex;
-    justify-content: space-between; /* Distribuye los elementos horizontalmente */
-    align-items: center; /* Centra verticalmente los elementos */
-    background-color: white;
-    overflow: hidden;
     transition: all 0.3s;
-    max-width: 100%;
-    min-width: 50%;
     min-height: 20%;
   	border-bottom: 1px solid var(--line-color);
-
 }
 
 
@@ -369,10 +361,13 @@ padding:20px;
 .background img{
 	width:50px;
 	height: 50px;
+		padding:5px;
+	
 }
 .action-buttons {
     display: flex; /* Hace que los botones se muestren en línea */
     align-items: center; /* Centra verticalmente los botones */
+    width:60%;
 }
 .action-buttons a {
     background-color: var(
@@ -456,11 +451,10 @@ padding:20px;
 		display: flex;
 		flex-direction: column; /* Cambia la dirección del diseño a columna */
 	}
-	.logo img {
-		width: 40px;
-	}
+	
 	.logo span {
 		display: none;
+		
 	}
 	header {
 		position: fixed; /* Mantiene el encabezado fijo */

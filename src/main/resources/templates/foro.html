@@ -25,28 +25,30 @@
 		<div class="header-content">
 			<div class="fa fa-bars" id="menu-icon"></div>
 
-			<a href="inicio" class="logo"> <img src="/assets/logo03.png"
-				alt="Conexión Vallejo Logo"> <span class="logo-text">Conexión
-					<strong>Vallejo</strong>
+			<a href="inicio" class="logo">  <span class="logo-text">Talk
+					
 			</span>
 			</a>
 
-			<div  id="search-container" class="search-container ">
+			<div id="search-container" class="search-container ">
 				<input type="text" placeholder="Buscar en la comunidad">
 				<button type="submit">Buscar</button>
 			</div>
-			<div class="actions">
-
-
-				<a class="search-icon" id="search-icon"> <i
-					class="fas fa-search"> </i>
-				</a> <a href="/mi-perfil" class="profile-btn"> <img
-					src="/assets/profile.png" alt="Foto de perfil">
-				</a> <a href="#" class="notifications-btn"> <i class="fas fa-bell"></i>
-					<span id="notification-count" class="notification-count">0</span>
-				</a> <a href="#" class="settings-btn"> <i class="fas fa-cog"></i>
-				</a>
-			</div>
+		<div class="actions">
+    <a class="search-icon" id="search-icon">
+        <i class="fas fa-search"></i>
+    </a>
+    <a href="/mi-perfil" class="profile-btn">
+        <img src="/assets/profile.png" alt="Foto de perfil">
+    </a>
+    <a href="#" class="notifications-btn">
+        <i class="fas fa-bell"></i>
+        <span id="notification-count" class="notification-count">0</span>
+    </a>
+    <a href="#" class="settings-btn">
+        <i class="fas fa-cog"></i>
+    </a>
+</div>
 
 
 		</div>
@@ -80,53 +82,42 @@
 					<a class="ask-questions">Pregunta</a>
 
 				</div>
+
 				<div id="content-listas">
 					<div id="flex-questions">
-						<div th:each="post : ${posts}" class="question-summary">
-							<div>
-								<a th:href="@{'/inicio/' + ${post.createdByUser.displayName}}">
+
+						<div th:each="post : ${posts}" class="card">
+							<div class="content">
+								<p th:text="${post.postTitle}"></p>
+								<ul class="chips">
+									<li class="chip">React.js</li>
+									<li class="chip">Node.js</li>
+									<li class="chip">PostgreSQL</li>
+								</ul>
+								<div class="question-meta">
+									<p
+										th:text="${#dates.format(post.createdDate, 'dd/MM/yyyy HH:mm')}">
+										<span></span>
+									</p>
+								</div>
+								<div class="action-buttons">
+									<a href="#book-a-mentor">Ayudar</a>
+								</div>
+							</div>
+
+
+							<div class="background">
+								<img src="assets/profile.png" alt="profile"> <a
+									th:href="@{'/inicio/' + ${post.createdByUser.displayName}}">
 									<span th:text="${post.createdByUser.displayName}"></span>
 								</a>
-
-								<h3 th:text="${post.postTitle}"></h3>
-									
-									<p>
-										Fecha de Creación: <span
-											th:text="${#dates.format(post.createdDate, 'dd/MM/yyyy HH:mm')}"></span>
-									</p>
 							</div>
+
+
 						</div>
 
-
 					</div>
-
 				</div>
-<div id="content-listas">
-    <div id="flex-questions">
-        <!-- Reemplaza el contenido actual con la tarjeta -->
-       <div class="card">
-    <div class="content">
-        <p>¿Cuál es la mejor manera de aprender a programar en C++?</p>
-        <ul class="chips">
-            <li class="chip">React.js</li>
-            <li class="chip">Node.js</li>
-            <li class="chip">PostgreSQL</li>
-        </ul>
-        <div class="question-meta">
-            <p>Preguntó hace <span>3 días</span></p>
-        </div>
-        <div class="action-buttons">
-            <a href="#book-a-mentor">Ayudar</a>
-        </div>
-    </div>
-    <div class="background">
-        <img src="assets/profile.png" alt="profile">
-        <span>Zack Wilson</span>
-    </div>
-</div>
-
-    </div>
-</div>
 
 			</div>
 
