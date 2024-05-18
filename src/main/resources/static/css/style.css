@@ -609,10 +609,9 @@ a:focus {
 
 /* info section */
 .footer_bg {
-  background-image: url(/assets/footerbg.png);
+  background: -webkit-gradient(linear, left top, right top, from(#864ddf), to(#203376));
+  background: linear-gradient(to right, #864ddf, #203376);
   background-size: cover;
-  padding-top: 280px;
-  margin-top: -125px;
 }
 
 .info_section {
@@ -624,7 +623,7 @@ a:focus {
   text-transform: uppercase;
   font-weight: bold;
   color: #f9fcfb;
-  margin-bottom: 35px;
+padding-top:20px ;
 }
 
 .info_section img {

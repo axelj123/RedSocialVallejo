@@ -37,5 +37,8 @@ public class FormsControlador {
 	public String home() {
 		return "home";
 	}
-	
+	@GetMapping("/perfil")
+	public String perfil() {
+		return "Perfil";
+	}
 }

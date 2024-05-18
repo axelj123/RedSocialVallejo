@@ -1,20 +1,21 @@
-/* CSS general */
 :root {
 	--bg-color: #fafafa;
 	--text-color: #000000;
 	--main-color: #4117db;
 	--line-color: #ccc;
 	--font-text: sans-serif;
-	    --background: #D8E3FA;
-    --gray: #EAEAEC;
-    --primary: #29283F;
-    --primary-violet: #7370F4;
+	--background: #D8E3FA;
+	--gray: #EAEAEC;
+	--primary: #29283F;
+	--primary-violet: #7370F4;
 }
+
 body {
-    display: flex;
-    flex-direction: column;
-    background-color: var(--bg-color);
+	display: flex;
+	flex-direction: column;
+	background-color: var(--bg-color);
 }
+
 * {
 	padding: 0;
 	margin: 0;
@@ -54,8 +55,8 @@ header {
 	align-items: center;
 	text-decoration: none;
 	justify-content: center;
+	padding-left: 20px;
 }
-
 
 .logo span {
 	color: #3b4045;
@@ -71,9 +72,8 @@ header {
 	padding: 2px;
 	background-color: #fff;
 	border-radius: 10px;
-	width: 70%;
-	margin: 10px auto;
-	align-items: center;
+	width: 50%;
+	margin: 10px;
 }
 
 .search-container input[type="text"] {
@@ -101,7 +101,6 @@ header {
 	align-items: center;
 	justify-content: center;
 	width: 100px;
-	
 }
 
 .profile-btn img {
@@ -114,18 +113,21 @@ header {
 	padding: 8px;
 	color: var(--line-color);
 }
+
 .actions a:hover i {
-    /* Estilos que se aplicarán al icono cuando el cursor esté sobre el enlace */
-    color: var(--main-color); /* Cambia el color del icono a rojo */
-    transform: scale(1.2); /* Aumenta ligeramente el tamaño del icono */
+	/* Estilos que se aplicarán al icono cuando el cursor esté sobre el enlace */
+	color: var(--main-color); /* Cambia el color del icono a rojo */
+	transform: scale(1.2); /* Aumenta ligeramente el tamaño del icono */
 }
 
 .notifications-btn {
 	position: relative;
 }
-.notifications-btn a:hover{
+
+.notifications-btn a:hover {
 	background: red;
 }
+
 .notification-count {
 	position: absolute;
 	/* Establece la posición absoluta para el contador */
@@ -138,33 +140,36 @@ header {
 	padding: 2px 6px;
 	border-radius: 50%;
 }
+
 .notifications-btn:hover .notification-count {
-    background-color: #ff5f5f; /* Cambia el color de fondo del contador de notificaciones al pasar el mouse */
+	background-color: #ff5f5f;
+	/* Cambia el color de fondo del contador de notificaciones al pasar el mouse */
 }
 
 .container {
-    width: 100%;
-    max-width: 1264px;
-    height: auto;
-    position: relative;
-    top: 61px;
-    display: flex;
-    margin: 0 auto;
-    flex-grow: 1; /* Permite que el contenedor crezca */
+	width: 100%;
+	max-width: 1264px;
+	height: auto;
+	position: relative;
+	top: 61px;
+	display: flex;
+	margin: 0 auto;
+	flex-grow: 1; /* Permite que el contenedor crezca */
+	margin-bottom: 60px; /* Añadir margen inferior */
 }
-
 
 .sidebar {
-    width: 162px;
-    border-right: 1px solid var(--line-color);
-    background: white;
-    display: flex;
-    flex-direction: column;
+	width: 162px;
+	border-right: 1px solid var(--line-color);
+	background: white;
+	display: flex;
+	flex-direction: column;
 }
+
 .sidebar-content {
 	height: 1900px;
-	padding-top:20px;
-	width:162px;
+	padding-top: 20px;
+	width: 162px;
 }
 
 nav {
@@ -225,13 +230,12 @@ nav a i {
 
 /* Contenido principal */
 #content-center {
-    width: 100%;
-    height: 100%;
-    padding: 20px;
-    margin-top: 0; /* Ajusta el margen superior negativo para mover hacia arriba */
-    
+	width: 100%;
+	height: 100%;
+	padding-left: 20px;
+	margin-top: 0;
+	/* Ajusta el margen superior negativo para mover hacia arriba */
 }
-
 
 #mainbar {
 	width: 100%;
@@ -244,41 +248,42 @@ nav a i {
 	height: auto;
 	display: flex;
 	align-items: flex-start; /* Cambiado de center a flex-start */
-	padding-bottom: 20px;
-	
+	padding: 20px;
 }
 
 #content-listas {
-    border-top: 1px solid var(--line-color);
-    margin: 0;
-    margin-left: -20px; /* Ajusta el margen izquierdo */
-    width: calc(100% + 40px); /* Ajusta el ancho para compensar el margen */
+	border-top: 1px solid var(--line-color);
+	margin: 0;
+	margin-left: -20px; /* Ajusta el margen izquierdo */
+	width: calc(100% + 40px);
+	/* Ajusta el ancho para compensar el margen */
 }
-
 
 #d-flex h1 {
 	font-weight: 300;
 	font-size: 25px;
-	width:80%;
+	width: 80%;
 }
 
 .ask-questions {
 	background-color: var(--main-color); /* Color de fondo */
 	border: 2px solid var(--main-color); /* Borde */
 	color: var(--bg-color);
-	padding: 10px ;
+	padding: 10px;
 	text-align: center;
 	text-decoration: none;
 	font-size: 16px;
 	transition-duration: 0.4s;
 	cursor: pointer;
 	border-radius: 5px;
+	font-size: 14px;
+		width: 100px;
+		padding: 2px;
 }
-.ask-questions:hover{
-		background-color: #603EDE; /* Color de fondo */
-			border: 2px solid var(--bg-color); /* Borde */
-		
 
+.ask-questions:hover {
+	background-color: #603EDE; /* Color de fondo */
+	border: 2px solid var(--bg-color); /* Borde */
 }
 
 #menu-icon {
@@ -293,121 +298,116 @@ nav.open {
 	right: 20px;
 }
 
-
-
- /* DIVS PREGUNTAS*/
- 
+/* DIVS PREGUNTAS */
 .card {
-    display: flex;
-    transition: all 0.3s;
-    min-height: 20%;
-  	border-bottom: 1px solid var(--line-color);
+	display: flex;
+	transition: all 0.3s;
+	min-height: 20%;
+	border-bottom: 1px solid var(--line-color);
 }
-
-
 
 .background {
-	width: 20%;;
+	width: 20%;
 	height: 20%;
 }
-.background span{
+
+.background span {
 	font-size: 12px;
-	padding:2px;
+	padding: 2px;
 	display: flex;
 }
 
-
 .content {
-    flex: 3 1 22rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    padding: 1rem;
+	flex: 3 1 22rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: start;
+	padding: 1rem;
 }
 
-
-.content > p {
-    font-size: 14px;;
-    font-weight: 400;
-    margin: 0.4rem 0;
+.content>p {
+	font-size: 14px;
+	font-weight: 400;
+	margin: 0.4rem 0;
 }
 
 .content a {
-    color: var(--primary-violet);
+	color: var(--primary-violet);
 }
 
 .chips {
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-    list-style-type: none;
-    padding: 0.75rem 0px 1rem 0px;
+	display: flex;
+	gap: 1.5rem;
+	flex-wrap: wrap;
+	list-style-type: none;
+	padding: 0.75rem 0px 1rem 0px;
 }
 
 .chip {
-    border-radius: 0.5rem;
-    padding: 0.25rem 0.5rem;
-    font-size: 10px;
-    background-color: var(--gray);
-    transition: all 0.3s;
-    font-weight: 500;
+	border-radius: 0.5rem;
+	padding: 0.25rem 0.5rem;
+	font-size: 10px;
+	background-color: var(--gray);
+	transition: all 0.3s;
+	font-weight: 500;
 }
 
 .chip:hover {
-    background-color: var(
-        --primary-violet);
-    color: var(--gray)
+	background-color: var(--primary-violet);
+	color: var(--gray);
 }
-.background img{
-	width:50px;
+
+.background img {
+	width: 50px;
 	height: 50px;
-		padding:5px;
-	
+	padding: 5px;
 }
+
 .action-buttons {
-    display: flex; /* Hace que los botones se muestren en línea */
-    align-items: center; /* Centra verticalmente los botones */
-    width:60%;
+	display: flex; /* Hace que los botones se muestren en línea */
+	align-items: center; /* Centra verticalmente los botones */
+	min-width: 100%;
 }
+
 .action-buttons a {
-    background-color: var(
-        --primary);
-    color: white;
-    padding: 2px;
-    text-decoration: none;
-    border-radius: 0.75rem;
-    outline: none;
-    border: none;
-    font-size: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex: 1 0 15rem;
-    max-width: 20%;
+	background-color: var(--primary);
+	color: white;
+	padding: 2px;
+	text-decoration: none;
+	border-radius: 0.75rem;
+	outline: none;
+	border: none;
+	font-size: 12px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex: 1 0 15rem;
+	max-width: 20%;
+	min-width: 150px; /* Establece un ancho mínimo para los botones */
 }
 
 .action-buttons a:hover {
-    text-decoration: underline;
+	text-decoration: underline;
 }
 
 .action-buttons a.secondary {
-    background-color: inherit;
-    color: var(--primary);
-    border: 1px solid var(
-        --primary);
-    flex: 1 0 5rem;
+	background-color: inherit;
+	color: var(--primary);
+	border: 1px solid var(--primary);
+	flex: 1 0 5rem;
 }
+
 .question-meta {
-    font-size: 12px;
-    color: #999; /* Color de texto gris */
-    margin-bottom: 10px; /* Espacio inferior */
+	font-size: 12px;
+	color: #999; /* Color de texto gris */
+	margin-bottom: 10px; /* Espacio inferior */
 }
 
 .question-meta span {
-    font-weight: bold; /* Texto en negrita */
-    color: #333; /* Color de texto oscuro */
+	font-weight: bold; /* Texto en negrita */
+	color: #333; /* Color de texto oscuro */
 }
- 
+
 @media ( max-width : 480px) {
 	#menu-icon {
 		font-size: 20px;
@@ -451,10 +451,8 @@ nav.open {
 		display: flex;
 		flex-direction: column; /* Cambia la dirección del diseño a columna */
 	}
-	
 	.logo span {
 		display: none;
-		
 	}
 	header {
 		position: fixed; /* Mantiene el encabezado fijo */
@@ -472,45 +470,34 @@ nav.open {
 		top: 50%;
 		transform: translate(-20%, -50%);
 	}
-
 	.search-container {
 		display: none;
 		position: fixed;
 		top: 40px;
-		left: 0;
-		width: 100%;
+		width: 90%;
 		z-index: 1000;
-	padding:10px;
-    box-shadow: 3px 4px 10px rgba(0, 0, 0, 0.1);
+		box-shadow: 3px 4px 10px rgba(0, 0, 0, 0.1);
 	}
-
-	
 	#d-flex h1 {
 		font-size: 20px;
 	}
-	.ask-questions {
-		font-size: 14px;
-		width: 100px;
-		padding:2px;
-	}
+
 	.container {
 		width: auto;
-		top: 50px; 
+		top: 50px;
 		margin: 0;
 		left: 0;
 		right: 0;
 	}
 	#content-center {
 		width: 100%;
-		left: 0; 
-		margin: 0; 
+		left: 0;
+		margin: 0;
 		height: 100%;
 		padding: 20px;
 	}
-	#mainbar{
+	#mainbar {
 		width: auto; /* Ajusta el ancho automáticamente */
 		height: auto; /* Ajusta la altura automáticamente */
 	}
-	
-
 }

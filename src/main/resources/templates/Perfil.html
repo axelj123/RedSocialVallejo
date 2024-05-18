@@ -4,8 +4,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Foro</title>
-<link rel="stylesheet" type="text/css" href="css/foro.css">
+<title>User</title>
+<link rel="stylesheet" type="text/css" href="css/perfil.css">
 
 <link
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
@@ -37,7 +37,7 @@
 			<div class="actions">
 				<a class="search-icon" id="search-icon"> <i
 					class="fas fa-search"></i>
-				</a> <a href="/perfil" class="profile-btn"> <img
+				</a> <a href="/mi-perfil" class="profile-btn"> <img
 					src="/assets/profile.png" alt="Foto de perfil">
 				</a> <a href="#" class="notifications-btn"> <i class="fas fa-bell"></i>
 					<span id="notification-count" class="notification-count">0</span>
@@ -73,46 +73,17 @@
 		<div id="content-center">
 			<div id="mainbar">
 				<div id="d-flex">
-					<h1>Preguntas Top</h1>
-					<a class="ask-questions">Pregunta</a>
+					<h1>Axel Muñoz</h1>
+					<a class="ask-questions">Editar perfil</a>
 
 				</div>
 
-				<div id="content-listas">
-					<div id="flex-questions">
+				<div id="d-flex">
+					<h1>Axel Muñoz</h1>
+					<a class="ask-questions">Editar perfil</a>
 
-						<div th:each="post : ${posts}" class="card">
-							<div class="content">
-								<p th:text="${post.postTitle}"></p>
-								<ul class="chips">
-									<li class="chip">React.js</li>
-									<li class="chip">Node.js</li>
-									<li class="chip">PostgreSQL</li>
-								</ul>
-								<div class="question-meta">
-									<p
-										th:text="${#dates.format(post.createdDate, 'dd/MM/yyyy HH:mm')}">
-										<span></span>
-									</p>
-								</div>
-								<div class="action-buttons">
-									<a href="#book-a-mentor">Ayudar</a>
-								</div>
-							</div>
-
-
-							<div class="background">
-								<img src="assets/profile.png" alt="profile"> <a
-									th:href="@{'/inicio/' + ${post.createdByUser.displayName}}">
-									<span th:text="${post.createdByUser.displayName}"></span>
-								</a>
-							</div>
-
-
-						</div>
-
-					</div>
 				</div>
+
 
 			</div>
 
