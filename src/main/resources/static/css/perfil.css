@@ -309,9 +309,8 @@ nav.open {
     display: flex;
     flex-wrap: wrap;
     background-color: white;
-    cursor: pointer;
-    overflow: hidden;
    width: 100%;
+   padding-top:4px;
     min-width: 2rem;
     min-height: 2.5rem;
 }
@@ -320,15 +319,14 @@ nav.open {
 
 
 .background {
-	width: 20%;
+	width:20%;
 	height: 20%;
 }
 
 
 .background img {
-    width: 100%;
+    width:120px;;
     height: 100%;
-    object-fit: cover;
 }
 
 .content {
