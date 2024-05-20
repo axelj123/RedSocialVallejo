@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.conexionVallejo.modelos.Post;
 import com.example.conexionVallejo.servicios.PostService;
-
 @Controller
 public class FormsControlador {
 
@@ -17,28 +17,47 @@ public class FormsControlador {
     public FormsControlador(PostService postService) {
         this.postService = postService;
     }
-	@GetMapping ("/inicio")
-	public String inicio () {
-		
-		return "index";
-	}
-	  @GetMapping("/foro")
-	    public String foro(Model model) {
-	        List<Post> posts = postService.obtenerPreguntas();
-	        model.addAttribute("posts", posts);
-	        return "foro";
-	    }
-	
-	@GetMapping ("/posts/ask")
-	public String ask() {
-		return "ask";
-	}
-	@GetMapping("/home")
-	public String home() {
-		return "home";
-	}
-	@GetMapping("/perfil")
-	public String perfil() {
-		return "Perfil";
-	}
+
+    @GetMapping("/inicio")
+    public String inicio() {
+        return "index";
+    }
+
+    @GetMapping("/foro")
+    public String foro(Model model) {
+        List<Post> posts = postService.obtenerPreguntas();
+        model.addAttribute("posts", posts);
+        return "foro";
+    }
+
+    @GetMapping("/posts/ask")
+    public String ask() {
+        return "ask";
+    }
+
+    @GetMapping("/home")
+    public String home() {
+        return "home";
+    }
+
+    @GetMapping("/perfil")
+    public String perfil(@RequestParam(value = "tab", defaultValue = "info") String tab, Model model) {
+        model.addAttribute("activeTab", tab);
+        return "Perfil";
+    }
+
+    @GetMapping("/perfil/info")
+    public String perfilInfo(Model model) {
+        return "redirect:/perfil?tab=info";
+    }
+
+    @GetMapping("/perfil/actividades")
+    public String perfilActividades(Model model) {
+        return "redirect:/perfil?tab=actividades";
+    }
+
+    @GetMapping("/perfil/configuracion")
+    public String perfilConfiguracion(Model model) {
+        return "redirect:/perfil?tab=configuracion";
+    }
 }

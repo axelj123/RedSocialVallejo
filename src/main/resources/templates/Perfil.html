@@ -1,22 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Perfil</title>
 <link rel="stylesheet" type="text/css" href="css/perfil.css">
-
 <link
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
 	rel="stylesheet">
-
-
 <link rel="icon" href="assets/logo03.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link
-	href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+	href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
 	rel="stylesheet">
 </head>
 
@@ -24,39 +20,29 @@
 	<header>
 		<div class="header-content">
 			<div class="fa fa-bars" id="menu-icon"></div>
-
-			<a href="/inicio" class="logo"> <span class="logo-text">Talk
-
-			</span>
-			</a>
-
-			<div id="search-container" class="search-container ">
+			<a href="/inicio" class="logo"><span class="logo-text">Talk</span></a>
+			<div id="search-container" class="search-container">
 				<input type="text" placeholder="Buscar en la comunidad">
-				<button type="submit">Buscar</button>
+				<button id="search-encabezado" type="submit">Buscar</button>
 			</div>
 			<div class="actions">
-				<a class="search-icon" id="search-icon"> <i
-					class="fas fa-search"></i>
-				</a> <a href="/perfil" class="profile-btn"> <img
-					src="/assets/profile.png" alt="Foto de perfil">
-				</a> <a href="#" class="notifications-btn"> <i class="fas fa-bell"></i>
-					<span id="notification-count" class="notification-count">0</span>
-				</a> <a href="#" class="settings-btn"> <i class="fas fa-cog"></i>
-				</a>
+				<a class="search-icon" id="search-icon"><i class="fas fa-search"></i></a>
+				<a href="/perfil" class="profile-btn"><img
+					src="/assets/profile.png" alt="Foto de perfil"></a> <a href="#"
+					class="notifications-btn"><i class="fas fa-bell"></i><span
+					id="notification-count" class="notification-count">0</span></a> <a
+					href="/perfil?tab=configuracion" class="settings-btn"><i
+					class="fas fa-cog"></i></a>
 			</div>
-
-
 		</div>
 	</header>
-
-
 
 	<div class="container">
 		<div class="sidebar">
 			<div class="sidebar-content">
 				<nav>
 					<ul>
-						<li><a href="#"><i class="fas fa-home"></i> Inicio</a></li>
+						<li><a href="/foro"><i class="fas fa-home"></i> Inicio</a></li>
 						<li><a href="#"><i class="fas fa-question-circle"></i>
 								Preguntas</a></li>
 						<li><a href="#"><i class="fas fa-tag"></i> Tags</a></li>
@@ -64,96 +50,178 @@
 						<li><a href="#"><i class="fas fa-user"></i> Usuarios</a></li>
 					</ul>
 				</nav>
-
 			</div>
-
-
 		</div>
 
 		<div id="content-center">
 			<div id="mainbar">
-			
+				<div class="card">
+					<div class='background'>
+						<img src="assets/profile.png" alt="background">
+					</div>
+					<div class='content'>
+						<h2>Jason Alexander</h2>
+						<p>
+							I'm JavaScript full-stack engineer, love working with <em>React</em>
+							and <em>Node.js</em>.
+						</p>
+					</div>
+				</div>
+				<div class="flex-actions">
+					<div class="items-navigation">
+						<a th:href="@{/perfil(tab='info')}"
+							th:classappend="${activeTab == 'info'} ? 'active' : ''">Perfil</a>
+						<a th:href="@{/perfil(tab='actividades')}"
+							th:classappend="${activeTab == 'actividades'} ? 'active' : ''">Actividades</a>
+						<a th:href="@{/perfil(tab='configuracion')}"
+							th:classappend="${activeTab == 'configuracion'} ? 'active' : ''">Configuración</a>
+					</div>
+				</div>
+				<div class="action-items">
+					<div id="perfil" class="section-content"
+						th:style="${activeTab == 'info'} ? 'display:block;' : 'display:none;'">
+						<h3>Stats</h3>
+						<ul>
+							<li><strong>11</strong> reputation</li>
+							<li><strong>1k</strong> reached</li>
+							<li><strong>0</strong> answers</li>
+							<li><strong>2</strong> questions</li>
+						</ul>
 
-		<div class="card">
-                <div class='background'>
-                    <img src="assets/profile.png" alt="background">
-                </div>
-                <div class='content'>
-                    <h2>Jason Alexander</h2>
-                    <p>
-                        I'm JavaScript full-stack engineer, love working with <em>React</em> and <em>Node.js</em>. 
-                    </p>
-               
-                </div>
-            
-                
-            </div>
-                <div class="flex-actions">
-                <div class="items-navigation">
-                <a>Perfil</a>
-                <a>Actividades</a>
-                <a>Configuración</a>
-                
-                </div>
-                </div>
+						<h3>Communities</h3>
+						<ul>
+							<li>Stack Overflow <strong>11</strong></li>
+							<li>Meta Stack Exchange <strong>1</strong></li>
+						</ul>
 
+						<h3>Badges</h3>
+						<ul>
+							<li>This user doesn’t have any gold badges yet.</li>
+							<li>This user doesn’t have any silver badges yet.</li>
+							<li>2 bronze badges</li>
+						</ul>
+
+						<h3>Top Tags</h3>
+						<table>
+							<tr>
+								<th>Tag</th>
+								<th>Score</th>
+								<th>Posts</th>
+								<th>Posts %</th>
+							</tr>
+							<tr>
+								<td>google-apps-script</td>
+								<td>0</td>
+								<td>1</td>
+								<td>50%</td>
+							</tr>
+							<tr>
+								<td>google-sheets-formula</td>
+								<td>0</td>
+								<td>1</td>
+								<td>50%</td>
+							</tr>
+							<tr>
+								<td>google-sheets</td>
+								<td>0</td>
+								<td>1</td>
+								<td>50%</td>
+							</tr>
+							<tr>
+								<td>javascript</td>
+								<td>0</td>
+								<td>1</td>
+								<td>50%</td>
+							</tr>
+						</table>
+
+						<h3>Top posts</h3>
+						<ul>
+							<li>1. Splitting single column into multiple columns 1000
+								rows per column (Aug 21, 2020)</li>
+							<li>0. Select with Group By</li>
+						</ul>
+					</div>
+					<div id="actividades" class="section-content"
+						th:style="${activeTab == 'actividades'} ? 'display:block;' : 'display:none;'">
+						Contenido de Actividades</div>
+					<div id="configuracion" class="section-content"
+						th:style="${activeTab == 'configuracion'} ? 'display:block;' : 'display:none;'">
+						<div class="main-profile">
+							<h2>Editar Perfil</h2>
+							<form action="" method="POST" id="edit-profile-form"
+								enctype="multipart/form-data">
+								<div class="avatar">
+									<label for="profile_picture"> <img
+										src="/assets/profile.png" alt="Foto de perfil"> <span
+										class="change-avatar">Cambiar foto</span>
+									</label> <input type="file" id="profile_picture" name="profile_picture"
+										accept="image/*">
+								</div>
+								<div class="details">
+									<div class="form-group">
+										<label for="display_name">Nombre de usuario</label> <input
+											type="text" id="display_name" name="display_name" required>
+									</div>
+									<div class="form-group">
+										<label for="email_address">Correo electrónico</label> <input
+											type="email" id="email_address" name="email_address" required>
+									</div>
+									<div class="form-group">
+										<label for="password">Contraseña</label> <input
+											type="password" id="password" name="password" required>
+									</div>
+									<div class="form-group">
+										<label for="about_me">Acerca de mí</label>
+										<textarea id="about_me" name="about_me" rows="4"></textarea>
+									</div>
+									<div class="form-group">
+										<label for="carrera">Carrera</label> <input type="text"
+											id="carrera" name="carrera" required>
+									</div>
+									<button type="submit" id="save-changes-btn">Guardar
+										cambios</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
 			</div>
-
-
 		</div>
 	</div>
 
+	<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var menuItems = document.querySelectorAll('.sidebar-content nav ul li');
 
+            menuItems.forEach(function(item) {
+                item.addEventListener('click', function() {
+                    menuItems.forEach(function(menuItem) {
+                        menuItem.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
 
+            document.querySelector('.sidebar-content nav ul li:first-child').classList.add('active');
 
+            let menu = document.querySelector('#menu-icon');
+            let navbar = document.querySelector('.sidebar');
+
+            menu.onclick = () => {
+                menu.classList.toggle('fa-times');
+                navbar.classList.toggle('open');
+            }
+
+            const searchIcon = document.getElementById('search-icon');
+            const searchContainer = document.getElementById('search-container');
+
+            searchIcon.addEventListener('click', function(event) {
+                event.preventDefault();
+                searchContainer.style.display = searchContainer.style.display === 'block' ? 'none' : 'block';
+            });
+        });
+    </script>
 </body>
-<script>
-	document
-			.addEventListener(
-					'DOMContentLoaded',
-					function() {
-						var menuItems = document
-								.querySelectorAll('.sidebar-content nav ul li');
-
-						menuItems.forEach(function(item) {
-							item.addEventListener('click', function() {
-								menuItems.forEach(function(menuItem) {
-									menuItem.classList.remove('active');
-								});
-								this.classList.add('active');
-							});
-						});
-						document
-								.querySelector('.sidebar-content nav ul li:first-child').classList
-								.add('active');
-
-					});
-	
-	let menu = document.querySelector('#menu-icon');
-	let navbar = document.querySelector('.sidebar');
-
-	menu.onclick = () => {
-	    menu.classList.toggle('fa-times'); // Cambia el ícono de las barras a la cruz
-	    navbar.classList.toggle('open'); // Abre o cierra la barra lateral
-	}
-	
-	document.addEventListener('DOMContentLoaded', function() {
-	    const searchIcon = document.getElementById('search-icon');
-	    const searchContainer = document.getElementById('search-container');
-
-	    // Agregar un controlador de eventos al icono de búsqueda
-	    searchIcon.addEventListener('click', function(event) {
-	        event.preventDefault(); // Evita que el enlace te lleve al inicio
-	        searchContainer.style.display = searchContainer.style.display === 'none' ? 'flex' : 'none';
-	        
-	        
-	    });
-	    
-	});
-
-
-
-
-
-</script>
 </html>
+
