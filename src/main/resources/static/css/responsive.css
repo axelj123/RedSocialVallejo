@@ -14,9 +14,7 @@
   }
 
 
-  .service_section {
-    background-size: cover;
-  }
+
 
   .slider_section ol.carousel-indicators {
     display: none;
@@ -26,6 +24,7 @@
   .slider_img-box img {
     z-index: 1;
     position: relative;
+    top:90px;
   }
 
   .slider_img-box {
@@ -33,7 +32,6 @@
   }
 
   .slider_img-box::before {
-    background-image: url(/assets/herobgmobile.png);
     width: 100%;
     height: 100%;
     content: "";
@@ -64,10 +62,18 @@
   }
 }
 
+  .slider_detail-box h1{
+	
+	font-size: 54px;
+}
+  
 @media (max-width: 768px) {
 
 
-
+.slider_detail-box h1{
+	
+	font-size: 64px;
+}
 
   .slider_section .carousel_btn-container {
     display: none;
@@ -100,6 +106,7 @@
   .slider_img-box img {
     z-index: 1;
     position: relative;
+    top:0;
   }
 
   .slider_img-box {
@@ -107,7 +114,6 @@
   }
 
   .slider_img-box::before {
-    background-image: url(/assets/herobgmobile.png);
     width: 100%;
     height: 100%;
     content: "";
@@ -123,11 +129,7 @@
     display: none;
   }
 
-  .service_section {
-    padding-top: 375px;
-    background-position: bottom;
-    margin-top: -325px;
-  }
+ 
 
   .client_container {
     width: 95%;
@@ -157,9 +159,11 @@
 @media (max-width: 576px) {
 
 
-  .slider_section ol.carousel-indicators {
-    right: 0;
-  }
+  .slider_detail-box h1{
+	
+	font-size: 54px;
+}
+  
 }
 
 @media (max-width: 480px) {}
