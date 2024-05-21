@@ -49,7 +49,8 @@ body {
   height: 94vh;
   
     box-shadow: 0 2px 7px rgba(0, 0, 2, 0.1); /* Sombra con desplazamiento, desenfoque y color */
-  
+   background: -webkit-gradient(linear, left top, right top, from(#864ddf), to(#203376));
+  background: linear-gradient(to right, #864ddf, #203376);
 }
 
 .hero_area::before {
@@ -76,9 +77,14 @@ body {
 }
 
 .header_section {
-  padding-top: 15px;
-  box-shadow: 0 2px 5px rgba(0, 0, 2, 0.1); /* Sombra con desplazamiento, desenfoque y color */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* Ajusta el índice z según sea necesario */
+  background-color: #fff; /* Agrega un color de fondo si es necesario */
 }
+
 
 .header_section .container-fluid {
   padding-right: 25px;
@@ -158,10 +164,9 @@ a:focus {
 
 .navbar-brand span {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 800;
   color: #000;
   margin-top: 5px;
-  text-transform: uppercase;
 }
 
 .custom_nav-container {
@@ -200,7 +205,7 @@ a:focus {
 
 
 .slider_detail-box p{
-	  color:#000;
+	  color:#fff;
 	
 }
 
@@ -208,7 +213,7 @@ a:focus {
   font-weight: bold;
   font-size:70px;
   margin-bottom: 25px;
-  color:#000;
+  color:#fff;
 }
 
 .slider_detail-box .btn-box a {
@@ -231,7 +236,7 @@ a:focus {
 }
 
 .slider_img-box {
-  width: 75%;
+  width: 65%;
   margin: 0 auto;
 }
 
