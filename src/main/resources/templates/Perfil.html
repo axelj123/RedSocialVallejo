@@ -46,7 +46,9 @@
 						<li><a href="#"><i class="fas fa-question-circle"></i>
 								Preguntas</a></li>
 						<li><a href="#"><i class="fas fa-tag"></i> Tags</a></li>
-						<li><a href="#"><i class="fas fa-bookmark"></i> Guardado</a></li>
+						<li><a th:href="@{/perfil(tab='guardados')}"
+							th:classappend="${activeTab == 'guardados'} ? 'active' : ''"><i
+								class="fas fa-bookmark"></i> Guardado</a></li>
 						<li><a href="#"><i class="fas fa-user"></i> Usuarios</a></li>
 					</ul>
 				</nav>
@@ -62,8 +64,8 @@
 					<div class='content'>
 						<h2>Jason Alexander</h2>
 						<p>
-							I'm JavaScript full-stack engineer, love working with <em>React</em>
-							and <em>Node.js</em>.
+							Soy ingeniero full-stack de JavaScript, me encanta trabajar con <em>React</em>
+							y <em>Node.js</em>.
 						</p>
 					</div>
 				</div>
@@ -73,6 +75,9 @@
 							th:classappend="${activeTab == 'info'} ? 'active' : ''">Perfil</a>
 						<a th:href="@{/perfil(tab='actividades')}"
 							th:classappend="${activeTab == 'actividades'} ? 'active' : ''">Actividades</a>
+						<a th:href="@{/perfil(tab='guardados')}"
+							th:classappend="${activeTab == 'guardados'} ? 'active' : ''">Guardados</a>
+
 						<a th:href="@{/perfil(tab='configuracion')}"
 							th:classappend="${activeTab == 'configuracion'} ? 'active' : ''">Configuración</a>
 					</div>
@@ -80,7 +85,7 @@
 				<div class="action-items">
 					<div id="perfil" class="section-content"
 						th:style="${activeTab == 'info'} ? 'display:block;' : 'display:none;'">
-						<h3>Stats</h3>
+						<h3>Estado</h3>
 						<ul>
 							<li><strong>11</strong> reputation</li>
 							<li><strong>1k</strong> reached</li>
@@ -88,11 +93,7 @@
 							<li><strong>2</strong> questions</li>
 						</ul>
 
-						<h3>Communities</h3>
-						<ul>
-							<li>Stack Overflow <strong>11</strong></li>
-							<li>Meta Stack Exchange <strong>1</strong></li>
-						</ul>
+
 
 						<h3>Badges</h3>
 						<ul>
@@ -116,29 +117,28 @@
 								<td>50%</td>
 							</tr>
 							<tr>
-								<td>google-sheets-formula</td>
+								<td>java</td>
 								<td>0</td>
 								<td>1</td>
 								<td>50%</td>
 							</tr>
 							<tr>
-								<td>google-sheets</td>
+								<td>php</td>
 								<td>0</td>
 								<td>1</td>
 								<td>50%</td>
 							</tr>
 							<tr>
-								<td>javascript</td>
+								<td>sql</td>
 								<td>0</td>
 								<td>1</td>
 								<td>50%</td>
 							</tr>
 						</table>
 
-						<h3>Top posts</h3>
+						<h3>Preguntas realizadas</h3>
 						<ul>
-							<li>1. Splitting single column into multiple columns 1000
-								rows per column (Aug 21, 2020)</li>
+							<li>1. Como hacer algo (Aug 21, 2020)</li>
 							<li>0. Select with Group By</li>
 						</ul>
 					</div>

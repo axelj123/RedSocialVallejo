@@ -51,6 +51,11 @@ public class FormsControlador {
     public String perfilActividades(Model model) {
         return "redirect:/perfil?tab=actividades";
     }
+    
+    @GetMapping("/perfil/guardados")
+    public String Guardados (Model model) {
+    	return  "redirect:/perfil?tab=guardados";
+    }
 
     @GetMapping("/perfil/configuracion")
     public String perfilConfiguracion(Model model) {
