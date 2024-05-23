@@ -149,10 +149,10 @@ header {
 	max-width: 1264px;
 	height: auto;
 	position: relative;
-	top: 60px;
+	top: 61px;
 	display: flex;
 	margin: 0 auto;
-			flex-grow: 1;
+	flex-grow: 1;
 	margin-bottom: 60px;
 }
 

@@ -1,21 +1,19 @@
 package com.example.conexionVallejo.controlador;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.conexionVallejo.modelos.Post;
 import com.example.conexionVallejo.servicios.PostService;
@@ -49,9 +47,10 @@ public class FormsControlador {
 		return "foro";
 	}
 
-	/*
-	 * @GetMapping("/login") public String login() { return "loginregister"; }
-	 */
+	@GetMapping("/login")
+	public String login() {
+		return "loginregister";
+	}
 
 	@GetMapping("/perfil")
 	public String perfil(@RequestParam(value = "tab", defaultValue = "info") String tab, Model model) {
@@ -79,22 +78,9 @@ public class FormsControlador {
 		return "redirect:/perfil?tab=configuracion";
 	}
 
-	@GetMapping("/session")
-	public ResponseEntity<?> getDetailsSession() {
-
-		String sessionId = "";
-		User userObject = null;
-
-		List<Object> sessions = sessionRegistry.getAllPrincipals();
-		
-		for (Object session :  sessions) {
-		if (session instanceof User) {
-			userObject=(User) session;
-			
-		}
-			
-		}
-		return (ResponseEntity<?>) ResponseEntity.ok();
-	}
+@GetMapping("/createPost")
+public String createPost(Model model) {
+	return "createpost";
+}
 
 }

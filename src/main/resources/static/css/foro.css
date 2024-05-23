@@ -151,7 +151,7 @@ header {
 	max-width: 1264px;
 	height: auto;
 	position: relative;
-	top: 61px;
+	top: 60px;
 	display: flex;
 	margin: 0 auto;
 	flex-grow: 1; /* Permite que el contenedor crezca */
