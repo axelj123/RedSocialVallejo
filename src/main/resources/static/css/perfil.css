@@ -1,7 +1,7 @@
 :root {
 	--bg-color: #fafafa;
 	--text-color: #000000;
-	--main-color: #005ea2;
+	--main-color: #0077cc;
 	--line-color: #e2e7e8;
 	--font-text: sans-serif;
 	--background: #D8E3FA;
@@ -76,15 +76,24 @@ header {
 	margin: 10px;
 }
 
-.search-container input[type="text"] {
-	flex-grow: 1;
-	border: none;
-	padding: 8px;
-	border-radius: 25px;
-	outline: none;
-	margin-right: 5px;
+.search-container .search-input {
+    flex-grow: 1;
+    border: none;
+    padding: 8px;
+    border-radius: 25px;
+    outline: none;
+    margin-right: 5px;
 }
-
+.search-container button {
+    background-color: var(--main-color);
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    outline: none;
+    margin-left: 5px;
+    border-radius: 10px;
+}
 .search-encabezado {
 	background-color: var(--main-color);
 	color: #fff;
@@ -491,8 +500,9 @@ textarea {
 	resize: vertical;
 }
 
+
 button[type="submit"] {
-	background-color: #0077cc;
+	background-color: var(--main-color);
 	color: #fff;
 	border: none;
 	border-radius: 5px;
@@ -505,7 +515,6 @@ button[type="submit"] {
 button[type="submit"]:hover {
 	background-color: #005ea2;
 }
-
 #profile_picture {
 	display: none;
 }

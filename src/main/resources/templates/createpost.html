@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Perfil</title>
-<link rel="stylesheet" type="text/css" href="css/perfil.css">
+<title>Crear Post</title>
+<link rel="stylesheet" type="text/css" href="css/createpost.css">
 <link
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
 	rel="stylesheet">
@@ -14,6 +14,7 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
 	rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -22,7 +23,7 @@
 			<div class="fa fa-bars" id="menu-icon"></div>
 			<a href="/foro" class="logo"><span class="logo-text">Talk</span></a>
 			<div id="search-container" class="search-container">
-				<input type="text" placeholder="Buscar en la comunidad">
+				<input class="search-input" type="text" placeholder="Buscar">
 				<button id="search-encabezado" type="submit">Buscar</button>
 			</div>
 			<div class="actions">
@@ -57,48 +58,200 @@
 
 		<div id="content-center">
 			<div id="mainbar">
-				
-				
-				<div class=""></div>
+				<div class="create-post">
+					<div class="flex-h1">
 						<h1>Realiza una pregunta pública</h1>
-				</div>
-		
-				
+
+					</div>
+
+					<div class="rules-question">
+
+						<div class="content-rules">
+							<h2 id="h2-estructura">Estructura</h2>
+							<p>Este formulario te guiará para realizar una buena
+								consulta.</p>
+
+							<h5 id="h5-estructura-pasos">Pasos</h5>
+							<ol>
+								<li>Resuma su problema en un título de una línea.</li>
+								<li>Describe tu problema con más detalle.</li>
+								<li>Describe lo que intentaste y lo que esperabas que
+									sucediera.</li>
+								<li>Agregue "etiquetas" que ayuden a hacer llegar su
+									pregunta a los miembros de la comunidad.</li>
+								<li>Revise su pregunta y publíquela en el sitio.</li>
+							</ol>
+						</div>
+					</div>
+
+
+
+					<form id="question-form" action="#" method="post">
+						<div class="question">
+							<div class="question-inner">
+								<label for="title">Titulo</label> <input type="text" id="title"
+									name="title"
+									placeholder="Sea específico e imagine que le está haciendo una pregunta a otra persona."
+									required autofocus>
+							</div>
+						</div>
+
+						<div class="question">
+							<div class="question-inner">
+								<label for="details">Detalles</label>
+								<textarea id="details" name="details"
+									placeholder="Presenta el problema y amplía lo que pusiste en el título. Mínimo 20 caracteres."
+									required disabled></textarea>
+							</div>
+						</div>
+
+						<div class="question">
+							<div class="question-inner">
+								<label for="tried">¿Qué intentaste?</label>
+								<textarea id="tried" name="tried"
+									placeholder="Describe lo que intentaste, lo que esperabas que sucediera y el resultado real. Mínimo 20 caracteres."
+									required disabled></textarea>
+							</div>
+						</div>
+
+						<div class="question">
+							<div class="question-inner">
+								<label for="tags">Tags</label> <input type="text" id="tags"
+									name="tags"
+									placeholder="Agregue hasta 5 etiquetas para describir de qué se trata su pregunta. Empiece a escribir para ver sugerencias."
+									required disabled>
+							</div>
+						</div>
+
+						<button class="publish-btn" type="submit">Review your
+							question and post it to the site</button>
+						<a href="#" class="discard-btn" onclick="discardChanges()">Descartar
+							cambios</a>
+
+					</form>
+
+
+
 				</div>
 			</div>
-
+		</div>
+	</div>
 
 	<script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var menuItems = document.querySelectorAll('.sidebar-content nav ul li');
+	
 
-            menuItems.forEach(function(item) {
-                item.addEventListener('click', function() {
-                    menuItems.forEach(function(menuItem) {
-                        menuItem.classList.remove('active');
-                    });
-                    this.classList.add('active');
-                });
+	
+document.addEventListener('DOMContentLoaded', function() {
+    var menuItems = document.querySelectorAll('.sidebar-content nav ul li');
+
+    menuItems.forEach(function(item) {
+        item.addEventListener('click', function() {
+            menuItems.forEach(function(menuItem) {
+                menuItem.classList.remove('active');
             });
-
-            document.querySelector('.sidebar-content nav ul li:first-child').classList.add('active');
-
-            let menu = document.querySelector('#menu-icon');
-            let navbar = document.querySelector('.sidebar');
-
-            menu.onclick = () => {
-                menu.classList.toggle('fa-times');
-                navbar.classList.toggle('open');
-            }
-
-            const searchIcon = document.getElementById('search-icon');
-            const searchContainer = document.getElementById('search-container');
-
-            searchIcon.addEventListener('click', function(event) {
-                event.preventDefault();
-                searchContainer.style.display = searchContainer.style.display === 'block' ? 'none' : 'block';
-            });
+            this.classList.add('active');
         });
-    </script>
+    });
+
+    document.querySelector('.sidebar-content nav ul li:first-child').classList.add('active');
+
+    let menu = document.querySelector('#menu-icon');
+    let navbar = document.querySelector('.sidebar');
+
+    menu.onclick = () => {
+        menu.classList.toggle('fa-times');
+        navbar.classList.toggle('open');
+    }
+
+    const searchIcon = document.getElementById('search-icon');
+    const searchContainer = document.getElementById('search-container');
+
+    searchIcon.addEventListener('click', function(event) {
+        event.preventDefault();
+        searchContainer.style.display = searchContainer.style.display === 'flex' ? 'none' : 'flex';
+    });
+
+ 
+});
+
+function discardChanges() {
+    // Obtener todos los elementos de entrada y textareas del formulario
+    var inputs = document.querySelectorAll('#question-form input');
+    var textareas = document.querySelectorAll('#question-form textarea');
+
+    // Restablecer los valores de los campos
+    inputs.forEach(function(input) {
+        input.value = '';
+    });
+
+    textareas.forEach(function(textarea) {
+        textarea.value = '';
+    });
+}
+</script>
+<style>
+.disabled-field {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+</style>
+<script >
+document.getElementById('title').addEventListener('input', function() {
+    var currentField = this; // Almacena el campo actual
+    if (this.value.length >= 20) {
+        document.getElementById('details').removeAttribute('disabled');
+        document.getElementById('details').classList.remove('disabled-field');
+        currentField.focus(); // Mantiene el foco en el campo actual
+    }
+});
+
+document.getElementById('details').addEventListener('input', function() {
+    var currentField = this; // Almacena el campo actual
+    if (this.value.length >= 20) {
+        document.getElementById('tried').removeAttribute('disabled');
+        document.getElementById('tried').classList.remove('disabled-field');
+        currentField.focus(); // Mantiene el foco en el campo actual
+    }
+});
+
+document.getElementById('tried').addEventListener('input', function() {
+    var currentField = this; // Almacena el campo actual
+    if (this.value.length >= 20) {
+        document.getElementById('tags').removeAttribute('disabled');
+        document.getElementById('tags').classList.remove('disabled-field');
+        currentField.focus(); // Mantiene el foco en el campo actual
+    }
+});
+
+document.getElementById('details').setAttribute('disabled', true);
+document.getElementById('details').classList.add('disabled-field');
+
+document.getElementById('tried').setAttribute('disabled', true);
+document.getElementById('tried').classList.add('disabled-field');
+
+document.getElementById('tags').setAttribute('disabled', true);
+document.getElementById('tags').classList.add('disabled-field');
+</script>
+<script>
+
+document.querySelector('.publish-btn').addEventListener('click', function(event) {
+	  event.preventDefault(); // Evita que el formulario se envíe automáticamente
+	  Swal.fire({
+	    title: '¿Estás seguro?',
+	    text: "Estás a punto de publicar tu pregunta.",
+	    icon: 'warning',
+	    showCancelButton: true,
+	    confirmButtonColor: '#3085d6',
+	    cancelButtonColor: '#d33',
+	    confirmButtonText: 'Sí, publicar',
+	    cancelButtonText: 'Cancelar'
+	  }).then((result) => {
+	    if (result.isConfirmed) {
+	      document.getElementById('question-form').submit(); // Envía el formulario si el usuario confirma
+	    }
+	  });
+	});
+</script>
 </body>
 </html>
+

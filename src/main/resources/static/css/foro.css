@@ -1,7 +1,7 @@
 :root {
 	--bg-color: #fafafa;
 	--text-color: #000000;
-	--main-color: #005ea2;
+	--main-color: #0077cc;
 	--line-color: #e2e7e8;
 	--font-text: sans-serif;
 	--background: #D8E3FA;
@@ -61,7 +61,7 @@ header {
 .logo span {
 	color: #3b4045;
 	font-size: 28px;
-	font-weight: 800;
+	font-weight: 700;
 }
 
 /* Contenedor de búsqueda */
@@ -75,7 +75,16 @@ header {
 	width: 50%;
 	margin: 10px;
 }
-
+.search-encabezado {
+	background-color: var(--main-color);
+	color: #fff;
+	border: none;
+	padding: 8px 15px;
+	cursor: pointer;
+	outline: none;
+	margin-left: 5px;
+	border-radius: 10px;
+}
 .search-container input[type="text"] {
 	flex-grow: 1;
 	border: none;
@@ -83,6 +92,8 @@ header {
 	border-radius: 25px;
 	outline: none;
 	margin-right: 5px;
+		width: 100%;
+	font-size: 13px;
 }
 
 .search-container button {
@@ -282,9 +293,23 @@ nav a i {
 }
 
 .ask-questions:hover {
-	background-color: #603EDE; /* Color de fondo */
-	border: 2px solid var(--bg-color); /* Borde */
+	background-color: #005ea2;
 }
+button[type="submit"] {
+	background-color: #0077cc;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	padding: 10px 20px;
+	font-size: 12px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+	background-color: #005ea2;
+}
+
 
 #menu-icon {
 	display: none;

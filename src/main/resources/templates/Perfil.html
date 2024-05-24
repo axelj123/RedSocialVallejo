@@ -22,9 +22,9 @@
 			<div class="fa fa-bars" id="menu-icon"></div>
 			<a href="/foro" class="logo"><span class="logo-text">Talk</span></a>
 			<div id="search-container" class="search-container">
-				<input type="text" placeholder="Buscar en la comunidad">
-				<button id="search-encabezado" type="submit">Buscar</button>
-			</div>
+    <input class="search-input" type="text" placeholder="Buscar">
+    <button id="search-encabezado" type="submit">Buscar</button>
+</div>
 			<div class="actions">
 				<a class="search-icon" id="search-icon"><i class="fas fa-search"></i></a>
 				<a href="/perfil" class="profile-btn"><img
@@ -218,7 +218,7 @@
 
             searchIcon.addEventListener('click', function(event) {
                 event.preventDefault();
-                searchContainer.style.display = searchContainer.style.display === 'block' ? 'none' : 'block';
+    	        searchContainer.style.display = searchContainer.style.display === 'none' ? 'flex' : 'none';
             });
         });
     </script>

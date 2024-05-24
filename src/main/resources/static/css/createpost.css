@@ -1,7 +1,7 @@
 :root {
 	--bg-color: #fafafa;
 	--text-color: #000000;
-	--main-color: #005ea2;
+	--main-color: #0077cc;
 	--line-color: #e2e7e8;
 	--font-text: sans-serif;
 	--background: #D8E3FA;
@@ -85,16 +85,7 @@ header {
 	margin-right: 5px;
 }
 
-.search-encabezado {
-	background-color: var(--main-color);
-	color: #fff;
-	border: none;
-	padding: 8px 15px;
-	cursor: pointer;
-	outline: none;
-	margin-left: 5px;
-	border-radius: 10px;
-}
+
 
 .actions {
 	display: flex;
@@ -147,7 +138,7 @@ header {
 .container {
 	width: 100%;
 	max-width: 1264px;
-	height: auto;
+	height: 100%;
 	position: relative;
 	top: 61px;
 	display: flex;
@@ -232,6 +223,7 @@ nav a i {
 	height: 100%;
 	padding-left: 20px;
 	margin-top: 0;
+	margin-bottom:20px;;
 	/* Ajusta el margen superior negativo para mover hacia arriba */
 }
 
@@ -241,19 +233,7 @@ nav a i {
 	margin: 0;
 }
 
-#d-flex {
-	width: 100%;
-	height: auto;
-	display: flex;
-	align-items: flex-start; /* Cambiado de center a flex-start */
-	padding: 20px;
-}
 
-#d-flex h1 {
-	font-weight: 300;
-	font-size: 25px;
-	width: 80%;
-}
 
 #menu-icon {
 	display: none;
@@ -267,216 +247,6 @@ nav.open {
 	right: 20px;
 }
 
-.card {
-	display: flex;
-	flex-wrap: wrap;
-	background-color: white;
-	width: 100%;
-	padding-top: 4px;
-	min-width: 2rem;
-	min-height: 2.5rem;
-	margin-bottom: 20px;
-}
-
-.background {
-	width: 20%;
-	height: 20%;
-}
-
-.background img {
-	width: 120px;;
-	height: 100%;
-}
-
-.content {
-	flex: 3 1 22rem;
-	display: flex;
-	flex-direction: column;
-	justify-content: start;
-	padding: 1rem;
-}
-
-.content>h2 {
-	font-size: 20px;
-	font-weight: 300;
-	margin-bottom: clamp(0.35rem, 2vw, 0.55rem);
-}
-
-.content>p {
-	font-size: 14px;
-	font-weight: 400;
-	margin-bottom: 1rem;
-	line-height: 1.4rem;
-}
-
-.social-icons {
-	display: flex;
-	width: 100%;
-	justify-content: end;
-	margin-top: auto;
-}
-
-.social-icons li {
-	list-style: none;
-}
-
-.social-icons li a {
-	position: relative;
-	display: block;
-	display: grid;
-	place-items: center;
-	font-weight: bold;
-	transition: .2s;
-}
-
-.social-icons li a svg {
-	stroke: var(--background);
-	width: clamp(1.6rem, 2.3vw, 2rem);
-	height: clamp(1.6rem, 2.3vw, 2rem);
-	stroke-width: 2px;
-}
-
-.social-icons li a:hover svg {
-	transition: 1.2s;
-	transform: rotateY(360deg);
-}
-
-.items-navigation a {
-	padding: 7px;
-	color: var(--text-color);
-	font-size: 13px;
-}
-
-.items-navigation a:hover {
-	background: var(--line-color);
-	border-radius: 15px;
-}
-
-.items-navigation a.active {
-	background: var(--main-color);
-	border-radius: 15px;
-	color: var(--bg-color);
-}
-
-/* Sección del perfil de usuario */
-.action-items {
-	margin-top: 20px;
-}
-
-#perfil {
-	background-color: #fff;
-	padding: 20px;
-	border-radius: 8px;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-	margin-bottom: 20px;
-}
-
-/* Encabezados dentro de la sección del perfil */
-#perfil h3 {
-	font-size: 18px;
-	margin-bottom: 10px;
-	color: #333;
-}
-
-/* Lista de estadísticas, comunidades y badges */
-#perfil ul {
-	list-style-type: none;
-	padding: 0;
-	margin-bottom: 20px;
-}
-
-#perfil ul li {
-	font-size: 14px;
-	color: #555;
-	margin-bottom: 8px;
-}
-
-#perfil ul li strong {
-	font-weight: 600;
-	color: #333;
-}
-
-/* Tabla de etiquetas principales */
-#perfil table {
-	width: 100%;
-	border-collapse: collapse;
-	margin-bottom: 20px;
-}
-
-#perfil table th, #perfil table td {
-	border: 1px solid #ddd;
-	padding: 8px;
-	text-align: left;
-}
-
-#perfil table th {
-	background-color: #f4f4f4;
-	font-weight: 600;
-	color: #333;
-}
-
-#perfil table tr:nth-child(even) {
-	background-color: #f9f9f9;
-}
-
-/* Lista de posts principales */
-#perfil ul li {
-	font-size: 14px;
-	color: #555;
-	margin-bottom: 8px;
-}
-
-#perfil ul li:first-child {
-	font-weight: 600;
-	color: #333;
-}
-
-.main-profile {
-	max-width: 600px;
-	width: 100%;
-	background-color: #fff;
-	border: 1px solid #e0e0e0;
-	border-radius: 5px;
-	padding: 20px;
-}
-
-.main-profile h2 {
-	margin-top: 0;
-	font-size: 24px;
-	color: #333;
-}
-
-.avatar {
-	text-align: center;
-}
-
-.avatar img {
-	width: 120px;
-	height: 120px;
-	border-radius: 50%;
-	margin-bottom: 10px;
-}
-
-.change-avatar {
-	color: #0077cc;
-	cursor: pointer;
-	display: flex;
-	justify-content: center;
-}
-
-.details {
-	margin-top: 20px;
-}
-
-.form-group {
-	margin-bottom: 15px;
-}
-
-.form-group label {
-	display: block;
-	margin-bottom: 5px;
-	color: #333;
-}
 
 input[type="text"], input[type="email"], input[type="password"],
 	textarea {
@@ -497,17 +267,92 @@ button[type="submit"] {
 	border: none;
 	border-radius: 5px;
 	padding: 10px 20px;
+	    margin-bottom:2px;
+	
 	font-size: 12px;
 	cursor: pointer;
 	transition: background-color 0.3s ease;
+    border: none;
+    float: right;
+    
 }
 
 button[type="submit"]:hover {
 	background-color: #005ea2;
 }
 
-#profile_picture {
-	display: none;
+.flex-h1 h1{
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-size: 24px;
+font-weight: 400;
+}
+.rules-question{
+	background: #f0f4fc;
+	border-radius: 5px;
+	border: 1px solid #93c2f3;
+	margin-bottom: 20px;
+}
+
+
+.content-rules{
+	padding:20px;
+	font-size: 14px;
+}
+.content-rules h2{
+	font-size: 20px;
+	padding-bottom:10px;
+	
+	
+}
+#h5-estructura-pasos{
+	margin-top:10px;
+}
+
+
+ol li::before {
+    content: ". "; /* Agrega el punto seguido de un espacio antes del texto */
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.5em; /* line-height: 1.5 establece el interlineado a un 150% del tamaño de la fuente */
+    
+}
+.question {
+    border: 1px solid #93c2f3;
+    padding: 10px;
+    margin-bottom: 40px;
+}
+
+.question-inner {
+    margin-bottom: 10px;
+}
+
+.question-inner label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.question-inner input[type="text"],
+.question-inner textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+.question-inner input:focus,
+.question-inner textarea:focus {
+    outline-color: var(--main-color); /* Cambia el color del contorno al enfocar */
+    outline-style: solid; /* Establece el estilo del contorno */
+    outline-width:3px; /* Establece el grosor del contorno */
+}
+
+
+.publish-btn:hover {
+    background-color: #005ea2;
 }
 
 @media ( max-width : 480px) {
@@ -580,16 +425,8 @@ button[type="submit"]:hover {
 		z-index: 1000;
 		box-shadow: 3px 4px 10px rgba(0, 0, 0, 0.1);
 	}
-	#d-flex h1 {
-		font-size: 20px;
-	}
-	.container {
-		width: auto;
-		top: 50px;
-		margin: 0;
-		left: 0;
-		right: 0;
-	}
+
+
 	#content-center {
 		width: 100%;
 		left: 0;
