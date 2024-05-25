@@ -114,10 +114,13 @@ header {
 	width: 100px;
 }
 
+
 .profile-btn img {
 	width: 40px;
-	height: auto;
+	height: 40px;;
+	    border-radius: 50%;
 }
+
 
 .actions a i {
 	font-size: 17px; /* Tamaño deseado para los iconos */
@@ -197,19 +200,7 @@ nav ul li.active a {
 	font-weight: bold;
 }
 
-nav #active {
-	background: #f1f2f3;
-}
 
-nav #active li {
-	color: var(--text-color2);
-	width: 162px;
-}
-
-nav #active a {
-	color: var(--text-color);
-	font-weight: bold;
-}
 
 nav li {
 	width: 161px;
@@ -525,4 +516,8 @@ nav.open {
 		width: auto; /* Ajusta el ancho automáticamente */
 		height: auto; /* Ajusta la altura automáticamente */
 	}
+		.profile-btn img {
+
+	margin-top:5px;
+}
 }

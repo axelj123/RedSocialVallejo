@@ -27,12 +27,12 @@
 			<a href="/foro" class="logo"><span class="logo-text">Talk</span></a>
 			<div id="search-container" class="search-container">
 				<input type="text" placeholder="Buscar">
-				<button id="search-encabezado" type="submit">Buscar</button>
+
 			</div>
 			<div class="actions">
 				<a class="search-icon" id="search-icon"><i class="fas fa-search"></i></a>
 				<a href="/perfil" class="profile-btn"><img
-					src="/assets/profile.png" alt="Foto de perfil"></a> <a href="#"
+						th:src="@{${user.profileImage}}" ></a> <a href="#"
 					class="notifications-btn"><i class="fas fa-bell"></i><span
 					id="notification-count" class="notification-count">0</span></a> <a
 					href="/perfil?tab=configuracion" class="settings-btn"><i
@@ -48,14 +48,14 @@
 			<div class="sidebar-content">
 				<nav>
 					<ul>
-						<li><a href="#"><i class="fas fa-home"></i> Inicio</a></li>
+						<li><a href="/foro"><i class="fas fa-home"></i> Inicio</a></li>
 						<li><a href="#"><i class="fas fa-question-circle"></i>
 								Preguntas</a></li>
 						<li><a href="#"><i class="fas fa-tag"></i> Tags</a></li>
 							<li><a th:href="@{/perfil(tab='guardados')}"
 							th:classappend="${activeTab == 'guardados'} ? 'active' : ''"><i
 								class="fas fa-bookmark"></i> Guardado</a></li>
-						<li><a href="#"><i class="fas fa-user"></i> Usuarios</a></li>
+						<li><a href="/users"><i class="fas fa-user"></i> Usuarios</a></li>
 					</ul>
 				</nav>
 
@@ -96,7 +96,8 @@
 
 
 							<div class="background">
-								<img src="assets/profile.png" alt="profile"> <a
+								        <img th:src="@{${post.createdByUser.profileImage}}" alt="profile"> 
+ <a
 									th:href="@{'/inicio/' + ${post.createdByUser.displayName}}">
 									<span th:text="${post.createdByUser.displayName}"></span>
 								</a>
@@ -126,14 +127,6 @@
 						var menuItems = document
 								.querySelectorAll('.sidebar-content nav ul li');
 
-						menuItems.forEach(function(item) {
-							item.addEventListener('click', function() {
-								menuItems.forEach(function(menuItem) {
-									menuItem.classList.remove('active');
-								});
-								this.classList.add('active');
-							});
-						});
 						document
 								.querySelector('.sidebar-content nav ul li:first-child').classList
 								.add('active');

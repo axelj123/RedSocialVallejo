@@ -17,6 +17,12 @@ public class PostService {
     public List<Post> obtenerTodosLosPosts() {
         return postRepository.findAll();
     }
+    
+
+    public List<Post> obtenerTodosLosPostsAsc() {
+        return postRepository.findAllByOrderByCreatedDateDesc();
+    }
+    
     // Método para obtener todos los posts que son preguntas
     public List<Post> obtenerPreguntas() {
         return postRepository.findAllByPostTypeId(1); // Suponiendo que el campo se llama "postType"

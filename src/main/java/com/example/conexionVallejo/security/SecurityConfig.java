@@ -30,13 +30,15 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/inicio", "/register/**", "/css/**", "/assets/**", "/js/**").permitAll();
+                    auth.requestMatchers("/", "/register/**", "/css/**", "/assets/**", "/js/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(httpSecurityFormLoginConfigurer ->{
                 	httpSecurityFormLoginConfigurer.loginPage("/login")
                 	.successHandler(successHandler())
+
                 	.permitAll();
+                	
                 	
                 })
                 .build();
@@ -68,6 +70,8 @@ public class SecurityConfig {
     public AuthenticationSuccessHandler successHandler() {
         return (request, response, authentication) -> {
             response.sendRedirect("/foro");
+            
         };
     }
+    
 }

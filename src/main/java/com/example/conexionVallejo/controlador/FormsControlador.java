@@ -4,18 +4,22 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.conexionVallejo.modelos.Post;
+import com.example.conexionVallejo.modelos.User;
+import com.example.conexionVallejo.repositorios.UserRepository;
 import com.example.conexionVallejo.servicios.PostService;
 
 @Controller
@@ -23,6 +27,9 @@ public class FormsControlador {
 
 	@Autowired
 	private SessionRegistry sessionRegistry;
+	
+    @Autowired
+    private UserRepository userRepository;
 
 	private final PostService postService;
 
@@ -30,22 +37,32 @@ public class FormsControlador {
 		this.postService = postService;
 	}
 
-	@GetMapping("/")
-	public String root() {
-		return "redirect:/inicio";
-	}
 
-	@GetMapping("/inicio")
+	@GetMapping("/")
 	public String inicio() {
 		return "index";
 	}
-
 	@GetMapping("/foro")
 	public String foro(Model model) {
-		List<Post> posts = postService.obtenerPreguntas();
-		model.addAttribute("posts", posts);
-		return "foro";
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    if (authentication != null && authentication.isAuthenticated()) {
+	        String emailAddress = authentication.getName();
+	        Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
+	        if (optionalUser.isPresent()) {
+	            User user = optionalUser.get();
+	            model.addAttribute("user", user);
+	        } else {
+	            return "redirect:/login";
+	        }
+	    } else {
+	        return "redirect:/login";
+	    }
+
+	    List<Post> posts = postService.obtenerTodosLosPostsAsc();
+	    model.addAttribute("posts", posts);
+	    return "foro";
 	}
+
 
 	@GetMapping("/login")
 	public String login() {
@@ -54,33 +71,63 @@ public class FormsControlador {
 
 	@GetMapping("/perfil")
 	public String perfil(@RequestParam(value = "tab", defaultValue = "info") String tab, Model model) {
-		model.addAttribute("activeTab", tab);
-		return "Perfil";
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    if (authentication != null && authentication.isAuthenticated()) {
+	        String emailAddress = authentication.getName();
+	        Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
+	        if (optionalUser.isPresent()) {
+	            User user = optionalUser.get();
+	            model.addAttribute("user", user);
+	        } else {
+	            return "redirect:/login";
+	        }
+	    } else {
+	        return "redirect:/login";
+	    }
+	    
+	    // Se establece activeTab en función del parámetro tab en la URL
+	    model.addAttribute("activeTab", tab);
+	    
+	    return "Perfil";
+	}
+	@GetMapping("/users")
+	public String users(Model model) {
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    if (authentication != null && authentication.isAuthenticated()) {
+	        String emailAddress = authentication.getName();
+	        Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
+	        if (optionalUser.isPresent()) {
+	            User user = optionalUser.get();
+	            model.addAttribute("user", user);
+	        } else {
+	            return "redirect:/login";
+	        }
+	    } else {
+	        return "redirect:/login";
+	    }
+
+	    return "users";
 	}
 
-	@GetMapping("/perfil/info")
-	public String perfilInfo(Model model) {
-		return "redirect:/perfil?tab=info";
-	}
 
-	@GetMapping("/perfil/actividades")
-	public String perfilActividades(Model model) {
-		return "redirect:/perfil?tab=actividades";
-	}
+	@GetMapping("/createPost")
+	public String createPost(Model model) {
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    if (authentication != null && authentication.isAuthenticated()) {
+	        String emailAddress = authentication.getName();
+	        Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
+	        if (optionalUser.isPresent()) {
+	            User user = optionalUser.get();
+	            model.addAttribute("user", user);
+	        } else {
+	            return "redirect:/login";
+	        }
+	    } else {
+	        return "redirect:/login";
+	    }
 
-	@GetMapping("/perfil/guardados")
-	public String Guardados(Model model) {
-		return "redirect:/perfil?tab=guardados";
+	    model.addAttribute("post", new Post());
+	    return "createpost";
 	}
-
-	@GetMapping("/perfil/configuracion")
-	public String perfilConfiguracion(Model model) {
-		return "redirect:/perfil?tab=configuracion";
-	}
-
-@GetMapping("/createPost")
-public String createPost(Model model) {
-	return "createpost";
-}
 
 }

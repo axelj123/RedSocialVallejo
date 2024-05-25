@@ -38,7 +38,20 @@ public class User  {
     
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date nacimiento;
+    
 
+    @Column(name = "profile_image")
+    private String profileImage; // Campo para almacenar la ruta de la imagen de perfil
+
+
+
+	public String getProfileImage() {
+		return profileImage;
+	}
+
+	public void setProfileImage(String profileImage) {
+		this.profileImage = profileImage;
+	}
 
 	public Long getId() {
 		return id;

@@ -75,7 +75,23 @@ header {
 	width: 50%;
 	margin: 10px;
 }
-
+.search-user{
+		display: flex;
+	align-items: center;
+	border: 1px solid #ccc;
+	padding: 2px;
+	background-color: #fff;
+	border-radius: 10px;
+	margin-bottom:50px;
+}
+.search-user input[type="text"] {
+	flex-grow: 1;
+	border: none;
+	padding: 8px;
+	border-radius: 25px;
+	outline: none;
+	margin-right: 5px;
+}
 .search-container input[type="text"] {
 	flex-grow: 1;
 	border: none;
@@ -94,10 +110,9 @@ header {
 	width: 100px;
 }
 
-
 .profile-btn img {
 	width: 40px;
-	height: 40px;;
+	height: auto;
 	    border-radius: 50%;
 }
 
@@ -178,19 +193,7 @@ nav ul li.active a {
 	font-weight: bold;
 }
 
-nav #active {
-	background: #f1f2f3;
-}
 
-nav #active li {
-	color: var(--text-color2);
-	width: 162px;
-}
-
-nav #active a {
-	color: var(--text-color);
-	font-weight: bold;
-}
 
 nav li {
 	width: 161px;
@@ -251,112 +254,11 @@ nav.open {
 }
 
 
-input[type="text"], input[type="email"], input[type="password"],
-	textarea {
-	width: 100%;
-	padding: 10px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	font-size: 13px;
-}
-
-textarea {
-	resize: vertical;
-}
-
-button[type="submit"] {
-	background-color: #0077cc;
-	color: #fff;
-	border: none;
-	border-radius: 5px;
-	padding: 10px 20px;
-	    margin-bottom:2px;
-	
-	font-size: 12px;
-	cursor: pointer;
-	transition: background-color 0.3s ease;
-    border: none;
-    float: right;
-    
-}
-
-button[type="submit"]:hover {
-	background-color: #005ea2;
-}
-
-.flex-h1 h1{
-    margin-block-start: 0.67em;
-    margin-block-end: 0.67em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    font-size: 24px;
-font-weight: 400;
-}
-.rules-question{
-	background: #f0f4fc;
-	border-radius: 5px;
-	border: 1px solid #93c2f3;
-	margin-bottom: 20px;
-}
 
 
-.content-rules{
-	padding:20px;
-	font-size: 14px;
-}
-.content-rules h2{
-	font-size: 20px;
-	padding-bottom:10px;
-	
-	
-}
-#h5-estructura-pasos{
-	margin-top:10px;
-}
 
 
-ol li::before {
-    content: ". "; /* Agrega el punto seguido de un espacio antes del texto */
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 1.5em; /* line-height: 1.5 establece el interlineado a un 150% del tamaño de la fuente */
-    
-}
-.question {
-    border: 1px solid #93c2f3;
-    padding: 10px;
-    margin-bottom: 40px;
-}
 
-.question-inner {
-    margin-bottom: 10px;
-}
-
-.question-inner label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-.question-inner input[type="text"],
-.question-inner textarea {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-
-.question-inner input:focus,
-.question-inner textarea:focus {
-    outline-color: var(--main-color); /* Cambia el color del contorno al enfocar */
-    outline-style: solid; /* Establece el estilo del contorno */
-    outline-width:3px; /* Establece el grosor del contorno */
-}
-
-
-.publish-btn:hover {
-    background-color: #005ea2;
-}
 
 @media ( max-width : 480px) {
 	#menu-icon {
@@ -445,4 +347,83 @@ ol li::before {
 
 	margin-top:5px;
 }
+}
+
+
+
+
+
+
+
+
+
+.user-main {
+    padding: 20px;
+}
+
+.flex-h1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.user-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Columnas de igual ancho, cuatro en total */
+    gap: 20px;
+}
+
+
+.user-card {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    cursor: pointer;
+}
+
+.user-card img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.user-card h3 {
+    margin-bottom: 5px;
+}
+
+.user-card p {
+    font-size: 14px;
+    color: #6c757d;
+}
+
+/* Estilos para pantallas grandes */
+@media screen and (min-width: 992px) {
+    .user-list {
+        grid-template-columns: repeat(4, 1fr); /* Cuatro columnas en pantalla grande */
+    }
+}
+
+/* Estilos para pantallas medianas */
+@media screen and (max-width: 991px) {
+    .user-list {
+        grid-template-columns: repeat(3, 1fr); /* Tres columnas en pantalla mediana */
+    }
+}
+
+/* Estilos para pantallas pequeñas */
+@media screen and (max-width: 767px) {
+    .user-list {
+        grid-template-columns: repeat(2, 1fr); /* Dos columnas en pantalla pequeña */
+    }
+}
+
+/* Estilos para pantallas extra pequeñas */
+@media screen and (max-width: 575px) {
+    .user-list {
+        grid-template-columns: repeat(1, 1fr); /* Una columna en pantalla extra pequeña */
+    }
 }

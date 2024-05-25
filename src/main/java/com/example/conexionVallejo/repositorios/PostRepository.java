@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     List<Post> findAllByPostTypeId(Integer postTypeId);
+    List<Post> findAllByOrderByCreatedDateDesc();
 
 
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +15,10 @@
 	href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
 	rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+
 </head>
 
 <body>
@@ -29,7 +33,7 @@
 			<div class="actions">
 				<a class="search-icon" id="search-icon"><i class="fas fa-search"></i></a>
 				<a href="/perfil" class="profile-btn"><img
-					src="/assets/profile.png" alt="Foto de perfil"></a> <a href="#"
+						th:src="@{${user.profileImage}}" ></a> <a href="#"
 					class="notifications-btn"><i class="fas fa-bell"></i><span
 					id="notification-count" class="notification-count">0</span></a> <a
 					href="/perfil?tab=configuracion" class="settings-btn"><i
@@ -86,11 +90,11 @@
 
 
 
-					<form id="question-form" action="#" method="post">
+					<form id="question-form" action="/post/new" method="post">
 						<div class="question">
 							<div class="question-inner">
 								<label for="title">Titulo</label> <input type="text" id="title"
-									name="title"
+									name="postTitle"
 									placeholder="Sea específico e imagine que le está haciendo una pregunta a otra persona."
 									required autofocus>
 							</div>
@@ -99,7 +103,7 @@
 						<div class="question">
 							<div class="question-inner">
 								<label for="details">Detalles</label>
-								<textarea id="details" name="details"
+								<textarea id="details" name="postDetails"
 									placeholder="Presenta el problema y amplía lo que pusiste en el título. Mínimo 20 caracteres."
 									required disabled></textarea>
 							</div>
@@ -114,14 +118,12 @@
 							</div>
 						</div>
 
-						<div class="question">
-							<div class="question-inner">
-								<label for="tags">Tags</label> <input type="text" id="tags"
-									name="tags"
-									placeholder="Agregue hasta 5 etiquetas para describir de qué se trata su pregunta. Empiece a escribir para ver sugerencias."
-									required disabled>
-							</div>
-						</div>
+<div class="question">
+    <div class="question-inner">
+        <label for="tags">Tags</label>
+        <select id="tagsSelect" name="tags" multiple></select>
+    </div>
+</div>
 
 						<button class="publish-btn" type="submit">Review your
 							question and post it to the site</button>
@@ -136,6 +138,34 @@
 			</div>
 		</div>
 	</div>
+<style>
+    #tagsList li {
+        background-color: #f0f0f0; /* Cambia el color de fondo según tu preferencia */
+        margin-bottom: 10px; /* Ajusta el margen inferior según sea necesario */
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var select = new Choices('#tagsSelect', {
+        removeItemButton: true, // Habilitar botón para eliminar elementos
+        maxItemCount: 5, // Establecer el límite máximo de elementos seleccionados
+        allowHTML: true // Permitir HTML en las opciones
+    });
+
+    // Hacer una solicitud AJAX para obtener las etiquetas desde la API
+    fetch('/api/tags')
+        .then(response => response.json())
+        .then(data => {
+            var options = data.map(function(tag) {
+                return { value: tag, label: tag };
+            });
+            select.setChoices(options, 'value', 'label', true); // Añadir las opciones al select
+        })
+        .catch(error => console.error('Error fetching tags:', error));
+});
+
+</script>
 
 	<script>
 	
@@ -144,14 +174,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     var menuItems = document.querySelectorAll('.sidebar-content nav ul li');
 
-    menuItems.forEach(function(item) {
-        item.addEventListener('click', function() {
-            menuItems.forEach(function(menuItem) {
-                menuItem.classList.remove('active');
-            });
-            this.classList.add('active');
-        });
-    });
+
 
     document.querySelector('.sidebar-content nav ul li:first-child').classList.add('active');
 
@@ -189,13 +212,8 @@ function discardChanges() {
     });
 }
 </script>
-<style>
-.disabled-field {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-</style>
-<script >
+
+	<script>
 document.getElementById('title').addEventListener('input', function() {
     var currentField = this; // Almacena el campo actual
     if (this.value.length >= 20) {
@@ -217,8 +235,8 @@ document.getElementById('details').addEventListener('input', function() {
 document.getElementById('tried').addEventListener('input', function() {
     var currentField = this; // Almacena el campo actual
     if (this.value.length >= 20) {
-        document.getElementById('tags').removeAttribute('disabled');
-        document.getElementById('tags').classList.remove('disabled-field');
+        document.getElementById('tagsInput').removeAttribute('disabled');
+        document.getElementById('tagsInput').classList.remove('disabled-field');
         currentField.focus(); // Mantiene el foco en el campo actual
     }
 });
@@ -229,10 +247,8 @@ document.getElementById('details').classList.add('disabled-field');
 document.getElementById('tried').setAttribute('disabled', true);
 document.getElementById('tried').classList.add('disabled-field');
 
-document.getElementById('tags').setAttribute('disabled', true);
-document.getElementById('tags').classList.add('disabled-field');
 </script>
-<script>
+	<script>
 
 document.querySelector('.publish-btn').addEventListener('click', function(event) {
 	  event.preventDefault(); // Evita que el formulario se envíe automáticamente

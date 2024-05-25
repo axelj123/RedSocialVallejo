@@ -1,6 +1,7 @@
 package com.example.conexionVallejo.modelos;
 
-import java.util.Date;
+
+import java.sql.Timestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,12 +37,15 @@ public class Post {
 	    @JoinColumn(name = "accepted_answer_id")
 	    private Post acceptedAnswer;
 
+
+	    @Column(name = "post_title")
 	    private String postTitle;
 
+	    @Column(name = "post_details")
 	    private String postDetails;
 
-	    private Date createdDate;
-
+	    @Column(name = "created_date")
+	    private Timestamp createdDate;
 	    
 	    
 		public Post() {
@@ -51,7 +55,7 @@ public class Post {
 
 
 		public Post(Integer id, User createdByUser, Post parentQuestion, PostType postType, Post acceptedAnswer,
-				String postTitle, String postDetails, Date createdDate) {
+				String postTitle, String postDetails, Timestamp createdDate) {
 			super();
 			this.id = id;
 			this.createdByUser = createdByUser;
@@ -149,13 +153,13 @@ public class Post {
 
 
 
-		public Date getCreatedDate() {
+		public Timestamp getCreatedDate() {
 			return createdDate;
 		}
 
 
 
-		public void setCreatedDate(Date createdDate) {
+		public void setCreatedDate(Timestamp createdDate) {
 			this.createdDate = createdDate;
 		}
 
