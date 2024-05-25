@@ -43,7 +43,18 @@ public class User  {
     @Column(name = "profile_image")
     private String profileImage; // Campo para almacenar la ruta de la imagen de perfil
 
+    @Column(name = "facebook_url")
+    private String facebookUrl;
 
+
+    @Column(name = "linkedin_url")
+    private String linkedinUrl;
+
+    @Column(name = "instagram_url")
+    private String instagramUrl;
+
+    @Column(name = "tiktok_url")
+    private String tiktokUrl;
 
 	public String getProfileImage() {
 		return profileImage;
@@ -107,6 +118,38 @@ public class User  {
 
 	public void setNacimiento(Date nacimiento) {
 		this.nacimiento = nacimiento;
+	}
+
+	public String getFacebookUrl() {
+		return facebookUrl;
+	}
+
+	public void setFacebookUrl(String facebookUrl) {
+		this.facebookUrl = facebookUrl;
+	}
+
+	public String getLinkedinUrl() {
+		return linkedinUrl;
+	}
+
+	public void setLinkedinUrl(String linkedinUrl) {
+		this.linkedinUrl = linkedinUrl;
+	}
+
+	public String getInstagramUrl() {
+		return instagramUrl;
+	}
+
+	public void setInstagramUrl(String instagramUrl) {
+		this.instagramUrl = instagramUrl;
+	}
+
+	public String getTiktokUrl() {
+		return tiktokUrl;
+	}
+
+	public void setTiktokUrl(String tiktokUrl) {
+		this.tiktokUrl = tiktokUrl;
 	}
 
 

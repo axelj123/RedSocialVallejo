@@ -41,6 +41,9 @@
 					id="notification-count" class="notification-count">0</span></a> <a
 					href="/perfil?tab=configuracion" class="settings-btn"><i
 					class="fas fa-cog"></i></a>
+							<a href="/logout" class="logout-btn">
+    <i class="fas fa-sign-out-alt"></i>
+</a>
 			</div>
 		</div>
 	</header>
@@ -74,35 +77,20 @@
 							placeholder="Buscar usuarios...">
 					</div>
 					<div class="user-list">
-						<!-- Aquí se mostrará la lista de usuarios -->
-						<!-- Cada usuario puede estar representado por un elemento <div> -->
-						<!-- Por ejemplo: -->
-						<div class="user-card">
-							<img src="avatar1.jpg" alt="Avatar">
-							<h3>Axel</h3>
-							<p>Reputación: 1000</p>
-						</div>
-						<div class="user-card">
-							<img src="avatar2.jpg" alt="Avatar">
-							<h3>Nombre de Usuario</h3>
-							<p>Reputación: 800</p>
-						</div>
-						<div class="user-card">
-							<img src="avatar2.jpg" alt="Avatar">
-							<h3>Nombre de Usuario</h3>
-							<p>Reputación: 800</p>
-						</div>
-						<div class="user-card">
-							<img src="avatar2.jpg" alt="Avatar">
-							<h3>Nombre de Usuario</h3>
-							<p>Reputación: 800</p>
-						</div>
-						<div class="user-card">
-							<img src="avatar2.jpg" alt="Avatar">
-							<h3>Nombre de Usuario</h3>
-							<p>Reputación: 800</p>
-						</div>
-					</div>
+    <!-- Iterar sobre la lista de usuarios y mostrar sus detalles -->
+ <div class="user-list">
+    <h2>Lista de Usuarios</h2>
+   
+    <div th:each="user : ${userList}" class="user-card">
+    
+        <img th:src="${user.profileImage}" alt="Avatar">
+        <h3 th:text="${user.displayName}"></h3>
+        <p th:text="'Correo electrónico: ' + ${user.emailAddress}"></p>
+        <!-- Aquí puedes mostrar otros atributos del usuario si lo deseas -->
+    </div>
+</div>
+
+
 
 				</div>
 			</div>

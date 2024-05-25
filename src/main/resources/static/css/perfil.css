@@ -110,7 +110,9 @@ header {
 	align-items: center;
 	justify-content: center;
 	width: 100px;
+	margin-right:20px;
 }
+
 
 .profile-btn img {
 	width: 40px;
@@ -118,6 +120,72 @@ header {
 	    border-radius: 50%;
 }
 
+#guardados {
+    padding: 20px;
+        font-size: 14px;
+    
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.saved-items-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.saved-item {
+    background-color: #f6f6f6;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.vote-stats,
+.answer-stats,
+.view-stats {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.question-details {
+    flex-grow: 1;
+}
+
+.question-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.question-tags {
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.username {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.asked-time {
+    color: #777;
+}
 
 .actions a i {
 	font-size: 17px; /* Tamaño deseado para los iconos */
@@ -305,7 +373,7 @@ nav.open {
 	display: flex;
 	flex-direction: column;
 	justify-content: start;
-	padding: 1rem;
+	padding: 1rem 4rem;
 }
 
 .content>h2 {
@@ -578,11 +646,12 @@ button[type="submit"]:hover {
 		justify-content: flex-start; /* Alinea el contenido al inicio */
 		box-sizing: border-box;
 	}
-	.actions {
+		.actions {
 		position: absolute;
-		right: 10px;
+		right: 20px;
 		top: 50%;
 		transform: translate(-20%, -50%);
+		margin:0;
 	}
 	.search-container {
 		display: none;
@@ -602,6 +671,9 @@ button[type="submit"]:hover {
 		left: 0;
 		right: 0;
 	}
+.content{
+padding:0;	
+}
 	#content-center {
 		width: 100%;
 		left: 0;

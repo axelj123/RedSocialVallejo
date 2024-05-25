@@ -106,11 +106,7 @@
 							th:classappend="${activeTab == 'info'} ? 'active' : ''">Perfil</a>
 						<a th:href="@{/perfil(tab='actividades')}"
 							th:classappend="${activeTab == 'actividades'} ? 'active' : ''">Actividades</a>
-						<a th:href="@{/perfil(tab='guardados')}"
-							th:classappend="${activeTab == 'guardados'} ? 'active' : ''">Guardados</a>
-
-						<a th:href="@{/perfil(tab='configuracion')}"
-							th:classappend="${activeTab == 'configuracion'} ? 'active' : ''">Configuración</a>
+						
 					</div>
 				</div>
 				<div class="action-items">
@@ -181,69 +177,10 @@
     <h3>Todos los guardados</h3>
         <p>1 item guardado</p>
 
-    <div class="saved-item">
-        <div class="votes">0 votes</div>
-        <div class="answer">1 answer</div>
-        <div class="views">16 views</div>
-        <p>How to deploy an Model from the Model Catalogue in Azure ML Jobs/Pipelines</p>
-        <p>azure-machine-learning-serviceazure-ml-pipelines</p>
-        <div class="user-info">
-            <div class="user-avatar">
-                <img src="avatar.jpg" alt="User Avatar">
-            </div>
-            <div class="user-details">
-                <p>Henrique S. Silva's user avatar</p>
-                <p>Henrique S. Silva</p>
-                <p>1 asked May 20 at 14:34</p>
-            </div>
-        </div>
-    </div>
+   
 </div>
 
-						
-					<div id="configuracion" class="section-content"
-						th:style="${activeTab == 'configuracion'} ? 'display:block;' : 'display:none;'">
-						<div class="main-profile">
-							<h2>Editar Perfil</h2>
-							<form action="/perfil/actualizar" method="POST"
-								id="edit-profile-form" enctype="multipart/form-data">
-								<div class="avatar">
-									<label for="profile_picture"> <img id="profile-image"
-										th:src="${user.profileImage}" alt="Foto de perfil"> <span
-										class="change-avatar">Cambiar foto</span>
-									</label> <input type="file" id="profile_picture" name="profile_picture"
-										accept="image/*">
-								</div>
-								<div class="details">
-									<div class="form-group">
-										<label for="display_name">Nombre de usuario</label> <input
-											type="text" id="display_name" name="displayName"
-											th:value="${user.displayName}" required>
-									</div>
-									<div class="form-group">
-										<label for="email_address">Correo electrónico</label> <input
-											type="email" id="email_address" name="emailAddress"
-											th:value="${user.emailAddress}" required>
-									</div>
-									<div class="form-group">
-										<label for="about_me">Acerca de mí</label>
-										<textarea id="about_me" name="aboutMe" rows="4"
-											th:text="${user.aboutMe}"></textarea>
-									</div>
-									<div class="form-group">
-										<label for="carrera">Carrera</label> <input type="text"
-											id="carrera" name="carrera" th:value="${user.carrera}"
-											required>
-									</div>
-									<button type="submit" id="save-changes-btn">Guardar
-										cambios</button>
-								</div>
-							</form>
-
-
-
-						</div>
-					</div>
+				
 				</div>
 			</div>
 		</div>

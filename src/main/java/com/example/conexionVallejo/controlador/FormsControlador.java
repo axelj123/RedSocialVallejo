@@ -106,6 +106,11 @@ public class FormsControlador {
 	        return "redirect:/login";
 	    }
 
+	    // Obtener todos los usuarios de la base de datos
+	    List<User> userList = userRepository.findAll();
+	    // Agregar la lista de usuarios al modelo
+	    model.addAttribute("userList", userList);
+
 	    return "users";
 	}
 
