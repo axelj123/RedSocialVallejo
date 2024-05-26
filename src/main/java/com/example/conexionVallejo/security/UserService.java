@@ -51,5 +51,8 @@ public class UserService {
             throw new IllegalArgumentException("Usuario no autenticado");
         }
     }
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmailAddress(email);
+    }
     
 }

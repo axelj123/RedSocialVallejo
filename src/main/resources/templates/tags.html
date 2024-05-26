@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Crear Post</title>
-<link rel="stylesheet" type="text/css" href="css/users.css">
+<link rel="stylesheet" type="text/css" href="css/tags.css">
 
 <link
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
@@ -36,14 +36,13 @@
 			<div class="actions">
 				<a class="search-icon" id="search-icon"><i class="fas fa-search"></i></a>
 				<a href="/perfil" class="profile-btn"><img
-						th:src="@{${user.profileImage}}" ></a> <a href="#"
+					th:src="@{${user.profileImage}}"></a> <a href="#"
 					class="notifications-btn"><i class="fas fa-bell"></i><span
 					id="notification-count" class="notification-count">0</span></a> <a
 					href="/perfil?tab=configuracion" class="settings-btn"><i
-					class="fas fa-cog"></i></a>
-							<a href="/logout" class="logout-btn">
-    <i class="fas fa-sign-out-alt"></i>
-</a>
+					class="fas fa-cog"></i></a> <a href="/logout" class="logout-btn"> <i
+					class="fas fa-sign-out-alt"></i>
+				</a>
 			</div>
 		</div>
 	</header>
@@ -56,7 +55,7 @@
 						<li><a href="/foro"><i class="fas fa-home"></i> Inicio</a></li>
 						<li><a href="#"><i class="fas fa-question-circle"></i>
 								Preguntas</a></li>
-						<li><a href="/tags"><i class="fas fa-tag"></i> Tags</a></li>
+						<li><a href="#"><i class="fas fa-tag"></i> Tags</a></li>
 						<li><a th:href="@{/perfil(tab='guardados')}"
 							th:classappend="${activeTab == 'guardados'} ? 'active' : ''"><i
 								class="fas fa-bookmark"></i> Guardado</a></li>
@@ -70,7 +69,7 @@
 			<div id="mainbar">
 				<div class="user-main">
 					<div class="flex-h1">
-						<h1>Usuarios</h1>
+						<h1>Tags</h1>
 					</div>
 					<div class="search-user">
 						<input type="text" id="search-input"
@@ -78,25 +77,22 @@
 					</div>
 					<div class="user-list">
 
- <div class="user-list">
-    <h2>Lista de Usuarios</h2>
-   
-    <div th:each="user : ${userList}" class="user-card">
-    
-        <img th:src="${user.profileImage}" alt="Avatar">
-        <h3 th:text="${user.displayName}"></h3>
-        <p th:text="'Correo electrónico: ' + ${user.emailAddress}"></p>
-        <!-- Aquí puedes mostrar otros atributos del usuario si lo deseas -->
-    </div>
-</div>
+							
+
+							<div th:each=" tag : ${userList}" class="user-card">
+
+								<h3 th:text="${tag.tagName}"></h3>
+								<p th:text="${tag.tagDescription}"></p>
+								<!-- Aquí puedes mostrar otros atributos del usuario si lo deseas -->
+							</div>
+						</div>
 
 
 
 				</div>
 			</div>
-		</div>
 
-	</div>
+		</div>
 
 	</div>
 
@@ -152,4 +148,3 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
-

@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.conexionVallejo.modelos.Post;
+import com.example.conexionVallejo.modelos.Tag;
 import com.example.conexionVallejo.modelos.User;
+import com.example.conexionVallejo.repositorios.TagsRepository;
 import com.example.conexionVallejo.repositorios.UserRepository;
 import com.example.conexionVallejo.servicios.EmailRequest;
 import com.example.conexionVallejo.servicios.PostService;
@@ -32,6 +34,10 @@ public class FormsControlador {
     @Autowired
     private UserRepository userRepository;
 
+    
+    @Autowired
+    private TagsRepository tagsRepository;
+    
 	private final PostService postService;
 
 	public FormsControlador(PostService postService) {
@@ -115,6 +121,31 @@ public class FormsControlador {
 
 	    return "users";
 	}
+	
+	@GetMapping("/tags")
+	public String Tags(Model model) {
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    if (authentication != null && authentication.isAuthenticated()) {
+	        String emailAddress = authentication.getName();
+	        Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
+	        if (optionalUser.isPresent()) {
+	            User user = optionalUser.get();
+	            model.addAttribute("user", user);
+	        } else {
+	            return "redirect:/login";
+	        }
+	    } else {
+	        return "redirect:/login";
+	    }
+
+	    // Obtener todos los usuarios de la base de datos
+	    List<Tag> userList = tagsRepository.findAll();
+	    // Agregar la lista de usuarios al modelo
+	    model.addAttribute("userList", userList);
+
+	    return "tags";
+	}
+		
 
 
 	@GetMapping("/createPost")
@@ -141,4 +172,13 @@ public class FormsControlador {
 	    model.addAttribute("emailRequest", new EmailRequest());
 	    return "forgotPasswordEmail";
 	}
+	
+	@GetMapping("/nuevoPass")
+	public String showNewPasswordPage(Model model) {
+	    model.addAttribute("emailRequest", new EmailRequest());
+	    return "nuevoPass";
+	}
+
+	
+	
 }

@@ -19,25 +19,27 @@
 		<div class="contenedeor-form">
 			<div class="center">
 				<div class="encabezado">
-					<h1>Recupera tu contraseña</h1>
-					<p>Si has olvidado tu contraseña te ayudaremos a recuperarla
-						por medio del correo electrónico siempre y cuando ya te hayas
-						logueado anteriormente</p>
+					<h1>Nueva contraseña</h1>
+					<p>¡Estás a punto de actualizar tu contraseña! Si necesitas
+						cambiar tu contraseña actual por una nueva, estás en el lugar
+						correcto. Simplemente proporciona tu nueva contraseña en el campo
+						correspondiente y asegúrate de repetirla para confirmarla.
+						Recuerda que una contraseña segura es clave para proteger tu
+						cuenta. ¡Gracias por mantener tu información segura!</p>
 					<form id="recover-form" action="#" th:action="@{/send-reset-email}"
 						method="post" th:object="${emailRequest}">
 						<div class="correo-content">
 							<div class="question-inner">
-								<input type="email" id="email" th:field="*{email}"
-									placeholder="Email" required autofocus>
+								<input type="password" id="email" th:field="*{email}"
+									placeholder="Nueva contraseña" required autofocus>
 							</div>
-
-
+							<div class="question-inner">
+								<input type="password" id="email" th:field="*{email}"
+									placeholder="Repite la contraseña" required autofocus>
+							</div>
 						</div>
-						<button class="publish-btn" type="submit">Enviar</button>
-
+						<button class="publish-btn" type="submit">Actualizar</button>
 					</form>
-					<br> <a href="/login">Iniciar sesion </a>
-
 
 				</div>
 			</div>

@@ -18,7 +18,9 @@ public class EmailController {
 
 	@Autowired
 	EmailService emailService;
-	
+
+	@Autowired
+	UserService userService;
 	@GetMapping("/email/send")
 
 	public ResponseEntity<?> sendEmail(){
@@ -34,11 +36,17 @@ public class EmailController {
 	}
 	@PostMapping("/send-reset-email")
 	public ResponseEntity<String> sendResetEmail(@ModelAttribute("emailRequest") EmailRequest emailRequest) {
-	    String email = emailRequest.getEmail(); // Obtener el correo electrónico del objeto EmailRequest
-	    System.out.print(email);
+	    String email = emailRequest.getEmail();
+	    if (!userService.existsByEmail(email)) {
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El correo no existe en la base de datos");
+	    }
 	    emailService.sendResetEmail(email);
 	    return ResponseEntity.ok("Correo enviado con éxito");
 	}
+	
+
+
+	
 
 
 }
