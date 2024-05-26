@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
@@ -30,7 +31,7 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/", "/register/**", "/css/**", "/assets/**", "/js/**").permitAll();
+                    auth.requestMatchers("/", "/register/**", "/email/send",  "/email/send-correo","/send-reset-email", "/recuperarPassword","/css/**", "/assets/**", "/js/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(httpSecurityFormLoginConfigurer ->{
@@ -73,5 +74,12 @@ public class SecurityConfig {
             
         };
     }
-    
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return (request, response, exception) -> {
+            request.getSession().setAttribute("error", "Correo o contraseña incorrectos. Inténtalo de nuevo.");
+            response.sendRedirect("/login?error");
+        };
+    }
+
 }

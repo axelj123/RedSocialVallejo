@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.conexionVallejo.modelos.Post;
 import com.example.conexionVallejo.modelos.User;
 import com.example.conexionVallejo.repositorios.UserRepository;
+import com.example.conexionVallejo.servicios.EmailRequest;
 import com.example.conexionVallejo.servicios.PostService;
 
 @Controller
@@ -36,6 +37,7 @@ public class FormsControlador {
 	public FormsControlador(PostService postService) {
 		this.postService = postService;
 	}
+	
 
 
 	@GetMapping("/")
@@ -134,5 +136,9 @@ public class FormsControlador {
 	    model.addAttribute("post", new Post());
 	    return "createpost";
 	}
-
+	@GetMapping("/recuperarPassword")
+	public String showForgotPasswordForm(Model model) {
+	    model.addAttribute("emailRequest", new EmailRequest());
+	    return "forgotPasswordEmail";
+	}
 }

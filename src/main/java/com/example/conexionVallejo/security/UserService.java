@@ -1,4 +1,4 @@
-package com.example.conexionVallejo.servicios;
+package com.example.conexionVallejo.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +17,7 @@ import java.util.Optional;
 public class UserService {
 
     private static final String UPLOAD_DIR = "uploads/";
-
+   
     @Autowired
     private UserRepository userRepository;
 
@@ -51,4 +51,5 @@ public class UserService {
             throw new IllegalArgumentException("Usuario no autenticado");
         }
     }
+    
 }

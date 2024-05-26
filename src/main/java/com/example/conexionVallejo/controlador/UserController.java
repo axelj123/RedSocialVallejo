@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.conexionVallejo.modelos.User;
 import com.example.conexionVallejo.repositorios.UserRepository;
-import com.example.conexionVallejo.servicios.UserService;
+import com.example.conexionVallejo.security.UserService;
 
 @Controller
 public class UserController {
@@ -46,5 +45,8 @@ private UserRepository userRepository;
         
         return "perfil-publico"; // El nombre de la plantilla HTML para el perfil público
     }
+    
+    
+    
 
 }

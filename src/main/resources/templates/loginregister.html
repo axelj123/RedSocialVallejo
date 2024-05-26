@@ -7,6 +7,8 @@
 <link rel="stylesheet" type="text/css" href="/css/loginregister.css" />
 <script src="https://kit.fontawesome.com/64d58efce2.js"
 	crossorigin="anonymous"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 </head>
 <body>
@@ -23,12 +25,18 @@
 					</div>
 					<div class="input-field">
 						<i class="fas fa-lock"></i> <input type="password" name="password"
-							placeholder="Contraseña" required minlength="4" />
+							placeholder="Contraseña" />
 					</div>
 					<input type="submit" value="Entrar" class="btn solid" />
+
+					<div class="error-message" th:if="${param.error}"
+						style="display: block;;">Correo o contraseña incorrectos.
+						Inténtalo de nuevo.</div>
+
 					<p class="social-text">Estás por ingresar a Conexión Vallejo</p>
- <a href="/forgot-password" class="forgot-password-link">¿Olvidaste tu contraseña?</a>
-					
+					<a href="/recuperarPassword" class="forgot-password-link">¿Olvidaste
+						tu contraseña?</a>
+
 				</form>
 
 
@@ -48,6 +56,7 @@
 					<p class="social-text">Accede con tu correo institucional</p>
 
 				</form>
+
 			</div>
 		</div>
 		<div class="panels-container">
@@ -71,7 +80,14 @@
 			</div>
 		</div>
 	</div>
-
+	<script>
+		$(document).ready(function() {
+			// Verifica si hay un mensaje de error y lo muestra
+			if ($('.error-message').is(':visible')) {
+				$('.error-message').show();
+			}
+		});
+	</script>
 	<script src="/js/loginregister.js"></script>
 </body>
 </html>

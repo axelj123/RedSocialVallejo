@@ -230,7 +230,10 @@ form.sign-in-form {
 .right-panel .content {
   transform: translateX(800px);
 }
-
+.error-message {
+    color: red;
+    /* Otros estilos que desees aplicar al mensaje de error */
+}
 /* ANIMATION */
 
 .container.sign-up-mode:before {

@@ -15,8 +15,10 @@
 	href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
 	rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+<script
+	src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
 
 </head>
@@ -33,14 +35,13 @@
 			<div class="actions">
 				<a class="search-icon" id="search-icon"><i class="fas fa-search"></i></a>
 				<a href="/perfil" class="profile-btn"><img
-						th:src="@{${user.profileImage}}" ></a> <a href="#"
+					th:src="@{${user.profileImage}}"></a> <a href="#"
 					class="notifications-btn"><i class="fas fa-bell"></i><span
 					id="notification-count" class="notification-count">0</span></a> <a
 					href="/perfil?tab=configuracion" class="settings-btn"><i
-					class="fas fa-cog"></i></a>
-							<a href="/logout" class="logout-btn">
-    <i class="fas fa-sign-out-alt"></i>
-</a>
+					class="fas fa-cog"></i></a> <a href="/logout" class="logout-btn"> <i
+					class="fas fa-sign-out-alt"></i>
+				</a>
 			</div>
 		</div>
 	</header>
@@ -121,12 +122,12 @@
 							</div>
 						</div>
 
-<div class="question">
-    <div class="question-inner">
-        <label for="tags">Tags</label>
-        <select id="tagsSelect" name="tags" multiple></select>
-    </div>
-</div>
+						<div class="question">
+							<div class="question-inner">
+								<label for="tags">Tags</label> <select id="tagsSelect"
+									name="tags" multiple></select>
+							</div>
+						</div>
 
 						<button class="publish-btn" type="submit">Review your
 							question and post it to the site</button>
@@ -141,14 +142,16 @@
 			</div>
 		</div>
 	</div>
-<style>
-    #tagsList li {
-        background-color: #f0f0f0; /* Cambia el color de fondo según tu preferencia */
-        margin-bottom: 10px; /* Ajusta el margen inferior según sea necesario */
-    }
+	<style>
+#tagsList li {
+	background-color: #f0f0f0;
+	/* Cambia el color de fondo según tu preferencia */
+	margin-bottom: 10px;
+	/* Ajusta el margen inferior según sea necesario */
+}
 </style>
 
-<script>
+	<script>
 document.addEventListener('DOMContentLoaded', function() {
     var select = new Choices('#tagsSelect', {
         removeItemButton: true, // Habilitar botón para eliminar elementos
