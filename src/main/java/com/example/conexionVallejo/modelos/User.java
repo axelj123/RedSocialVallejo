@@ -26,7 +26,10 @@ public class User  {
     @Column(name = "display_name")
     private String displayName;
 
-    @Column(name = "email_address")
+
+
+
+	@Column(name = "email_address", unique = true)
     private String emailAddress;
 
     private String password;

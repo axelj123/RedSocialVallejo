@@ -1,5 +1,7 @@
 package com.example.conexionVallejo.servicios;
 
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -64,5 +66,16 @@ public void sendResetEmail(String email) {
 
 	}
 }
+	public boolean isEmailValid(String email) {
+		// Validar el formato del correo electrónico
+		try {
+			InternetAddress internetAddress = new InternetAddress(email);
+			internetAddress.validate();
+		} catch (AddressException ex) {
+			return false;
+		}
 
+		// Validar el dominio del correo electrónico (ejemplo: ucvvirtual.edu.pe)
+		return email.endsWith("ucvvirtual.edu.pe");
+	}
 }

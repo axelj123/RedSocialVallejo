@@ -387,6 +387,9 @@ nav.open {
         margin-bottom: 20px; /* Añadir margen inferior */
     
 }
+.user-card:hover{
+		box-shadow: 0 0 10px var(--main-color);
+}
 
 
 

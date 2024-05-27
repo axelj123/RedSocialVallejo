@@ -385,7 +385,9 @@ nav.open {
     text-align: center;
     cursor: pointer;
 }
-
+.user-card:hover{
+		box-shadow: 0 0 10px var(--main-color);
+}
 .user-card img {
     width: 100px;
     height: 100px;
