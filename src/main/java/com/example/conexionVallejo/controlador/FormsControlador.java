@@ -140,8 +140,27 @@ public class FormsControlador {
 
 	    return "tags";
 	}
-		
 
+	@GetMapping("/preguntas")
+	public String preguntas(Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null && authentication.isAuthenticated()) {
+			String emailAddress = authentication.getName();
+			Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
+			if (optionalUser.isPresent()) {
+				User user = optionalUser.get();
+				model.addAttribute("user", user);
+			} else {
+				return "redirect:/login";
+			}
+		} else {
+			return "redirect:/login";
+		}
+
+		List<Post> posts = postService.obtenerTodosLosPostsAsc();
+		model.addAttribute("posts", posts);
+		return "foro";
+	}
 
 	@GetMapping("/createPost")
 	public String createPost(Model model) {

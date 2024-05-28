@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 <meta charset="UTF-8">
@@ -52,7 +52,7 @@
 				<nav>
 					<ul>
 						<li><a href="/foro"><i class="fas fa-home"></i> Inicio</a></li>
-						<li><a href="#"><i class="fas fa-question-circle"></i>
+						<li><a href="/preguntas"><i class="fas fa-question-circle"></i>
 								Preguntas</a></li>
 						<li><a href="/tags"><i class="fas fa-tag"></i> Tags</a></li>
 							<li><a th:href="@{/perfil(tab='guardados')}"
@@ -99,7 +99,7 @@
 
 
 							<div class="background">
-								        <img th:src="@{${post.createdByUser.profileImage}}" alt="profile"> 
+								        <img th:src="@{${post.createdByUser.profileImage}}" alt="profile">
  <a
 									th:href="@{'/inicio/' + ${post.createdByUser.displayName}}">
 									<span th:text="${post.createdByUser.displayName}"></span>
@@ -135,7 +135,7 @@
 								.add('active');
 
 					});
-	
+
 	let menu = document.querySelector('#menu-icon');
 	let navbar = document.querySelector('.sidebar');
 
@@ -143,7 +143,7 @@
 	    menu.classList.toggle('fa-times'); // Cambia el ícono de las barras a la cruz
 	    navbar.classList.toggle('open'); // Abre o cierra la barra lateral
 	}
-	
+
 	document.addEventListener('DOMContentLoaded', function() {
 	    const searchIcon = document.getElementById('search-icon');
 	    const searchContainer = document.getElementById('search-container');
@@ -152,10 +152,10 @@
 	    searchIcon.addEventListener('click', function(event) {
 	        event.preventDefault(); // Evita que el enlace te lleve al inicio
 	        searchContainer.style.display = searchContainer.style.display === 'none' ? 'flex' : 'none';
-	        
-	        
+
+
 	    });
-	    
+
 	});
 
 

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preguntas</title>
+    <link rel="stylesheet" type="text/css" href="css/foro.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="assets/logo03.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+</head>
+
+<body>
+<header>
+    <div class="header-content">
+        <div class="fa fa-bars" id="menu-icon"></div>
+        <a href="/foro" class="logo"><span class="logo-text">Talk</span></a>
+        <div id="search-container" class="search-container">
+            <input type="text" placeholder="Buscar">
+        </div>
+        <div class="actions">
+            <a class="search-icon" id="search-icon"><i class="fas fa-search"></i></a>
+            <a href="/perfil" class="profile-btn"><img th:src="${user.profileImage}" alt="Perfil"></a>
+            <a href="#" class="notifications-btn"><i class="fas fa-bell"></i><span id="notification-count"
+                                                                                   class="notification-count">0</span></a>
+            <a href="/perfil?tab=configuracion" class="settings-btn"><i class="fas fa-cog"></i></a>
+            <a href="/logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i></a>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="sidebar">
+        <div class="sidebar-content">
+            <nav>
+                <ul>
+                    <li><a href="/foro"><i class="fas fa-home"></i> Inicio</a></li>
+                    <li><a href="/preguntas"><i class="fas fa-question-circle"></i>
+                        Preguntas</a></li>
+                    <li><a href="/tags"><i class="fas fa-tag"></i> Tags</a></li>
+                    <li><a th:href="@{/perfil(tab='guardados')}"
+                           th:classappend="${activeTab == 'guardados'} ? 'active' : ''"><i class="fas fa-bookmark"></i>
+                        Guardado</a></li>
+                    <li><a href="/users"><i class="fas fa-user"></i> Usuarios</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <div id="content-center">
+        <div id="mainbar">
+            <div id="d-flex">
+                <h1>Preguntas Top</h1>
+                <a href="/createPost" class="ask-questions">Pregunta</a>
+            </div>
+
+            <div id="content-listas">
+                <div id="flex-questions">
+                    <div th:each="post : ${posts}" class="card">
+                        <div class="content">
+                            <p th:text="${post.postTitle}"></p>
+                            <ul class="chips">
+                                <!-- Tags dinámicos -->
+                                <li th:each="tag : ${post.tags}" class="chip" th:text="${tag}"></li>
+                            </ul>
+                            <div class="question-meta">
+                                <p th:text="${#dates.format(post.createdDate, 'dd/MM/yyyy HH:mm')}">
+                                    <span></span>
+                                </p>
+                            </div>
+                            <div class="action-buttons">
+                                <a href="#book-a-mentor">Ayudar</a>
+                            </div>
+                        </div>
+                        <div class="background">
+                            <img th:src="${post.createdByUser.profileImage}" alt="profile">
+                            <a th:href="@{'/inicio/' + ${post.createdByUser.displayName}}">
+                                <span th:text="${post.createdByUser.displayName}"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var menuItems = document.querySelectorAll('.sidebar-content nav ul li');
+        document.querySelector('.sidebar-content nav ul li:first-child').classList.add('active');
+    });
+
+    let menu = document.querySelector('#menu-icon');
+    let navbar = document.querySelector('.sidebar');
+
+    menu.onclick = () => {
+        menu.classList.toggle('fa-times');
+        navbar.classList.toggle('open');
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchIcon = document.getElementById('search-icon');
+        const searchContainer = document.getElementById('search-container');
+
+        searchIcon.addEventListener('click', function(event) {
+            event.preventDefault();
+            searchContainer.style.display = searchContainer.style.display === 'none' ? 'flex' : 'none';
+        });
+    });
+</script>
+</body>
+</html>

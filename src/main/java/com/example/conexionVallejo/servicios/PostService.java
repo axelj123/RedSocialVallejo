@@ -3,6 +3,8 @@ package com.example.conexionVallejo.servicios;
 import com.example.conexionVallejo.modelos.Post;
 import com.example.conexionVallejo.repositorios.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +22,9 @@ public class PostService {
     
 
     public List<Post> obtenerTodosLosPostsAsc() {
-        return postRepository.findAllByOrderByCreatedDateDesc();
+
+        Pageable pageable = PageRequest.of(0, 15);  // Página 0, tamaño 15
+        return postRepository.findAllByOrderByCreatedDateDesc(pageable);
     }
     
     // Método para obtener todos los posts que son preguntas

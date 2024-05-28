@@ -4,6 +4,7 @@ import com.example.conexionVallejo.modelos.Post;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Repository;
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     List<Post> findAllByPostTypeId(Integer postTypeId);
-    List<Post> findAllByOrderByCreatedDateDesc();
-
+    List<Post> findAllByOrderByCreatedDateDesc(Pageable pageable);
 
 }
