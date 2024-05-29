@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionRegistry;
@@ -142,7 +145,7 @@ public class FormsControlador {
 	}
 
 	@GetMapping("/preguntas")
-	public String preguntas(Model model) {
+	public String preguntas(Model model, @RequestParam(defaultValue = "0", required=false) Integer page, @RequestParam(defaultValue = "15", required=false) Integer size) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication != null && authentication.isAuthenticated()) {
 			String emailAddress = authentication.getName();
@@ -157,10 +160,15 @@ public class FormsControlador {
 			return "redirect:/login";
 		}
 
-		List<Post> posts = postService.obtenerTodosLosPostsAsc();
-		model.addAttribute("posts", posts);
-		return "foro";
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Post> postsPage = postService.obtenerPostPaginados(pageable);
+		model.addAttribute("postsPage", postsPage);
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalPages", postsPage.getTotalPages());
+
+		return "preguntas";
 	}
+
 
 	@GetMapping("/createPost")
 	public String createPost(Model model) {
