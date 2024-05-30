@@ -1,11 +1,8 @@
 package com.example.conexionVallejo.modelos;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "Tags")
@@ -20,6 +17,10 @@ public class Tag {
 
     @Column(name = "tag_description")
     private String tagDescription;
+
+	@ManyToMany(mappedBy="tag")
+	private List<Post> post;
+
 
 	public Long getId() {
 		return id;

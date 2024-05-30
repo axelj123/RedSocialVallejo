@@ -1,6 +1,7 @@
 package com.example.conexionVallejo.controlador;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -15,12 +16,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.conexionVallejo.modelos.Post;
-import com.example.conexionVallejo.modelos.PostTag;
 import com.example.conexionVallejo.modelos.PostType;
 import com.example.conexionVallejo.modelos.Tag;
 import com.example.conexionVallejo.modelos.User;
 import com.example.conexionVallejo.repositorios.PostRepository;
-import com.example.conexionVallejo.repositorios.PostTagRepository;
 import com.example.conexionVallejo.repositorios.PostTypeRepository;
 import com.example.conexionVallejo.repositorios.TagsRepository;
 import com.example.conexionVallejo.repositorios.UserRepository;
@@ -40,8 +39,7 @@ public class PostController {
     @Autowired
     private TagsRepository tagsRepository;
 
-    @Autowired
-    private PostTagRepository postTagRepository;
+
     @PostMapping("/post/new")
     public String submitNewPost(@ModelAttribute Post post, @RequestParam("tags") String[] tagIds, Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
@@ -50,7 +48,7 @@ public class PostController {
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
                 post.setCreatedByUser(user);
-                
+
                 Optional<PostType> optionalPostType = postTypeRepository.findById(1L);
                 if (optionalPostType.isPresent()) {
                     PostType postType = optionalPostType.get();
@@ -59,26 +57,26 @@ public class PostController {
 
                 post.setCreatedDate(new Timestamp(System.currentTimeMillis()));
 
-                postRepository.save(post);
-                
-                for (String tagId : tagIds) {
-                    try {
-                        Long id = Long.parseLong(tagId); // Convertir el String a Long
-                        Tag tag = tagsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid tag Id:" + id));
-                        PostTag postTag = new PostTag(post, tag);
-                        postTagRepository.save(postTag);
-                    } catch (NumberFormatException e) {
-                        // Manejar el caso en que el identificador de etiqueta no sea un número válido
-                        System.err.println("Invalid tag identifier: " + tagId);
-                        // Opcionalmente, puedes ignorar este identificador y continuar con el siguiente
+                // Asociar etiquetas a la publicación
+                List<Tag> tags = new ArrayList<>();
+                for (String tagName : tagIds) {
+                    Tag tag = tagsRepository.findByTagName(tagName);
+                    if (tag != null) {
+                        tags.add(tag);
                     }
                 }
-        
+
+                post.setTag(tags);
+
+                // Guardar la publicación
+                postRepository.save(post);
+
                 return "redirect:/foro";
             }
         }
         return "redirect:/login";
     }
+
 
 
 }
