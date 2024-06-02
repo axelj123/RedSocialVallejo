@@ -37,7 +37,10 @@ public class PostService {
         return postRepository.findAll(pageable);
     }
 
-
+    // Método para obtener un post por su ID
+    public Optional<Post> findPostById(Long id) {
+        return postRepository.findById(id);
+    }
 
 
 }

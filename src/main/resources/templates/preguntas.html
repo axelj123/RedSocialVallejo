@@ -74,7 +74,25 @@
                 <a  href="/createPost" class="ask-questions">Pregunta</a>
 
             </div>
-
+            <!-- New Filter Section -->
+            <div id="filters">
+                <p th:text="${totalQuestions} + ' preguntas'">24,176,461 preguntas</p>
+                <form action="/preguntas" method="get">
+                    <label>
+                        <input type="checkbox" name="unanswered">
+                        Solo sin respuesta
+                    </label>
+                    <label for="tag">Tag:</label>
+                    <select name="tag" id="tag">
+                        <option value="">Todos</option>
+                        <option value="React.js">React.js</option>
+                        <option value="Node.js">Node.js</option>
+                        <option value="PostgreSQL">PostgreSQL</option>
+                    </select>
+                    <button type="submit">Filtrar</button>
+                </form>
+            </div>
+            <!-- End Filter Section -->
             <div id="content-listas">
                 <div id="flex-questions">
 
@@ -82,9 +100,8 @@
                         <div class="content">
                             <p th:text="${post.postTitle}"></p>
                             <ul class="chips">
-                                <li class="chip">React.js</li>
-                                <li class="chip">Node.js</li>
-                                <li class="chip">PostgreSQL</li>
+                                <li th:each="tag : ${post.tag}" class="chip" th:text="${tag.tagName}"></li>
+
                             </ul>
                             <div class="question-meta">
                                 <p th:text="${#dates.format(post.createdDate, 'dd/MM/yyyy HH:mm')}">

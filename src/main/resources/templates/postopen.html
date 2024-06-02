@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Foro</title>
-    <link rel="stylesheet" type="text/css" href="css/foro.css">
+    <title th:text="${post.postTitle}">Título predeterminado</title> <!-- Usar el título pasado como parámetro -->
+    <link rel="stylesheet" type="text/css" href="/css/postopen.css">
 
     <link
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
@@ -69,46 +69,23 @@
     <div id="content-center">
         <div id="mainbar">
             <div id="d-flex">
-                <h1>Preguntas Top</h1>
+                <h1 th:text="${post.postTitle}">Preguntas Top</h1>
                 <a href="/createPost" class="ask-questions">Pregunta</a>
 
             </div>
 
             <div id="content-listas">
-                <div id="flex-questions">
+                <div id="details">
+                    <p th:text="${post.postDetails}"></p>
 
-
-                    <div th:each="post : ${posts}" class="card">
-                        <div class="content">
-                            <p th:text="${post.postTitle}"></p>
-                            <ul class="chips">
-                                <li th:each="tag : ${post.tag}" class="chip" th:text="${tag.tagName}"></li>
-
-                            </ul>
-                            <div class="question-meta">
-                                <p
-                                        th:text="${#dates.format(post.createdDate, 'dd/MM/yyyy HH:mm')}">
-                                    <span></span>
-                                </p>
-                            </div>
-                            <div class="action-buttons">
-                                <a th:href="@{'/postopen/' + ${post.id}}">Ayudar</a>
-                            </div>
-                        </div>
-
-
-                        <div class="background">
-                            <img th:src="@{${post.createdByUser.profileImage}}" alt="profile">
-                            <a
-                                    th:href="@{'/inicio/' + ${post.createdByUser.displayName}}">
-                                <span th:text="${post.createdByUser.displayName}"></span>
-                            </a>
-                        </div>
-
-
-                    </div>
 
                 </div>
+                <div id="answers">
+                    <p th:text="${post.postDetails}"></p>
+
+
+                </div>
+
             </div>
 
         </div>

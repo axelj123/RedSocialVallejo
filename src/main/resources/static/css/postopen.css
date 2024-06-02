@@ -1,0 +1,525 @@
+:root {
+	--bg-color: #fafafa;
+	--text-color: #000000;
+	--main-color: #0077cc;
+	--line-color: #e2e7e8;
+	--font-text: sans-serif;
+	--background: #D8E3FA;
+	--gray: #EAEAEC;
+	--primary: #29283F;
+	--primary-violet: #7370F4;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	background-color: var(--bg-color);
+}
+
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: 'Poppins', sans-serif;
+	text-decoration: none;
+	list-style: none;
+}
+
+/*HEADER */
+header {
+	padding-top: 0;
+	padding-bottom: 0;
+	position: fixed;
+	width: 100%;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	/* Alinea horizontalmente los elementos del header */
+	background: rgb(255, 255, 255);
+	transition: all .50s ease;
+	border-bottom: 1px solid var(--line-color);
+}
+
+.header-content {
+	width: 1264px; /* Ancho del contenido del encabezado */
+	margin: 0 auto; /* Centra horizontalmente el contenido */
+	display: flex;
+	justify-content: space-between; /* Espacio entre los elementos */
+}
+
+.logo {
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+	justify-content: center;
+	padding-left: 20px;
+}
+
+.logo span {
+	color: #3b4045;
+	font-size: 28px;
+	font-weight: 700;
+}
+
+/* Contenedor de búsqueda */
+.search-container {
+	display: flex;
+	align-items: center;
+	border: 1px solid #ccc;
+	padding: 2px;
+	background-color: #fff;
+	border-radius: 10px;
+	width: 50%;
+	margin: 10px;
+}
+.search-encabezado {
+	background-color: var(--main-color);
+	color: #fff;
+	border: none;
+	padding: 8px 15px;
+	cursor: pointer;
+	outline: none;
+	margin-left: 5px;
+	border-radius: 10px;
+}
+.search-container input[type="text"] {
+	flex-grow: 1;
+	border: none;
+	padding: 8px;
+	border-radius: 25px;
+	outline: none;
+	margin-right: 5px;
+		width: 100%;
+	font-size: 13px;
+}
+
+.search-container button {
+	background-color: var(--main-color);
+	color: #fff;
+	border: none;
+	padding: 8px 15px;
+	cursor: pointer;
+	outline: none;
+	margin-left: 5px;
+	border-radius: 10px;
+}
+
+.actions {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100px;
+	margin-right:20px;
+}
+
+
+.profile-btn img {
+	width: 40px;
+	height: 40px;;
+	    border-radius: 50%;
+}
+
+
+.actions a i {
+	font-size: 17px; /* Tamaño deseado para los iconos */
+	padding: 8px;
+	color: var(--line-color);
+}
+
+.actions a:hover i {
+	/* Estilos que se aplicarán al icono cuando el cursor esté sobre el enlace */
+	color: var(--main-color); /* Cambia el color del icono a rojo */
+	transform: scale(1.2); /* Aumenta ligeramente el tamaño del icono */
+}
+
+.notifications-btn {
+	position: relative;
+}
+
+.notifications-btn a:hover {
+	background: red;
+}
+
+.notification-count {
+	position: absolute;
+	/* Establece la posición absoluta para el contador */
+	top: -5px; /* Ajusta la posición vertical */
+	right: -8px; /* Ajusta la posición horizontal */
+	background-color: #ff3f3f;
+	color: white;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 2px 6px;
+	border-radius: 50%;
+}
+
+.notifications-btn:hover .notification-count {
+	background-color: #ff5f5f;
+	/* Cambia el color de fondo del contador de notificaciones al pasar el mouse */
+}
+
+.container {
+	width: 100%;
+	max-width: 1264px;
+	height: auto;
+	position: relative;
+	top: 60px;
+	display: flex;
+	margin: 0 auto;
+	flex-grow: 1; /* Permite que el contenedor crezca */
+	margin-bottom: 60px; /* Añadir margen inferior */
+}
+
+.sidebar {
+	width: 162px;
+	border-right: 1px solid var(--line-color);
+	background: white;
+	display: flex;
+	flex-direction: column;
+}
+
+.sidebar-content {
+	height: 1900px;
+	padding-top: 20px;
+	width: 162px;
+}
+
+nav {
+	position: fixed;
+	display: flex;
+}
+
+nav ul li.active {
+	background-color: #f1f2f3;
+}
+
+nav ul li.active a {
+	color: var(--text-color);
+	font-weight: bold;
+}
+
+
+
+nav li {
+	width: 161px;
+	border-radius: 5px;
+	margin: 7px 0;
+	padding: 10px;
+	transition: all 0.3s ease;
+}
+
+nav li:hover {
+	background: #eaeaea;
+}
+
+nav a {
+	text-decoration: none;
+	color: #3b4045;
+	font-size: 14px;
+	font-weight: 400;
+	transition: all .50s ease;
+	position: relative;
+	display: block;
+	transition: all .50s ease;
+}
+
+nav a i {
+	margin-right: 5px;
+	color: var(--main-color);
+}
+
+/* Contenido principal */
+#content-center {
+	width: 100%;
+	height: 100%;
+	padding-left: 20px;
+	margin-top: 0;
+	/* Ajusta el margen superior negativo para mover hacia arriba */
+}
+
+#mainbar {
+	width: 100%;
+	height: 98%;
+	margin: 0;
+}
+
+#d-flex {
+	width: 100%;
+	height: auto;
+	display: flex;
+	align-items: flex-start; /* Cambiado de center a flex-start */
+	padding: 20px;
+}
+
+#content-listas {
+	border-top: 1px solid var(--line-color);
+	margin: 0;
+	margin-left: -20px; /* Ajusta el margen izquierdo */
+	width: calc(100% + 40px);
+	/* Ajusta el ancho para compensar el margen */
+}
+
+#d-flex h1 {
+	font-weight: 400;
+	font-size: 20px;
+	width: 80%;
+}
+
+.ask-questions {
+	background-color: var(--main-color); /* Color de fondo */
+	border: 2px solid var(--main-color); /* Borde */
+	color: var(--bg-color);
+	padding: 10px;
+	text-align: center;
+	text-decoration: none;
+	font-size: 16px;
+	transition-duration: 0.4s;
+	cursor: pointer;
+	border-radius: 5px;
+	font-size: 14px;
+		width: 100px;
+		padding: 2px;
+}
+
+.ask-questions:hover {
+	background-color: #005ea2;
+}
+button[type="submit"] {
+	background-color: #0077cc;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	padding: 10px 20px;
+	font-size: 12px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+	background-color: #005ea2;
+}
+
+
+#menu-icon {
+	display: none;
+}
+
+#search-icon {
+	display: none;
+}
+
+nav.open {
+	right: 20px;
+}
+
+/* DIVS PREGUNTAS */
+.card {
+	display: flex;
+	transition: all 0.3s;
+	min-height: 20%;
+	border-bottom: 1px solid var(--line-color);
+}
+
+.background {
+	width: 20%;
+	height: 20%;
+}
+
+.background span {
+	font-size: 12px;
+	padding: 2px;
+	display: flex;
+}
+
+.content {
+	flex: 3 1 22rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: start;
+	padding: 1rem;
+}
+
+.content>p {
+	font-size: 14px;
+	font-weight: 400;
+	margin: 0.4rem 0;
+}
+
+.content a {
+	color: var(--primary-violet);
+}
+
+.chips {
+	display: flex;
+	gap: 1.5rem;
+	flex-wrap: wrap;
+	list-style-type: none;
+	padding: 0.75rem 0px 1rem 0px;
+}
+
+.chip {
+	border-radius: 0.5rem;
+	padding: 0.25rem 0.5rem;
+	font-size: 10px;
+	background-color: var(--gray);
+	transition: all 0.3s;
+	font-weight: 500;
+}
+
+.chip:hover {
+	background-color: var(--primary-violet);
+	color: var(--gray);
+}
+
+.background img {
+	width: 50px;
+	height: 50px;
+	padding: 5px;
+}
+
+.action-buttons {
+	display: flex; /* Hace que los botones se muestren en línea */
+	align-items: center; /* Centra verticalmente los botones */
+	min-width: 100%;
+}
+
+.action-buttons a {
+	background-color: var(--primary);
+	color: white;
+	padding: 2px;
+	text-decoration: none;
+	border-radius: 0.75rem;
+	outline: none;
+	border: none;
+	font-size: 12px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex: 1 0 15rem;
+	max-width: 20%;
+	min-width: 150px; /* Establece un ancho mínimo para los botones */
+}
+
+.action-buttons a:hover {
+	text-decoration: underline;
+}
+
+.action-buttons a.secondary {
+	background-color: inherit;
+	color: var(--primary);
+	border: 1px solid var(--primary);
+	flex: 1 0 5rem;
+}
+
+.question-meta {
+	font-size: 12px;
+	color: #999; /* Color de texto gris */
+	margin-bottom: 10px; /* Espacio inferior */
+}
+
+.question-meta span {
+	font-weight: bold; /* Texto en negrita */
+	color: #333; /* Color de texto oscuro */
+}
+
+@media ( max-width : 480px) {
+	#menu-icon {
+		font-size: 20px;
+		color: var(--text-color);
+		cursor: pointer;
+		z-index: 10001;
+		margin: 14px;
+		right: 0;
+		/* Ajusta la posición del ícono del menú al extremo derecho */
+		display: flex;
+		justify-content: center;
+	}
+	#search-icon {
+		display: flex;
+		position: absolute;
+		right: 120%; /* Ajusta la posición izquierda del ícono */
+	}
+	/* Estilos para la barra lateral */
+	.sidebar {
+		width: 182px; /* Ajusta el ancho según sea necesario */
+		height: 100%;
+		border-right: 1px solid var(--line-color);
+		background: white;
+		position: fixed; /* Hace que la barra lateral sea fija */
+		left: -200px; /* Oculta la barra lateral por defecto */
+		top: 0; /* Ajusta la posición de la barra lateral */
+		transition: left 0.5s ease;
+		/* Agrega transición para que aparezca suavemente */
+		z-index: 999;
+		/* Asegura que la barra lateral esté por encima del contenido */
+		padding: 20px;
+	}
+	.sidebar.open {
+		left: 0; /* Muestra la barra lateral completamente */
+	}
+	.sidebar-content {
+		height: 100%; /* Ajusta la altura al 100% del contenedor */
+		padding-top: 20px; /* Agrega relleno superior */
+	}
+	.sidebar-content nav {
+		display: flex;
+		flex-direction: column; /* Cambia la dirección del diseño a columna */
+	}
+	.logo span {
+		display: none;
+	}
+	header {
+		position: fixed; /* Mantiene el encabezado fijo */
+		margin: 0;
+		width: 100%;
+	}
+	.header-content {
+		width: 100%;
+		justify-content: flex-start; /* Alinea el contenido al inicio */
+		box-sizing: border-box;
+	}
+	.actions {
+		position: absolute;
+		right: 20px;
+		top: 50%;
+		transform: translate(-20%, -50%);
+		margin:0;
+	}
+	.search-container {
+		display: none;
+		position: fixed;
+		top: 40px;
+		width: 90%;
+		z-index: 1000;
+		box-shadow: 3px 4px 10px rgba(0, 0, 0, 0.1);
+	}
+	#d-flex h1 {
+		font-size: 20px;
+	}
+
+	.container {
+		width: auto;
+		top: 50px;
+		margin: 0;
+		left: 0;
+		right: 0;
+	}
+	#content-center {
+		width: 100%;
+		left: 0;
+		margin: 0;
+		height: 100%;
+		padding: 20px;
+	}
+	#mainbar {
+		width: auto; /* Ajusta el ancho automáticamente */
+		height: auto; /* Ajusta la altura automáticamente */
+	}
+		.profile-btn img {
+
+	margin-top:5px;
+}
+}

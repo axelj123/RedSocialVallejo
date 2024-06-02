@@ -19,6 +19,7 @@
 	href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
 <script
 	src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.0/classic/ckeditor.js"></script>
 
 
 </head>
@@ -107,10 +108,11 @@
 						<div class="question">
 							<div class="question-inner">
 								<label for="details">Detalles</label>
-								<textarea id="details" name="postDetails"
-									placeholder="Presenta el problema y amplía lo que pusiste en el título. Mínimo 20 caracteres."
-									required disabled></textarea>
-							</div>
+                                <textarea id="details" name="postDetails"
+                                          placeholder="Presenta el problema y amplía lo que pusiste en el título. Mínimo 20 caracteres."
+                                          required></textarea>
+
+                            </div>
 						</div>
 
 						<div class="question">
@@ -254,7 +256,25 @@ document.getElementById('tried').setAttribute('disabled', true);
 document.getElementById('tried').classList.add('disabled-field');
 
 </script>
-	<script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#details'), {
+                toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'insertTable', 'mediaEmbed', 'codeBlock'],
+                codeBlock: {
+                    languages: [
+                        { language: 'javascript', label: 'JavaScript' },
+                        { language: 'html', label: 'HTML' },
+                        { language: 'css', label: 'CSS' },
+                        // Puedes añadir más lenguajes si es necesario
+                    ]
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+
+    <script>
 
 document.querySelector('.publish-btn').addEventListener('click', function(event) {
 	  event.preventDefault(); // Evita que el formulario se envíe automáticamente
