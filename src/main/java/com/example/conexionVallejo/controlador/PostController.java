@@ -1,11 +1,14 @@
 package com.example.conexionVallejo.controlador;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.conexionVallejo.modelos.*;
+import com.example.conexionVallejo.servicios.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -15,14 +18,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.conexionVallejo.modelos.Post;
-import com.example.conexionVallejo.modelos.PostType;
-import com.example.conexionVallejo.modelos.Tag;
-import com.example.conexionVallejo.modelos.User;
 import com.example.conexionVallejo.repositorios.PostRepository;
 import com.example.conexionVallejo.repositorios.PostTypeRepository;
 import com.example.conexionVallejo.repositorios.TagsRepository;
 import com.example.conexionVallejo.repositorios.UserRepository;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class PostController {
@@ -39,9 +39,15 @@ public class PostController {
     @Autowired
     private TagsRepository tagsRepository;
 
+    @Autowired
+    private FileService fileService;
+
 
     @PostMapping("/post/new")
-    public String submitNewPost(@ModelAttribute Post post, @RequestParam("tags") String[] tagIds, Authentication authentication) {
+    public String submitNewPost(@ModelAttribute Post post,
+                                @RequestParam("tags") String[] tagIds
+                              ,
+                                Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
             String emailAddress = authentication.getName();
             Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
@@ -57,7 +63,6 @@ public class PostController {
 
                 post.setCreatedDate(new Timestamp(System.currentTimeMillis()));
 
-                // Asociar etiquetas a la publicación
                 List<Tag> tags = new ArrayList<>();
                 for (String tagName : tagIds) {
                     Tag tag = tagsRepository.findByTagName(tagName);
@@ -65,11 +70,10 @@ public class PostController {
                         tags.add(tag);
                     }
                 }
-
                 post.setTag(tags);
 
-                // Guardar la publicación
                 postRepository.save(post);
+
 
                 return "redirect:/foro";
             }

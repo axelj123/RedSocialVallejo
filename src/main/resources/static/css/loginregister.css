@@ -159,6 +159,25 @@ form.sign-in-form {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 }
+.forgot-password-link,
+.admin-login-link {
+  display: block;
+  margin-top: 10px;
+  color: #005ea2;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+  text-align: center;
+}
+
+.forgot-password-link:hover,
+.admin-login-link:hover {
+  color: #003f7a;
+}
+
+.admin-option {
+  margin-top: 20px;
+}
 
 .container:before {
   content: "";

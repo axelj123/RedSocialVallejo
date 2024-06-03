@@ -233,5 +233,10 @@ public class FormsControlador {
         return "nuevoPass";
     }
 
+    @GetMapping("/adminLogin")
+    public String showLoginAdmin(){
+        return "adminLogin";
+    }
+
 
 }

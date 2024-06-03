@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login de Administrador</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f7f7f7;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .admin-login-container {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .admin-login-container h2 {
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .input-field {
+            position: relative;
+            margin-bottom: 1.5rem;
+            width: 100%;
+        }
+
+        .input-field i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+
+        .input-field input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border-radius: 25px;
+            border: 1px solid #ccc;
+            outline: none;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .input-field input:focus {
+            border-color: #005ea2;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 25px;
+            background: #005ea2;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #003f7a;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+
+        .forgot-password-link {
+            display: block;
+            margin-top: 1rem;
+            color: #005ea2;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-password-link:hover {
+            color: #003f7a;
+        }
+    </style>
+</head>
+<body>
+
+<div class="admin-login-container">
+    <h2>Admin Login</h2>
+    <form action="/adminLogin" method="POST">
+        <div class="input-field">
+            <i class="fas fa-user"></i>
+            <input type="email" name="username" placeholder="Correo" required>
+        </div>
+        <div class="input-field">
+            <i class="fas fa-lock"></i>
+            <input type="password" name="password" placeholder="Contraseña" required>
+        </div>
+        <input type="submit" value="Entrar" class="btn">
+    </form>
+    <a href="/recuperarPassword" class="forgot-password-link">¿Olvidaste tu contraseña?</a>
+    <div class="error-message" style="display: none;">Correo o contraseña incorrectos. Inténtalo de nuevo.</div>
+</div>
+
+</body>
+</html>

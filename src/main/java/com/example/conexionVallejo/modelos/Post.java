@@ -46,6 +46,8 @@ public class Post {
     )
     private List<Tag> tag;
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<FileEntity> files;
 
 
     public Post() {
@@ -64,6 +66,14 @@ public class Post {
         this.postTitle = postTitle;
         this.postDetails = postDetails;
         this.createdDate = createdDate;
+    }
+
+    public List<FileEntity> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<FileEntity> files) {
+        this.files = files;
     }
 
     public List<Tag> getTag() {
