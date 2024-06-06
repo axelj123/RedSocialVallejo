@@ -64,6 +64,10 @@ public class FormsControlador {
                 if (optionalPost.isPresent()) {
                     Post post = optionalPost.get();
                     model.addAttribute("post", post);
+
+                    // Cargar las respuestas relacionadas
+                    List<Post> answers = postService.obtenerRespuestas(id);
+                  model.addAttribute("answers", answers);
                     return "postopen"; // Nombre de la plantilla Thymeleaf
                 } else {
                     model.addAttribute("errorMessage", "Post no encontrado");
@@ -94,7 +98,7 @@ public class FormsControlador {
             return "redirect:/login";
         }
 
-        List<Post> posts = postService.obtenerTodosLosPostsAsc();
+        List<Post> posts = postService.obtenerPreguntas();
         model.addAttribute("posts", posts);
         return "foro";
     }
@@ -237,6 +241,9 @@ public class FormsControlador {
     public String showLoginAdmin(){
         return "adminLogin";
     }
-
+    @GetMapping("/ControlPanel")
+    public String PanelDeControl(){
+        return "panelControl";
+    }
 
 }

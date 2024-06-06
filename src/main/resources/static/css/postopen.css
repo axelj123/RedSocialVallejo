@@ -182,10 +182,15 @@ header {
 }
 
 .sidebar-content {
-	height: 1900px;
 	padding-top: 20px;
 	width: 162px;
 }
+
+.edit-post,
+.delete-post {
+    color: gray !important;
+}
+
 
 nav {
 	position: fixed;
@@ -263,8 +268,8 @@ nav a i {
 }
 
 #d-flex h1 {
-	font-weight: 400;
-	font-size: 20px;
+	font-weight: 300;
+	font-size: 25px;
 	width: 80%;
 }
 
@@ -320,13 +325,39 @@ nav.open {
 	display: flex;
 	transition: all 0.3s;
 	min-height: 20%;
-	border-bottom: 1px solid var(--line-color);
 }
 
 .background {
-	width: 20%;
-	height: 20%;
+    background-color: #eff0f1; /* Cambia el color de fondo */
+    border-radius: 5px; /* Redondea los bordes del contenedor */
+    padding: 10px; /* Agrega espacio alrededor del contenido */
+    margin-bottom: 10px; /* Añade espacio entre contenedores */
+    display: flex; /* Utiliza flexbox para organizar elementos */
+    flex-direction: column; /* Organiza los elementos en columna */
+    align-items: center; /* Centra los elementos horizontalmente */
 }
+
+.background p {
+    color: #0077cc; /* Cambia el color del enlace */
+    text-decoration: none; /* Quita la subrayado del enlace */
+    font-weight: bold; /* Hace el texto en negrita */
+    margin-top: 5px; /* Añade espacio entre el enlace y la imagen */
+}
+
+.background img {
+    width: 50px; /* Establece un ancho para la imagen */
+    height: 50px; /* Establece una altura para la imagen */
+    border-radius: 50%; /* Redondea la imagen */
+    margin-top: 5px; /* Añade espacio entre la imagen y el texto */
+}
+
+.background span {
+    margin-top: 5px; /* Añade espacio entre el texto y la imagen */
+    font-weight: bold; /* Hace el texto en negrita */
+    color: #333; /* Cambia el color del texto */
+    font-size: 14px; /* Ajusta el tamaño del texto */
+}
+
 
 .background span {
 	font-size: 12px;
@@ -348,15 +379,14 @@ nav.open {
 	margin: 0.4rem 0;
 }
 
-.content a {
-	color: var(--primary-violet);
-}
 
 .chips {
 	display: flex;
 	gap: 1.5rem;
 	flex-wrap: wrap;
 	list-style-type: none;
+		pointer:cursor;
+
 	padding: 0.75rem 0px 1rem 0px;
 }
 
@@ -367,11 +397,14 @@ nav.open {
 	background-color: var(--gray);
 	transition: all 0.3s;
 	font-weight: 500;
+	cursor:pointer;
+
 }
 
 .chip:hover {
 	background-color: var(--primary-violet);
 	color: var(--gray);
+
 }
 
 .background img {

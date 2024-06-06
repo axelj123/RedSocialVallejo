@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control del Administrador</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        .option:last-child {
+            border-bottom: none;
+        }
+        .option i {
+            margin-right: 10px;
+        }
+        .option button {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #005ea2;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .option button:hover {
+            background-color: #003f7a;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Panel de Control del Administrador</h1>
+    <div class="option">
+        <span>Eliminar Perfil de Usuario</span>
+        <button><i class="fas fa-trash-alt"></i>Eliminar</button>
+    </div>
+    <div class="option">
+        <span>Bloquear Perfil de Usuario</span>
+        <button><i class="fas fa-lock"></i>Bloquear</button>
+    </div>
+    <div class="option">
+        <span>Restablecer Contraseña de Usuario</span>
+        <button><i class="fas fa-key"></i>Restablecer</button>
+    </div>
+    <!-- Agrega más opciones según sea necesario -->
+</div>
+
+</body>
+</html>

@@ -358,6 +358,7 @@ nav.open {
 	flex-wrap: wrap;
 	list-style-type: none;
 	padding: 0.75rem 0px 1rem 0px;
+
 }
 
 .chip {
@@ -367,6 +368,8 @@ nav.open {
 	background-color: var(--gray);
 	transition: all 0.3s;
 	font-weight: 500;
+	cursor:pointer;
+
 }
 
 .chip:hover {

@@ -18,6 +18,7 @@
     <link
             href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
             rel="stylesheet">
+
 </head>
 
 <body>
@@ -75,18 +76,52 @@
             </div>
 
             <div id="content-listas">
-                <div id="details">
-                    <p th:text="${post.postDetails}"></p>
+                <div id="flex-questions">
+                    <div class="card">
+                        <div class="content">
+                            <!-- Contenido de la pregunta -->
+                            <p th:utext="${post.postDetails}"></p>
+                            <ul class="chips">
+                                <li th:each="tag : ${post.tag}" class="chip" th:text="${tag.tagName}"></li>
+                            </ul>
+                            <!-- Botones de editar y eliminar -->
+                            <div class="post-actions" th:if="${post.createdByUser != null and post.createdByUser.id == user.id}">
+                                <a href="#" class="edit-post"><i class="fas fa-edit"></i></a>
+                                <a href="#" class="delete-post"><i class="fas fa-trash-alt"></i></a>
+                            </div>
+                            <!-- Información del usuario que pregunta -->
+                            <div class="background blue">
+                                <p th:text="${#dates.format(post.createdDate, 'dd/MM/yyyy HH:mm:ss')}"></p>
+                                <img th:src="@{${post.createdByUser.profileImage}}" alt="profile">
+                                <a th:href="@{'/inicio/' + ${post.createdByUser.displayName}}">
+                                    <span th:text="${post.createdByUser.displayName}"></span>
+                                </a>
+                            </div>
 
+                            <!-- Respuestas -->
+                            <div class="Answer">
+                                <h3>Respuestas</h3>
+                                <!-- Itera sobre las respuestas y muestra cada una -->
+                                <div th:each="answer : ${answers}" class="answer-card">
+                                        <!-- Contenido de la respuesta -->
+                                        <p th:utext="${answer.postDetails}"></p>
+                                        <!-- Información del usuario que responde -->
+                                        <div class="background green-light">
+                                            <img th:src="@{${answer.createdByUser.profileImage}}" alt="profile">
+                                            <a th:href="@{'/inicio/' + ${answer.createdByUser.displayName}}">
+                                                <span th:text="${answer.createdByUser.displayName}"></span>
+                                            </a>
+                                        </div>
 
+                                </div>
+                            </div>
+                            <!-- Enlace para responder -->
+                            <a href="/createPost" class="ask-questions" th:if="${post.createdByUser != null and post.createdByUser.id != user.id}">Responder</a>
+                        </div>
+                    </div>
                 </div>
-                <div id="answers">
-                    <p th:text="${post.postDetails}"></p>
-
-
-                </div>
-
             </div>
+
 
         </div>
 
@@ -134,4 +169,5 @@
 
 
 </script>
+
 </html>

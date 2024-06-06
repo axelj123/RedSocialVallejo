@@ -30,7 +30,13 @@ public class PostService {
 
     // Método para obtener todos los posts que son preguntas
     public List<Post> obtenerPreguntas() {
+        Pageable pageable = PageRequest.of(0, 15);  // Página 0, tamaño 15
+
         return postRepository.findAllByPostTypeId(1); // Suponiendo que el campo se llama "postType"
+    }
+    public List<Post> obtenerRespuestas(Long idPregunta) {
+        // Obtener todas las respuestas relacionadas con la pregunta identificada por su ID
+        return postRepository.findAllByParentQuestionId(idPregunta);
     }
     // Método para obtener todas las publicaciones paginadas
     public Page<Post> obtenerPostPaginados(Pageable pageable){
@@ -42,5 +48,7 @@ public class PostService {
         return postRepository.findById(id);
     }
 
-
+    public List<Post> findAnswersByParentQuestionId(Long parentQuestionId) {
+        return postRepository.findAllByParentQuestionId(parentQuestionId);
+    }
 }

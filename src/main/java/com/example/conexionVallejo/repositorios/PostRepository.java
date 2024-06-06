@@ -13,5 +13,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     List<Post> findAllByPostTypeId(Integer postTypeId);
     List<Post> findAllByOrderByCreatedDateDesc(Pageable pageable);
+    List<Post> findAllByParentQuestionId(Long parentQuestionId);
 
 }

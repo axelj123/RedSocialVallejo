@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Añadir Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+        @media (min-width: 640px) {
+            .sidebar {
+                width: 16rem;
+            }
+
+            .content {
+                margin-left: 16rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+<div class="flex flex-col md:flex-row">
+    <!-- Sidebar -->
+    <div class="bg-gray-800 text-gray-100 flex justify-between items-center md:flex-col sidebar w-full md:w-auto">
+        <div class="p-4">
+            <h1 class="text-lg font-semibold">Panel de Control</h1>
+        </div>
+        <nav class="md:mt-4">
+            <a href="#" class="block p-4 hover:bg-gray-700">
+                <i class="fas fa-newspaper mr-2"></i> Publicaciones
+            </a>
+            <a href="#" class="block p-4 hover:bg-gray-700">
+                <i class="fas fa-users mr-2"></i> Usuarios
+            </a>
+            <a href="#" class="block p-4 hover:bg-gray-700">
+                <i class="fas fa-bell mr-2"></i> Notificaciones
+            </a>
+            <a href="#" class="block p-4 hover:bg-gray-700">
+                <i class="fas fa-cog mr-2"></i> Configuraciones
+            </a>
+            <a href="#" class="block p-4 hover:bg-gray-700">
+                <i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión
+            </a>
+        </nav>
+
+    </div>
+
+    <!-- Content -->
+    <div class="bg-gray-200 flex-1 min-h-screen p-8 content">
+        <h2 class="text-xl font-semibold mb-4">Bienvenido al Panel de Control</h2>
+        <p>Este es el contenido principal.</p>
+    </div>
+</div>
+</body>
+
+</html>

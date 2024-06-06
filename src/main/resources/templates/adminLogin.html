@@ -1,40 +1,43 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login de Administrador</title>
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
-        body, html {
-            height: 100%;
+        body {
             margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #f7f7f7;
+            height: 100vh;
+            background: #f3f4f6;
             font-family: 'Poppins', sans-serif;
         }
 
         .admin-login-container {
             background: #fff;
             padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
             width: 100%;
             max-width: 400px;
-            text-align: center;
+            box-sizing: border-box;
         }
 
         .admin-login-container h2 {
             margin-bottom: 1.5rem;
             color: #333;
+            font-size: 1.5rem;
+            font-weight: bold;
         }
 
         .input-field {
             position: relative;
             margin-bottom: 1.5rem;
-            width: 100%;
         }
 
         .input-field i {
@@ -42,17 +45,18 @@
             left: 15px;
             top: 50%;
             transform: translateY(-50%);
-            color: #999;
+            color: #777;
         }
 
         .input-field input {
-            width: 100%;
-            padding: 10px 15px 10px 40px;
+            width: calc(100% - 50px);
+            padding: 12px;
             border-radius: 25px;
             border: 1px solid #ccc;
             outline: none;
             font-size: 1rem;
             transition: all 0.3s;
+            box-sizing: border-box;
         }
 
         .input-field input:focus {
@@ -61,7 +65,7 @@
 
         .btn {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: none;
             border-radius: 25px;
             background: #005ea2;
@@ -69,15 +73,12 @@
             font-size: 1rem;
             cursor: pointer;
             transition: background 0.3s;
+            font-weight: bold;
+            letter-spacing: 1px;
         }
 
         .btn:hover {
             background: #003f7a;
-        }
-
-        .error-message {
-            color: red;
-            margin-top: 10px;
         }
 
         .forgot-password-link {
@@ -85,23 +86,44 @@
             margin-top: 1rem;
             color: #005ea2;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: bold;
             transition: color 0.3s ease;
         }
 
         .forgot-password-link:hover {
             color: #003f7a;
         }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .admin-login-container {
+                padding: 1.5rem;
+            }
+
+            .input-field input {
+                padding: 10px;
+            }
+
+            .input-field i {
+                left: 10px;
+            }
+        }
     </style>
 </head>
+
 <body>
 
 <div class="admin-login-container">
-    <h2>Admin Login</h2>
+    <h2>Inicia sesión como Administrador</h2>
     <form action="/adminLogin" method="POST">
         <div class="input-field">
-            <i class="fas fa-user"></i>
-            <input type="email" name="username" placeholder="Correo" required>
+            <i class="fas fa-envelope"></i>
+            <input type="email" name="username" placeholder="Correo electrónico" required>
         </div>
         <div class="input-field">
             <i class="fas fa-lock"></i>
@@ -114,4 +136,5 @@
 </div>
 
 </body>
+
 </html>
