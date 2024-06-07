@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,9 +31,9 @@ public class PostService {
 
     // Método para obtener todos los posts que son preguntas
     public List<Post> obtenerPreguntas() {
-        Pageable pageable = PageRequest.of(0, 15);  // Página 0, tamaño 15
+        Pageable pageable = PageRequest.of(0, 15, Sort.by("createdDate").descending());  // Página 0, tamaño 15, orden descendente por fecha de creación
 
-        return postRepository.findAllByPostTypeId(1); // Suponiendo que el campo se llama "postType"
+        return postRepository.findAllByPostTypeId(1,pageable); // Suponiendo que el campo se llama "postType"
     }
     public List<Post> obtenerRespuestas(Long idPregunta) {
         // Obtener todas las respuestas relacionadas con la pregunta identificada por su ID

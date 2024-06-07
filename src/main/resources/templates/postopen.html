@@ -18,6 +18,7 @@
     <link
             href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
             rel="stylesheet">
+    <script src="https://cdn.ckeditor.com/4.20.0/standard/ckeditor.js"></script>
 
 </head>
 
@@ -90,29 +91,53 @@
                                 <a href="#" class="delete-post"><i class="fas fa-trash-alt"></i></a>
                             </div>
                             <!-- Información del usuario que pregunta -->
-                            <div class="background blue">
-                                <p th:text="${#dates.format(post.createdDate, 'dd/MM/yyyy HH:mm:ss')}"></p>
-                                <img th:src="@{${post.createdByUser.profileImage}}" alt="profile">
-                                <a th:href="@{'/inicio/' + ${post.createdByUser.displayName}}">
-                                    <span th:text="${post.createdByUser.displayName}"></span>
-                                </a>
+                            <div class="user-info">
+                                <div class="user-info-block">
+                                    <span>Asked</span>
+                                    <span th:text="${age}"></span>
+                                </div>
+                                <div class="user-profile">
+                                    <img th:src="@{${post.createdByUser.profileImage}}" alt="profile">
+                                    <a th:href="@{'/inicio/' + ${post.createdByUser.displayName}}">
+                                        <span th:text="${post.createdByUser.displayName}"></span>
+                                    </a>
+                                </div>
                             </div>
 
+
                             <!-- Respuestas -->
+                            <div class="Answer-header">
+                                <h3 th:if="${not #lists.isEmpty(answers)}" th:text="'Respuestas (' + ${#lists.size(answers)} + ')'"></h3>
+
+                            </div>
                             <div class="Answer">
-                                <h3>Respuestas</h3>
                                 <!-- Itera sobre las respuestas y muestra cada una -->
                                 <div th:each="answer : ${answers}" class="answer-card">
-                                        <!-- Contenido de la respuesta -->
-                                        <p th:utext="${answer.postDetails}"></p>
-                                        <!-- Información del usuario que responde -->
-                                        <div class="background green-light">
+                                    <!-- Contenido de la respuesta -->
+                                    <p th:utext="${answer.postDetails}"></p>
+                                    <!-- Información del usuario que responde -->
+                                    <div class="user-info">
+                                        <div class="user-info-block">
+                                            <span>Answered</span>
+                                            <span th:text="${age}"></span>
+
+                                        </div>
+                                        <div class="user-profile">
                                             <img th:src="@{${answer.createdByUser.profileImage}}" alt="profile">
                                             <a th:href="@{'/inicio/' + ${answer.createdByUser.displayName}}">
                                                 <span th:text="${answer.createdByUser.displayName}"></span>
                                             </a>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
 
+
+                            <div class="yourAnswer">
+                                <h1>Tu respuesta</h1>
+                                <div class="question-inner">
+                                    <label for="details">Detalles</label>
+                                    <textarea id="details" name="postDetails" placeholder="Presenta el problema y amplía lo que pusiste en el título. Mínimo 20 caracteres." required></textarea>
                                 </div>
                             </div>
                             <!-- Enlace para responder -->
@@ -131,6 +156,10 @@
 
 
 </body>
+<script >
+    CKEDITOR.replace( 'details')
+
+</script>
 <script>
     document
             .addEventListener(

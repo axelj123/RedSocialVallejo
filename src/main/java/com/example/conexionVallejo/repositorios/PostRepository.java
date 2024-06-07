@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    List<Post> findAllByPostTypeId(Integer postTypeId);
+    List<Post> findAllByPostTypeId(Integer postTypeId,Pageable pageable);
     List<Post> findAllByOrderByCreatedDateDesc(Pageable pageable);
     List<Post> findAllByParentQuestionId(Long parentQuestionId);
 
