@@ -3,7 +3,9 @@ package com.example.conexionVallejo.controlador;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +86,19 @@ public class FormsControlador {
 
                     // Cargar las respuestas relacionadas
                     List<Post> answers = postService.obtenerRespuestas(id);
+
+                    // Calcular la antigüedad de cada respuesta y agregarla al modelo
+                    Map<Integer, String> answerAges = new HashMap<>();
+                    for (Post answer : answers) {
+                        Instant answerInstant = answer.getCreatedDate().toInstant();
+                        Duration answerDuration = Duration.between(answerInstant, currentInstant);
+                        String answerAge = calculateAge(answerDuration);
+                        answerAges.put(answer.getId(), answerAge);
+                    }
+
+                    model.addAttribute("answerAges", answerAges);
                     model.addAttribute("answers", answers);
+
 
                     return "postopen"; // Nombre de la plantilla Thymeleaf
                 } else {
@@ -98,6 +112,7 @@ public class FormsControlador {
             return "redirect:/login";
         }
     }
+
 
     private String calculateAge(Duration duration) {
         long days = duration.toDays();

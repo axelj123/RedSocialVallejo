@@ -81,6 +81,42 @@ public class PostController {
         return "redirect:/login";
     }
 
+    @PostMapping("/answer/new")
+    public String submitAnswer(@RequestParam("parentQuestionId") Long parentQuestionId,
+                               @RequestParam("postDetails") String postDetails,
+                               Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            String emailAddress = authentication.getName();
+            Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+
+                Post answer = new Post();
+                answer.setCreatedByUser(user);
+                answer.setPostDetails(postDetails);
+                answer.setCreatedDate(new Timestamp(System.currentTimeMillis()));
+
+                Optional<PostType> optionalPostType = postTypeRepository.findById(2L); // Assuming 2 is the PostType ID for answers
+                if (optionalPostType.isPresent()) {
+                    PostType postType = optionalPostType.get();
+                    answer.setPostType(postType);
+                }
+
+                Optional<Post> optionalParentPost = postRepository.findById(parentQuestionId);
+                if (optionalParentPost.isPresent()) {
+                    Post parentPost = optionalParentPost.get();
+                    answer.setParentQuestion(parentPost);
+                }
+
+                postRepository.save(answer);
+
+                return "redirect:/postopen/" + parentQuestionId; // Redirect to the original post page
+            }
+        }
+        return "redirect:/login";
+    }
+
+
 
 
 }

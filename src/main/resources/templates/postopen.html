@@ -90,6 +90,11 @@
                                 <a href="#" class="edit-post"><i class="fas fa-edit"></i></a>
                                 <a href="#" class="delete-post"><i class="fas fa-trash-alt"></i></a>
                             </div>
+                            <div class="additional-options" th:unless="${post.createdByUser != null and post.createdByUser.id == user.id}">
+                                <!-- Icono de guardar publicación -->
+                                <i class="fas fa-bookmark"></i>
+                            </div>
+
                             <!-- Información del usuario que pregunta -->
                             <div class="user-info">
                                 <div class="user-info-block">
@@ -110,40 +115,54 @@
                                 <h3 th:if="${not #lists.isEmpty(answers)}" th:text="'Respuestas (' + ${#lists.size(answers)} + ')'"></h3>
 
                             </div>
-                            <div class="Answer">
-                                <!-- Itera sobre las respuestas y muestra cada una -->
-                                <div th:each="answer : ${answers}" class="answer-card">
-                                    <!-- Contenido de la respuesta -->
-                                    <p th:utext="${answer.postDetails}"></p>
-                                    <!-- Información del usuario que responde -->
-                                    <div class="user-info">
-                                        <div class="user-info-block">
-                                            <span>Answered</span>
-                                            <span th:text="${age}"></span>
 
-                                        </div>
-                                        <div class="user-profile">
-                                            <img th:src="@{${answer.createdByUser.profileImage}}" alt="profile">
-                                            <a th:href="@{'/inicio/' + ${answer.createdByUser.displayName}}">
-                                                <span th:text="${answer.createdByUser.displayName}"></span>
-                                            </a>
-                                        </div>
+                            <!-- Itera sobre las respuestas y muestra cada una -->
+                            <div th:each="answer : ${answers}" class="answer-card">
+                                <!-- Contenido de la respuesta -->
+                                <p th:utext="${answer.postDetails}"></p>
+                                <!-- Información del usuario que responde -->
+                                <div class="user-info">
+                                    <div class="user-info-block">
+                                        <span>Answered</span>
+                                        <span th:text="'Answered ' + ${answerAges[answer.id]}"></span>
+                                        <!-- Opciones adicionales -->
+                                    </div>
+                                    <div class="user-profile">
+                                        <img th:src="@{${answer.createdByUser.profileImage}}" alt="profile">
+                                        <a th:href="@{'/inicio/' + ${answer.createdByUser.displayName}}">
+                                            <span th:text="${answer.createdByUser.displayName}"></span>
+                                        </a>
+                                    </div>
+                                    <div class="additional-options">
+                                        <!-- Icono de guardar respuesta -->
+                                        <i class="fas fa-bookmark"></i>
+                                        <!-- Icono de likes -->
+                                        <i class="fas fa-thumbs-up"></i>
+                                        <!-- Icono de dislikes -->
+                                        <i class="fas fa-thumbs-down"></i>
+                                        <!-- Otras opciones aquí -->
                                     </div>
                                 </div>
                             </div>
 
 
-                            <div class="yourAnswer">
+
+
+                            <div class="yourAnswer" th:unless="${post.createdByUser != null and post.createdByUser.id == user.id}">
                                 <h1>Tu respuesta</h1>
-                                <div class="question-inner">
-                                    <label for="details">Detalles</label>
-                                    <textarea id="details" name="postDetails" placeholder="Presenta el problema y amplía lo que pusiste en el título. Mínimo 20 caracteres." required></textarea>
-                                </div>
+                                <form action="/answer/new" method="post" th:action="@{/answer/new}" th:object="${post}">
+                                    <input type="hidden" name="parentQuestionId" th:value="${post.id}" required>
+                                    <div class="question-inner">
+                                        <label for="details">Detalles</label>
+                                        <textarea id="details" name="postDetails" placeholder="Presenta el problema y amplía lo que pusiste en el título. Mínimo 20 caracteres." required></textarea>
+                                    </div>
+                                    <button id="send-answer" type="submit">Responder</button>
+                                </form>
                             </div>
-                            <!-- Enlace para responder -->
-                            <a href="/createPost" class="ask-questions" th:if="${post.createdByUser != null and post.createdByUser.id != user.id}">Responder</a>
+
+
+
                         </div>
-                    </div>
                 </div>
             </div>
 
@@ -154,12 +173,20 @@
     </div>
 </div>
 
-
+</div>
 </body>
-<script >
-    CKEDITOR.replace( 'details')
+<script>
+    // Verificar si hay un textarea visible con ID "details"
+    var detailsTextArea = document.getElementById('details');
+    if (detailsTextArea && window.getComputedStyle(detailsTextArea).display !== 'none') {
+        // Si hay un textarea visible con ID "details", no inicializar CKEditor
+           CKEDITOR.replace('details');
+    } else {
+        // Si no hay un textarea visible con ID "details", inicializar CKEditor
 
+    }
 </script>
+
 <script>
     document
             .addEventListener(
