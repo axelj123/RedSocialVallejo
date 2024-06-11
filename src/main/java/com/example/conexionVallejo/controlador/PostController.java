@@ -8,20 +8,15 @@ import java.util.List;
 import java.util.Optional;
 
 import com.example.conexionVallejo.modelos.*;
+import com.example.conexionVallejo.repositorios.*;
 import com.example.conexionVallejo.servicios.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import com.example.conexionVallejo.repositorios.PostRepository;
-import com.example.conexionVallejo.repositorios.PostTypeRepository;
-import com.example.conexionVallejo.repositorios.TagsRepository;
-import com.example.conexionVallejo.repositorios.UserRepository;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
@@ -41,7 +36,8 @@ public class PostController {
 
     @Autowired
     private FileService fileService;
-
+@Autowired
+private SavedPostRepository savedPostRepository;
 
     @PostMapping("/post/new")
     public String submitNewPost(@ModelAttribute Post post,
@@ -201,6 +197,41 @@ public class PostController {
         }
         // Redirige al inicio de sesión si no está autenticado o no es el autor de la respuesta
         return "redirect:/login";
+    }
+
+    @PostMapping("/save")
+    public ResponseEntity<String> savePost(@RequestParam("postId") Long postId, Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            String emailAddress = authentication.getName();
+            Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                Optional<Post> optionalPost = postRepository.findById(postId);
+                if (optionalPost.isPresent()) {
+                    Post post = optionalPost.get();
+
+                    // Verifica si la publicación ya está guardada por el usuario
+                    Optional<SavedPost> existingSavedPost = savedPostRepository.findByUserAndPost(user, post);
+                    if (existingSavedPost.isPresent()) {
+                        return ResponseEntity.badRequest().body("La publicación ya está guardada");
+                    }
+
+                    // Guarda la publicación
+                    SavedPost savedPost = new SavedPost();
+                    savedPost.setUser(user);
+                    savedPost.setPost(post);
+                    savedPostRepository.save(savedPost);
+
+                    return ResponseEntity.ok("Publicación guardada exitosamente");
+                } else {
+                    return ResponseEntity.badRequest().body("No se encontró la publicación con el ID especificado");
+                }
+            } else {
+                return ResponseEntity.badRequest().body("Usuario no autenticado");
+            }
+        } else {
+            return ResponseEntity.badRequest().body("Usuario no autenticado");
+        }
     }
 
 }

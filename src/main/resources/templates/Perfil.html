@@ -238,10 +238,28 @@
                                                                                 th:value="${user.carrera}"
                                                                                 required>
                                 </div>
+                                <div class="form-group">
+                                    <label for="facebook_url">Facebook</label>
+                                    <input type="text" id="facebook_url" name="facebookUrl" th:value="${user.facebookUrl}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="linkedin_url">LinkedIn</label>
+                                    <input type="text" id="linkedin_url" name="linkedinUrl" th:value="${user.linkedinUrl}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="instagram_url">Instagram</label>
+                                    <input type="text" id="instagram_url" name="instagramUrl" th:value="${user.instagramUrl}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="tiktok_url">TikTok</label>
+                                    <input type="text" id="tiktok_url" name="tiktokUrl" th:value="${user.tiktokUrl}">
+                                </div>
+
                                 <button type="submit" id="save-changes-btn">Guardar
                                     cambios
                                 </button>
                             </div>
+
                         </form>
 
 
