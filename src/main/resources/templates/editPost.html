@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Post</title>
-    <link rel="stylesheet" type="text/css" href="css/createpost.css">
+    <title>Editar publicación</title>
+    <link rel="stylesheet" type="text/css" href="/css/editPost.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="icon" href="assets/logo03.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,7 +28,8 @@
         <div class="actions">
             <a class="search-icon" id="search-icon"><i class="fas fa-search"></i></a>
             <a href="/perfil" class="profile-btn"><img th:src="@{${user.profileImage}}"></a>
-            <a href="#" class="notifications-btn"><i class="fas fa-bell"></i><span id="notification-count" class="notification-count">0</span></a>
+            <a href="#" class="notifications-btn"><i class="fas fa-bell"></i><span id="notification-count"
+                                                                                   class="notification-count">0</span></a>
             <a href="/perfil?tab=configuracion" class="settings-btn"><i class="fas fa-cog"></i></a>
             <a href="/logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i></a>
         </div>
@@ -43,7 +44,9 @@
                     <li><a href="/foro"><i class="fas fa-home"></i> Inicio</a></li>
                     <li><a href="/preguntas"><i class="fas fa-question-circle"></i> Preguntas</a></li>
                     <li><a href="/tags"><i class="fas fa-tag"></i> Tags</a></li>
-                    <li><a th:href="@{/perfil(tab='guardados')}" th:classappend="${activeTab == 'guardados'} ? 'active' : ''"><i class="fas fa-bookmark"></i> Guardado</a></li>
+                    <li><a th:href="@{/perfil(tab='guardados')}"
+                           th:classappend="${activeTab == 'guardados'} ? 'active' : ''"><i class="fas fa-bookmark"></i>
+                        Guardado</a></li>
                     <li><a href="#"><i class="fas fa-user"></i> Usuarios</a></li>
                 </ul>
             </nav>
@@ -54,48 +57,50 @@
         <div id="mainbar">
             <div class="create-post">
                 <div class="flex-h1">
-                    <h1>Realiza una pregunta pública</h1>
+                    <h1>Edita tu publicación</h1>
                 </div>
                 <div class="rules-question">
                     <div class="content-rules">
-                        <h2 id="h2-estructura">Estructura</h2>
-                        <p>Este formulario te guiará para realizar una buena consulta.</p>
-                        <h5 id="h5-estructura-pasos">Pasos</h5>
-                        <ol>
-                            <li>Resuma su problema en un título de una línea.</li>
-                            <li>Describe tu problema con más detalle.</li>
-                            <li>Describe lo que intentaste y lo que esperabas que sucediera.</li>
-                            <li>Agregue "etiquetas" que ayuden a hacer llegar su pregunta a los miembros de la comunidad.</li>
-                            <li>Revise su pregunta y publíquela en el sitio.</li>
-                        </ol>
+                        <p>Agradecemos las ediciones que hagan que la publicación sea más fácil de entender y más
+                            valiosa para los lectores. Debido a que los miembros de la comunidad revisan las ediciones,
+                            intente hacer que la publicación sea sustancialmente mejor de cómo la encontró, por ejemplo,
+                            corrigiendo la gramática o agregando recursos e hipervínculos adicionales.</p>
+
                     </div>
                 </div>
 
-                <form id="question-form" action="/post/new" method="post">
+                <form id="question-form" action="/post/edit" method="post">
+                    <input type="hidden" name="postId" th:value="${post.id}">
                     <div class="question">
                         <div class="question-inner">
                             <label for="title">Titulo</label>
-                            <input type="text" id="title" name="postTitle" placeholder="Sea específico e imagine que le está haciendo una pregunta a otra persona." required autofocus>
+                            <input type="text" id="title" name="postTitle" th:value="${post.postTitle}" placeholder="Sea específico e imagine que le está haciendo una pregunta a otra persona." required autofocus>
                         </div>
                     </div>
 
                     <div class="question">
                         <div class="question-inner">
                             <label for="details">Detalles</label>
-                            <textarea id="details" name="postDetails" placeholder="Presenta el problema y amplía lo que pusiste en el título. Mínimo 20 caracteres." required></textarea>
+                            <textarea id="details" name="postDetails" placeholder="Presenta el problema y amplía lo que pusiste en el título. Mínimo 20 caracteres." required th:text="${post.postDetails}"></textarea>
                         </div>
                     </div>
 
                     <div class="question">
                         <div class="question-inner">
                             <label for="tags">Tags</label>
-                            <select id="tagsSelect" name="tags" multiple></select>
+                            <select id="tagsSelect" name="tags" multiple>
+                                <!-- Iterar sobre las etiquetas seleccionadas y agregarlas como opciones -->
+                                <option th:each="tag : ${post.tag}" th:text="${tag.tagName}" selected="selected"></option>
+                                <!-- Agregar etiquetas adicionales como opciones -->
+                                <option th:each="tag : ${allTags}" th:text="${tag.tagName}"></option>
+                            </select>
                         </div>
                     </div>
 
-                    <button class="publish-btn" type="submit">Publicar</button>
+                    <button class="publish-btn" type="submit">Guardar cambios</button>
                     <a href="#" class="discard-btn" onclick="discardChanges()">Descartar cambios</a>
                 </form>
+
             </div>
         </div>
     </div>
@@ -163,46 +168,29 @@
 
 
 </script>
-<script >
+<script>
     CKEDITOR.replace( 'details')
 
 </script>
 <script>
     document.querySelector('.publish-btn').addEventListener('click', function(event) {
         event.preventDefault();
-
-        // Obtener los valores de los campos del formulario
-        var title = document.getElementById('title').value.trim();
-        var details = document.getElementById('details').value.trim();
-        var tags = document.getElementById('tagsSelect').value;
-
-        // Verificar si alguno de los campos está vacío
-        if (title === '' || details === '' || tags.length === 0) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Por favor completa todos los campos del formulario.',
-            });
-        } else {
-            // Si todos los campos están completos, mostrar el mensaje de confirmación
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: "Estás a punto de publicar tu pregunta.",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sí, publicar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('question-form').submit();
-                }
-            });
-        }
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Estás a punto de publicar tu pregunta.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, publicar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('question-form').submit();
+            }
+        });
     });
 </script>
-
 
 </body>
 </html>

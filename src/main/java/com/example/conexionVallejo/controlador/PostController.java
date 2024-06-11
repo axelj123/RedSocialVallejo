@@ -116,7 +116,91 @@ public class PostController {
         return "redirect:/login";
     }
 
+    @PostMapping("/post/edit")
+    public String editPost(@RequestParam("postId") Long postId,
+                           @RequestParam("postTitle") String postTitle,
+                           @RequestParam("postDetails") String postDetails,
+                           @RequestParam("tags") String[] tagIds,
+                           Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            Optional<Post> optionalPost = postRepository.findById(postId);
+            if (optionalPost.isPresent()) {
+                Post post = optionalPost.get();
+                String emailAddress = authentication.getName();
+                Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
+                if (optionalUser.isPresent() && post.getCreatedByUser().getId().equals(optionalUser.get().getId())) {
+                    post.setPostTitle(postTitle);
+                    post.setPostDetails(postDetails);
 
+                    List<Tag> tags = new ArrayList<>();
+                    for (String tagName : tagIds) {
+                        Tag tag = tagsRepository.findByTagName(tagName);
+                        if (tag != null) {
+                            tags.add(tag);
+                        }
+                    }
+                    post.setTag(tags);
 
+                    postRepository.save(post);
+
+                    return "redirect:/postopen/" + postId; // Redirect to the edited post page
+                }
+            }
+        }
+        return "redirect:/login";
+    }
+    @PostMapping("/post/delete")
+    public String deletePost(@RequestParam("postId") Long postId, Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            Optional<Post> optionalPost = postRepository.findById(postId);
+            if (optionalPost.isPresent()) {
+                Post post = optionalPost.get();
+                String emailAddress = authentication.getName();
+                Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
+                if (optionalUser.isPresent() && post.getCreatedByUser().getId().equals(optionalUser.get().getId())) {
+                    // Buscar todas las respuestas asociadas a la publicación
+                    List<Post> respuestas = postRepository.findAllByParentQuestionId(postId);
+                    for (Post respuesta : respuestas) {
+                        // Eliminar las etiquetas asociadas a la respuesta
+                        respuesta.getTag().clear();
+                    }
+                    // Eliminar todas las respuestas
+                    postRepository.deleteAll(respuestas);
+
+                    // Eliminar las etiquetas asociadas a la publicación
+                    post.getTag().clear();
+
+                    // Eliminar la publicación
+                    postRepository.delete(post);
+
+                    return "redirect:/foro";
+                }
+            }
+        }
+        return "redirect:/login";
+    }
+    @PostMapping("/answer/edit")
+    public String editAnswer(@RequestParam("postId") Long answerId,
+                             @RequestParam("postDetails") String postDetails,
+                             Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            Optional<Post> optionalAnswer = postRepository.findById(answerId);
+            if (optionalAnswer.isPresent()) {
+                Post answer = optionalAnswer.get();
+                String emailAddress = authentication.getName();
+                Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
+                if (optionalUser.isPresent() && answer.getCreatedByUser().getId().equals(optionalUser.get().getId())) {
+                    answer.setPostDetails(postDetails);
+
+                    postRepository.save(answer);
+
+                    // Redirige a la página de la publicación original
+                    return "redirect:/postopen/" + answer.getParentQuestion().getId();
+                }
+            }
+        }
+        // Redirige al inicio de sesión si no está autenticado o no es el autor de la respuesta
+        return "redirect:/login";
+    }
 
 }

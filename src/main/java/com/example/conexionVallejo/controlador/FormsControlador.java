@@ -152,6 +152,61 @@ public class FormsControlador {
         return "foro";
     }
 
+    @GetMapping("/posts/{id}/edit")
+    public String postEdit(@PathVariable Long id, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String emailAddress = authentication.getName();
+            Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                model.addAttribute("user", user);
+
+                Optional<Post> optionalPost = postService.findPostById(id);
+                if (optionalPost.isPresent()) {
+                    Post post = optionalPost.get();
+                    model.addAttribute("post", post);
+
+                    return "editPost";
+                } else {
+                    model.addAttribute("errorMessage", "Post no encontrado");
+                    return "error";
+                }
+            } else {
+                return "redirect:/login";
+            }
+        } else {
+            return "redirect:/login";
+        }
+    }
+    @GetMapping("/answer/{id}/edit")
+    public String answerEdit(@PathVariable Long id, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String emailAddress = authentication.getName();
+            Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                model.addAttribute("user", user);
+
+                Optional<Post> optionalPost = postService.findPostById(id);
+                if (optionalPost.isPresent()) {
+                    Post post = optionalPost.get();
+                    model.addAttribute("post", post); // Aquí debería ser "answer" en lugar de "post"
+
+                    return "editAnswer";
+                } else {
+                    model.addAttribute("errorMessage", "Post no encontrado");
+                    return "error";
+                }
+            } else {
+                return "redirect:/login";
+            }
+        } else {
+            return "redirect:/login";
+        }
+    }
+
 
     @GetMapping("/login")
     public String login() {

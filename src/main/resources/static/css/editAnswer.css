@@ -1,0 +1,424 @@
+:root {
+	--bg-color: #fafafa;
+	--text-color: #000000;
+	--main-color: #0077cc;
+	--line-color: #e2e7e8;
+	--font-text: sans-serif;
+	--background: #D8E3FA;
+	--gray: #EAEAEC;
+	--primary: #29283F;
+	--primary-violet: #7370F4;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	background-color: var(--bg-color);
+	    margin: 0;
+
+}
+
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: 'Poppins', sans-serif;
+	text-decoration: none;
+	list-style: none;
+}
+
+/*HEADER */
+header {
+	padding-top: 0;
+	padding-bottom: 0;
+	position: fixed;
+	width: 100%;
+	top: 0;
+	left: 0;
+	z-index: 1000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	/* Alinea horizontalmente los elementos del header */
+	background: rgb(255, 255, 255);
+	transition: all .50s ease;
+	border-bottom: 1px solid var(--line-color);
+}
+
+.header-content {
+	width: 1264px; /* Ancho del contenido del encabezado */
+	margin: 0 auto; /* Centra horizontalmente el contenido */
+	display: flex;
+	justify-content: space-between; /* Espacio entre los elementos */
+}
+
+.logo {
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+	justify-content: center;
+	padding-left: 20px;
+}
+
+.logo span {
+	color: #3b4045;
+	font-size: 28px;
+	font-weight: 800;
+}
+
+/* Contenedor de búsqueda */
+.search-container {
+	display: flex;
+	align-items: center;
+	border: 1px solid #ccc;
+	padding: 2px;
+	background-color: #fff;
+	border-radius: 10px;
+	width: 50%;
+	margin: 10px;
+}
+
+.search-container input[type="text"] {
+	flex-grow: 1;
+	border: none;
+	padding: 8px;
+	border-radius: 25px;
+	outline: none;
+	margin-right: 5px;
+}
+
+
+
+.actions {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100px;
+	margin-right:20px;
+}
+
+
+
+.profile-btn img {
+	width: 40px;
+	height: 40px;;
+	    border-radius: 50%;
+}
+
+
+.actions a i {
+	font-size: 17px; /* Tamaño deseado para los iconos */
+	padding: 8px;
+	color: var(--line-color);
+}
+
+.actions a:hover i {
+	/* Estilos que se aplicarán al icono cuando el cursor esté sobre el enlace */
+	color: var(--main-color); /* Cambia el color del icono a rojo */
+	transform: scale(1.2); /* Aumenta ligeramente el tamaño del icono */
+}
+
+.notifications-btn {
+	position: relative;
+}
+
+.notifications-btn a:hover {
+	background: red;
+}
+
+.notification-count {
+	position: absolute;
+	top: -5px;
+	right: -8px;
+	background-color: #ff3f3f;
+	color: white;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 2px 6px;
+	border-radius: 50%;
+}
+
+.notifications-btn:hover .notification-count {
+	background-color: #ff5f5f;
+}
+
+.container {
+	width: 100%;
+	max-width: 1264px;
+	height: 100%;
+	position: relative;
+	top: 61px;
+	display: flex;
+	margin: 0 auto;
+	flex-grow: 1;
+	margin-bottom: 60px;
+}
+
+.sidebar {
+	width: 162px;
+	border-right: 1px solid var(--line-color);
+	background: white;
+	display: flex;
+	flex-direction: column;
+}
+
+.sidebar-content {
+	height: 1000px;
+	padding-top: 20px;
+	width: 162px;
+}
+
+nav {
+	position: fixed;
+	display: flex;
+}
+
+nav ul li.active {
+	background-color: #f1f2f3;
+}
+
+nav ul li.active a {
+	color: var(--text-color);
+	font-weight: bold;
+}
+
+nav #active {
+	background: #f1f2f3;
+}
+
+nav #active li {
+	color: var(--text-color2);
+	width: 162px;
+}
+
+nav #active a {
+	color: var(--text-color);
+	font-weight: bold;
+}
+
+nav li {
+	width: 161px;
+	border-radius: 5px;
+	margin: 7px 0;
+	padding: 10px;
+	transition: all 0.3s ease;
+}
+
+nav li:hover {
+	background: #eaeaea;
+}
+
+nav a {
+	text-decoration: none;
+	color: #3b4045;
+	font-size: 14px;
+	font-weight: 400;
+	transition: all .50s ease;
+	position: relative;
+	display: block;
+	transition: all .50s ease;
+}
+
+nav a i {
+	margin-right: 5px;
+	color: var(--main-color);
+}
+
+/* Contenido principal */
+#content-center {
+	width: 100%;
+	height: 100%;
+	padding-left: 20px;
+	margin-top: 0;
+	margin-bottom:20px;;
+	/* Ajusta el margen superior negativo para mover hacia arriba */
+}
+
+#mainbar {
+	width: 100%;
+	height: 98%;
+	margin: 0;
+}
+
+
+
+#menu-icon {
+	display: none;
+}
+
+#search-icon {
+	display: none;
+}
+
+nav.open {
+	right: 20px;
+}
+
+
+input[type="text"], input[type="email"], input[type="password"],
+	textarea {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	font-size: 13px;
+}
+
+textarea {
+	resize: vertical;
+}
+
+button[type="submit"] {
+	background-color: #0077cc;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	padding: 10px 20px;
+	    margin-bottom:2px;
+
+	font-size: 12px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+    border: none;
+    float: right;
+
+}
+
+button[type="submit"]:hover {
+	background-color: #005ea2;
+}
+
+.flex-h1 h1{
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-size: 24px;
+font-weight: 400;
+}
+.rules-question{
+	background: #fcf7e6;
+	border-radius: 5px;
+	border: 1px solid #f4d37a;
+	margin-bottom: 20px;
+}
+
+
+.content-rules{
+	padding:20px;
+	font-size: 14px;
+}
+.content-rules h2{
+	font-size: 20px;
+	padding-bottom:10px;
+
+
+}
+#h5-estructura-pasos{
+	margin-top:10px;
+}
+
+
+ol li::before {
+    content: ". "; /* Agrega el punto seguido de un espacio antes del texto */
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.5em; /* line-height: 1.5 establece el interlineado a un 150% del tamaño de la fuente */
+
+}
+.question {
+    border: 1px solid #93c2f3;
+    padding: 10px;
+    margin-bottom: 40px;
+}
+
+.question-inner {
+    margin-bottom: 10px;
+}
+
+.question-inner label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.question-inner input[type="text"],
+.question-inner textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+.question-inner input:focus,
+.question-inner textarea:focus {
+    outline-color: var(--main-color); /* Cambia el color del contorno al enfocar */
+    outline-style: solid; /* Establece el estilo del contorno */
+    outline-width:3px; /* Establece el grosor del contorno */
+}
+
+
+.publish-btn:hover {
+    background-color: #005ea2;
+}
+
+@media ( max-width : 480px) {
+	#menu-icon {
+		font-size: 20px;
+		color: var(--text-color);
+		cursor: pointer;
+		z-index: 10001;
+		margin: 14px;
+		right: 0;
+		/* Ajusta la posición del ícono del menú al extremo derecho */
+		display: flex;
+		justify-content: center;
+	}
+	#search-icon {
+		display: flex;
+		position: absolute;
+		right: 120%; /* Ajusta la posición izquierda del ícono */
+	}
+	/* Estilos para la barra lateral */
+	.sidebar {
+		width: 182px; /* Ajusta el ancho según sea necesario */
+		height: 100%;
+		border-right: 1px solid var(--line-color);
+		background: white;
+		position: fixed; /* Hace que la barra lateral sea fija */
+		left: -200px; /* Oculta la barra lateral por defecto */
+		top: 0; /* Ajusta la posición de la barra lateral */
+		transition: left 0.5s ease;
+		/* Agrega transición para que aparezca suavemente */
+		z-index: 999;
+		/* Asegura que la barra lateral esté por encima del contenido */
+		padding: 20px;
+	}
+	.sidebar.open {
+		left: 0; /* Muestra la barra lateral completamente */
+	}
+	.sidebar-content {
+		height: 100%; /* Ajusta la altura al 100% del contenedor */
+		padding-top: 20px; /* Agrega relleno superior */
+	}
+	.sidebar-content nav {
+		display: flex;
+		flex-direction: column; /* Cambia la dirección del diseño a columna */
+	}
+	.logo span {
+		display: none;
+	}
+	header {
+		position: fixed; /* Mantiene el encabezado fijo */
+		margin: 0;
+		width: 100%;
+	}
+	.header-content {
+		width: 100%;
+		justify-content: flex-start; /* Alinea el contenido al inicio */
+		box-sizing: border-box;
+	}
+		.actions {
+		position: absolute;
+		right: 20px;
+		top: 50%;
