@@ -63,6 +63,7 @@
                         <div class="content">
                             <!-- Contenido de la pregunta -->
                             <p th:utext="${post.postDetails}"></p>
+
                             <ul class="chips">
                                 <li th:each="tag : ${post.tag}" class="chip" th:text="${tag.tagName}"></li>
                             </ul>
@@ -124,8 +125,7 @@
 
                                     <!-- Mostrar botones de guardar y votar solo si el usuario actual no es el autor -->
                                     <div class="additional-options" th:unless="${answer.createdByUser != null and answer.createdByUser.id == user.id}">
-                                        <!-- Icono de guardar respuesta -->
-                                        <i class="fas fa-bookmark"></i>
+
                                         <!-- Icono de likes -->
                                         <i class="fas fa-thumbs-up"></i>
                                         <!-- Icono de dislikes -->
