@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.example.conexionVallejo.modelos.SavedPost;
+import com.example.conexionVallejo.repositorios.SavedPostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,7 +39,8 @@ public class FormsControlador {
 
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+private SavedPostRepository savedPostRepository;
 
     @Autowired
     private TagsRepository tagsRepository;
@@ -148,9 +151,24 @@ public class FormsControlador {
         }
 
         List<Post> posts = postService.obtenerPreguntas();
+
+        // Obtener la fecha y hora actual en formato UTC
+        Instant currentInstant = Instant.now();
+
+        // Calcular la antigüedad de cada post y agregarla al modelo
+        Map<Integer, String> postAges = new HashMap<>();
+        for (Post post : posts) {
+            Instant postInstant = post.getCreatedDate().toInstant();
+            Duration duration = Duration.between(postInstant, currentInstant);
+            String age = calculateAge(duration);
+            postAges.put(post.getId(), age);
+        }
+
         model.addAttribute("posts", posts);
+        model.addAttribute("postAges", postAges);
         return "foro";
     }
+
 
     @GetMapping("/posts/{id}/edit")
     public String postEdit(@PathVariable Long id, Model model) {
@@ -214,14 +232,34 @@ public class FormsControlador {
     }
 
     @GetMapping("/perfil")
-    public String perfil(@RequestParam(value = "tab", defaultValue = "info") String tab, Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    public String perfil(@RequestParam(value = "tab", defaultValue = "info") String tab, Model model, Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
             String emailAddress = authentication.getName();
             Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
                 model.addAttribute("user", user);
+
+                // Si la pestaña activa es "guardados", carga las publicaciones guardadas
+                if ("guardados".equals(tab)) {
+                    List<SavedPost> savedPosts = savedPostRepository.findByUser(user);
+
+                    // Obtener la fecha y hora actual en formato UTC
+                    Instant currentInstant = Instant.now();
+
+                    // Calcular la antigüedad de cada publicación guardada y agregarla al modelo
+                    Map<Long, String> savedPostAges = new HashMap<>();
+                    for (SavedPost savedPost : savedPosts) {
+                        Instant postInstant = savedPost.getPost().getCreatedDate().toInstant();
+                        Duration duration = Duration.between(postInstant, currentInstant);
+                        String age = calculateAge(duration);
+                        savedPostAges.put(savedPost.getId(), age);
+                    }
+
+                    model.addAttribute("savedPosts", savedPosts);
+                    model.addAttribute("savedPostAges", savedPostAges);
+
+                }
             } else {
                 return "redirect:/login";
             }
@@ -234,6 +272,8 @@ public class FormsControlador {
 
         return "Perfil";
     }
+
+
 
     @GetMapping("/users")
     public String users(Model model) {
@@ -258,6 +298,57 @@ public class FormsControlador {
 
         return "users";
     }
+    @GetMapping("/users/{userId}")
+    public String viewUserProfile(@PathVariable Long userId, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String emailAddress = authentication.getName();
+            Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
+            if (optionalUser.isPresent()) {
+                User loggedInUser = optionalUser.get();
+                model.addAttribute("user", loggedInUser);
+
+                Optional<User> optionalProfileUser = userRepository.findById(userId);
+                if (optionalProfileUser.isPresent()) {
+                    User profileUser = optionalProfileUser.get();
+                    model.addAttribute("profileUser", profileUser);
+
+                    // Verificar si el perfil es del usuario autenticado
+                    boolean isCurrentUser = loggedInUser.getId().equals(profileUser.getId());
+                    model.addAttribute("isCurrentUser", isCurrentUser);
+
+                    if (!isCurrentUser) {
+                        // Cargar las publicaciones guardadas del perfil seleccionado
+                        List<SavedPost> savedPosts = savedPostRepository.findByUser(profileUser);
+
+                        // Obtener la fecha y hora actual en formato UTC
+                        Instant currentInstant = Instant.now();
+
+                        // Calcular la antigüedad de cada publicación guardada y agregarla al modelo
+                        Map<Long, String> savedPostAges = new HashMap<>();
+                        for (SavedPost savedPost : savedPosts) {
+                            Instant postInstant = savedPost.getPost().getCreatedDate().toInstant();
+                            Duration duration = Duration.between(postInstant, currentInstant);
+                            String age = calculateAge(duration);
+                            savedPostAges.put(savedPost.getId(), age);
+                        }
+
+                        model.addAttribute("savedPosts", savedPosts);
+                        model.addAttribute("savedPostAges", savedPostAges);
+                    }
+
+                    return "perfil"; // Nombre del archivo HTML de la vista del perfil
+                } else {
+                    return "redirect:/error"; // Manejar el caso en que el usuario no existe
+                }
+            } else {
+                return "redirect:/login";
+            }
+        } else {
+            return "redirect:/login";
+        }
+    }
+
 
     @GetMapping("/tags")
     public String Tags(Model model) {

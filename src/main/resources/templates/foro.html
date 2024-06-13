@@ -79,34 +79,34 @@
 
 
                     <div th:each="post : ${posts}" class="card">
+
+
+                        <!-- Contenido del post -->
                         <div class="content">
                             <p th:text="${post.postTitle}"></p>
                             <ul class="chips">
                                 <li th:each="tag : ${post.tag}" class="chip" th:text="${tag.tagName}"></li>
-
                             </ul>
-                            <div class="question-meta">
-                                <p
-                                        th:text="${#dates.format(post.createdDate, 'dd/MM/yyyy HH:mm')}">
-                                    <span></span>
-                                </p>
-                            </div>
-                            <div class="action-buttons">
-                                <a th:href="@{'/postopen/' + ${post.id}}">Ayudar</a>
+
+                            <div class="action-buttons-profile">
+                                <a th:href="@{'/postopen/' + ${post.id}}" class="view-more-button">Ayudar</a>
+                                <div class="profile-section">
+                                    <img th:src="@{${post.createdByUser.profileImage}}" alt="profile"
+                                         class="save-profile">
+                                    <div class="profile-info">
+                                        <a th:href="@{'/inicio/' + ${post.createdByUser.displayName}}">
+                                            <span th:text="${post.createdByUser.displayName}"></span>
+                                        </a>
+                                        <p>
+                                            <span th:text="${postAges[post.id]}"></span>
+                                        </p>
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
-
-
-                        <div class="background">
-                            <img th:src="@{${post.createdByUser.profileImage}}" alt="profile">
-                            <a
-                                    th:href="@{'/inicio/' + ${post.createdByUser.displayName}}">
-                                <span th:text="${post.createdByUser.displayName}"></span>
-                            </a>
-                        </div>
-
-
                     </div>
+
 
                 </div>
             </div>

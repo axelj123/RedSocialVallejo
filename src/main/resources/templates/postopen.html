@@ -79,14 +79,15 @@
                             </form>
                             <div class="additional-options" th:unless="${post.createdByUser != null and post.createdByUser.id == user.id}">
                                 <!-- Formulario para guardar la publicación -->
-                                <form th:action="@{/save}" method="post">
-                                    <!-- Agrega un campo oculto para enviar el ID de la publicación -->
-                                    <input type="hidden" name="postId" th:value="${post.id}">
-                                    <!-- Agrega un botón o un enlace para guardar la publicación -->
-                                    <button type="submit" style="border: none; background-color: transparent; cursor: pointer;">
-                                        <i class="fas fa-bookmark"></i> Guardar Publicación
-                                    </button>
-                                </form>
+                                <form id="save-post-form" th:action="@{/save}" method="post" data-message="${message}" data-type="${type}">
+                                <!-- Agrega un campo oculto para enviar el ID de la publicación -->
+                                <input type="hidden" name="postId" th:value="${post.id}">
+                                <!-- Agrega un botón o un enlace para guardar la publicación -->
+                                <button type="submit" style="border: none; background-color: transparent; cursor: pointer;">
+                                    <i class="fas fa-bookmark"></i>
+                                </button>
+                            </form>
+
                             </div>
 
 
@@ -249,6 +250,57 @@
         });
     });
 </script>
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        // Selecciona el formulario de guardado de la publicación
+        const saveForm = document.querySelector('#save-post-form');
+
+        // Agrega un controlador de eventos para el evento submit del formulario
+        saveForm.addEventListener('submit', function(event) {
+            // Evita que el formulario se envíe normalmente
+            event.preventDefault();
+
+            // Realiza una solicitud POST al servidor
+            fetch('/save', {
+                method: 'POST',
+                body: new FormData(saveForm)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Obtiene el mensaje y el tipo de la respuesta
+                const message = data.message;
+                const type = data.type;
+
+                // Muestra la notificación
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    icon: type,
+                    title: message,
+                    customClass: {
+                        // Personaliza la clase del Toast para ajustar el tamaño del texto y el padding
+                        title: 'swal-title',
+                        popup: 'swal-popup'
+                    },
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    });
+
+
+</script>
+
+
 
 
 <script>

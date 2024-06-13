@@ -2,10 +2,7 @@ package com.example.conexionVallejo.controlador;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import com.example.conexionVallejo.modelos.*;
 import com.example.conexionVallejo.repositorios.*;
@@ -18,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class PostController {
@@ -75,6 +73,25 @@ private SavedPostRepository savedPostRepository;
             }
         }
         return "redirect:/login";
+    }
+    @DeleteMapping("/removeSavedPost/{savedPostId}")
+    public String removeSavedPost(@PathVariable Long savedPostId, Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            String emailAddress = authentication.getName();
+            Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                Optional<SavedPost> optionalSavedPost = savedPostRepository.findById(savedPostId);
+                if (optionalSavedPost.isPresent()) {
+                    SavedPost savedPost = optionalSavedPost.get();
+                    if (savedPost.getUser().getId().equals(user.getId())) {
+                        savedPostRepository.delete(savedPost);
+                        return "redirect:/perfil?tab=guardados"; // Redirigir al perfil del usuario donde se muestran los post guardados
+                    }
+                }
+            }
+        }
+        return "redirect:/login"; // Redirigir al inicio de sesión si no se pudo eliminar el post guardado
     }
 
     @PostMapping("/answer/new")
@@ -145,36 +162,8 @@ private SavedPostRepository savedPostRepository;
         }
         return "redirect:/login";
     }
-    @PostMapping("/post/delete")
-    public String deletePost(@RequestParam("postId") Long postId, Authentication authentication) {
-        if (authentication != null && authentication.isAuthenticated()) {
-            Optional<Post> optionalPost = postRepository.findById(postId);
-            if (optionalPost.isPresent()) {
-                Post post = optionalPost.get();
-                String emailAddress = authentication.getName();
-                Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
-                if (optionalUser.isPresent() && post.getCreatedByUser().getId().equals(optionalUser.get().getId())) {
-                    // Buscar todas las respuestas asociadas a la publicación
-                    List<Post> respuestas = postRepository.findAllByParentQuestionId(postId);
-                    for (Post respuesta : respuestas) {
-                        // Eliminar las etiquetas asociadas a la respuesta
-                        respuesta.getTag().clear();
-                    }
-                    // Eliminar todas las respuestas
-                    postRepository.deleteAll(respuestas);
 
-                    // Eliminar las etiquetas asociadas a la publicación
-                    post.getTag().clear();
 
-                    // Eliminar la publicación
-                    postRepository.delete(post);
-
-                    return "redirect:/foro";
-                }
-            }
-        }
-        return "redirect:/login";
-    }
     @PostMapping("/answer/edit")
     public String editAnswer(@RequestParam("postId") Long answerId,
                              @RequestParam("postDetails") String postDetails,
@@ -200,38 +189,80 @@ private SavedPostRepository savedPostRepository;
     }
 
     @PostMapping("/save")
-    public ResponseEntity<String> savePost(@RequestParam("postId") Long postId, Authentication authentication) {
+    @ResponseBody
+    public ResponseEntity<Map<String, String>> savePost(@RequestParam("postId") Long postId, Authentication authentication) {
+        Map<String, String> response = new HashMap<>();
+
         if (authentication != null && authentication.isAuthenticated()) {
             String emailAddress = authentication.getName();
             Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
+
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
                 Optional<Post> optionalPost = postRepository.findById(postId);
+
                 if (optionalPost.isPresent()) {
                     Post post = optionalPost.get();
 
                     // Verifica si la publicación ya está guardada por el usuario
                     Optional<SavedPost> existingSavedPost = savedPostRepository.findByUserAndPost(user, post);
+
                     if (existingSavedPost.isPresent()) {
-                        return ResponseEntity.badRequest().body("La publicación ya está guardada");
+                        response.put("message", "La publicación ya está guardada");
+                        response.put("type", "error");
+                    } else {
+                        // Guarda la publicación
+                        SavedPost savedPost = new SavedPost();
+                        savedPost.setUser(user);
+                        savedPost.setPost(post);
+                        savedPostRepository.save(savedPost);
+
+                        response.put("message", "Se guardó correctamente en tu perfil");
+                        response.put("type", "success");
                     }
-
-                    // Guarda la publicación
-                    SavedPost savedPost = new SavedPost();
-                    savedPost.setUser(user);
-                    savedPost.setPost(post);
-                    savedPostRepository.save(savedPost);
-
-                    return ResponseEntity.ok("Publicación guardada exitosamente");
                 } else {
-                    return ResponseEntity.badRequest().body("No se encontró la publicación con el ID especificado");
+                    response.put("message", "No se encontró la publicación con el ID especificado");
+                    response.put("type", "error");
                 }
             } else {
-                return ResponseEntity.badRequest().body("Usuario no autenticado");
+                response.put("message", "Usuario no autenticado");
+                response.put("type", "error");
             }
         } else {
-            return ResponseEntity.badRequest().body("Usuario no autenticado");
+            response.put("message", "Usuario no autenticado");
+            response.put("type", "error");
         }
+
+        return ResponseEntity.ok(response);
+
+
     }
+    @PostMapping("/postopen/{postId}")
+    public String showPostDetails(@PathVariable Long postId, Model model, Authentication authentication) {
+        // Obtener el post
+        Optional<Post> optionalPost = postRepository.findById(postId);
+        if (optionalPost.isPresent()) {
+            Post post = optionalPost.get();
+            model.addAttribute("post", post);
+
+            // Verificar si el post está guardado por el usuario actual
+            boolean isPostSaved = false;
+            if (authentication != null && authentication.isAuthenticated()) {
+                String emailAddress = authentication.getName();
+                Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
+                if (optionalUser.isPresent()) {
+                    User user = optionalUser.get();
+                    Optional<SavedPost> existingSavedPost = savedPostRepository.findByUserAndPost(user, post);
+                    isPostSaved = existingSavedPost.isPresent();
+                }
+            }
+            model.addAttribute("isPostSaved", isPostSaved);
+        }
+
+return "";
+    }
+
+
+
 
 }
