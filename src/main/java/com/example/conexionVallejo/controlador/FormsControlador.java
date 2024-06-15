@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.example.conexionVallejo.modelos.SavedPost;
+import com.example.conexionVallejo.repositorios.PostRepository;
 import com.example.conexionVallejo.repositorios.SavedPostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -45,6 +46,8 @@ private SavedPostRepository savedPostRepository;
     @Autowired
     private TagsRepository tagsRepository;
 
+    @Autowired
+    private PostRepository postRepository;
     private final PostService postService;
 
     public FormsControlador(PostService postService) {
@@ -240,8 +243,25 @@ private SavedPostRepository savedPostRepository;
                 User user = optionalUser.get();
                 model.addAttribute("user", user);
 
-                // Si la pestaña activa es "guardados", carga las publicaciones guardadas
-                if ("guardados".equals(tab)) {
+                if ("info".equals(tab)) {
+                    // Obtener número de respuestas y preguntas del usuario
+                    long numPreguntas = postRepository.countQuestionsByCreatedByUser(user);
+                    long numRespuestas = postRepository.countAnswersByCreatedByUser(user);
+
+
+                    model.addAttribute("numRespuestas", numRespuestas);
+                    model.addAttribute("numPreguntas", numPreguntas);
+
+                    // Obtener las etiquetas más utilizadas por el usuario
+//                    List<Tag> topTags = tagsRepository.findTopTagsByUser(user);
+//                    model.addAttribute("topTags", topTags);
+
+                    // Obtener todas las publicaciones y respuestas del usuario
+                    List<Post> userPosts = postRepository.findByCreatedByUser(user);
+                    model.addAttribute("userPosts", userPosts);
+
+                    // Si la pestaña activa es "guardados", carga las publicaciones guardadas
+                }  else  if ("guardados".equals(tab)) {
                     List<SavedPost> savedPosts = savedPostRepository.findByUser(user);
 
                     // Obtener la fecha y hora actual en formato UTC
@@ -258,7 +278,6 @@ private SavedPostRepository savedPostRepository;
 
                     model.addAttribute("savedPosts", savedPosts);
                     model.addAttribute("savedPostAges", savedPostAges);
-
                 }
             } else {
                 return "redirect:/login";

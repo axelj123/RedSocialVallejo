@@ -67,16 +67,19 @@
                             <ul class="chips">
                                 <li th:each="tag : ${post.tag}" class="chip" th:text="${tag.tagName}"></li>
                             </ul>
-                            <!-- Botones de editar y eliminar -->
+                            <!-- Botones de editar y eliminar publicación -->
                             <div class="post-actions" th:if="${post.createdByUser != null and post.createdByUser.id == user.id}">
                                 <a th:href="@{'/posts/' + ${post.id} + '/edit'}" class="edit-post"><i class="fas fa-edit"></i></a>
-                                <a href="javascript:void(0);" class="delete-post" th:attr="data-post-id=${post.id}">
+                                <a href="#" class="delete-post" th:attr="data-post-id=${post.id}">
                                     <i class="fas fa-trash-alt"></i>
-                                </a>                            </div>
-                            <!-- Formulario oculto para eliminar la publicación -->
-                            <form id="delete-post-form" action="/posts/delete" method="post" style="display: none;">
-                                <input type="hidden" id="postIdToDelete" name="postId">
-                            </form>
+                                </a>
+                            </div>
+
+
+
+
+
+
                             <div class="additional-options" th:unless="${post.createdByUser != null and post.createdByUser.id == user.id}">
                                 <!-- Formulario para guardar la publicación -->
                                 <form id="save-post-form" th:action="@{/save}" method="post" data-message="${message}" data-type="${type}">
@@ -128,8 +131,8 @@
                                     </div>
                                     <!-- Mostrar botones de editar y eliminar solo si el usuario actual es el autor -->
                                     <div class="post-actions" th:if="${answer.createdByUser != null and answer.createdByUser.id == user.id}">
-                                        <a th:href="@{'/answer/' + ${answer.id} + '/edit'}" class="edit-post"><i class="fas fa-edit"></i></a>
-                                        <a href="#" class="delete-post"><i class="fas fa-trash-alt"></i></a>
+                                        <a th:href="@{'/answer/' + ${answer.id} + '/edit'}" class="edit-answer"><i class="fas fa-edit"></i></a>
+                                        <a href="#" class="delete-answer" th:attr="data-answer-id=${answer.id}"><i class="fas fa-trash-alt"></i></a>
                                     </div>
 
                                     <!-- Mostrar botones de guardar y votar solo si el usuario actual no es el autor -->
@@ -145,7 +148,7 @@
 
                             <div class="yourAnswer" th:unless="${post.createdByUser != null and post.createdByUser.id == user.id}">
                                 <h1>Tu respuesta</h1>
-                                <form action="/answer/new" method="post" th:action="@{/answer/new}" th:object="${post}">
+                                <form id="answer-form" action="/answer/new" method="post" th:action="@{/answer/new}" th:object="${post}">
                                     <input type="hidden" name="parentQuestionId" th:value="${post.id}" required>
                                     <div class="question-inner">
                                         <label for="details">Detalles</label>
@@ -154,6 +157,7 @@
                                     <button id="send-answer" type="submit">Responder</button>
                                 </form>
                             </div>
+
 
                         </div>
                     </div>
@@ -177,36 +181,38 @@
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.delete-post').forEach(function(button) {
-            button.addEventListener('click', function(event) {
-                var postId = event.target.closest('.delete-post').getAttribute('data-post-id');
+        var answerForm = document.getElementById('answer-form');
+
+        if (answerForm) {
+            answerForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Evita el envío del formulario inmediato
+
                 Swal.fire({
-                    title: '¿Estás seguro?',
-                    text: "No podrás revertir esto",
-                    icon: 'warning',
+                    title: '¿Deseas publicar esta respuesta?',
+                    icon: 'question',
                     showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Sí, eliminar',
+                    confirmButtonText: 'Sí, publicar',
                     cancelButtonText: 'Cancelar'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        document.getElementById('postIdToDelete').value = postId;
-                        document.getElementById('delete-post-form').submit();
+                        // Si el usuario confirma, entonces envía el formulario
+                        answerForm.submit();
                     }
                 });
             });
-        });
+        }
     });
 </script>
-<script>
+
+<script th:inline="javascript">
     document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.delete-post').forEach(function(button) {
             button.addEventListener('click', function(event) {
+                event.preventDefault();
                 var postId = button.getAttribute('data-post-id');
                 Swal.fire({
                     title: '¿Estás seguro?',
-                    text: "No podrás revertir esto",
+                    text: 'No podrás revertir esto',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -215,34 +221,36 @@
                     cancelButtonText: 'Cancelar'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Enviar una solicitud POST para eliminar la publicación
-                        fetch(`/post/delete?postId=${postId}`, {
-                            method: 'POST',
+                        // Realizar la solicitud DELETE para eliminar la publicación
+                        fetch('/posts/delete/' + postId, {
+                            method: 'DELETE',
                             headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded'
+                                'Content-Type': 'application/json'
                             }
-                        }).then(response => {
+                        })
+                        .then(response => {
                             if (response.ok) {
-                                Swal.fire(
-                                    'Eliminado',
-                                    'Tu publicación ha sido eliminada.',
-                                    'success'
-                                ).then(() => {
-                                    window.location.href = '/foro';
+                                // Eliminación exitosa
+                                console.log('Publicación eliminada correctamente');
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Publicación eliminada',
+                                    text: 'La publicación ha sido eliminada correctamente.'
+                                }).then(() => {
+                                    window.location.href = '/foro'; // Redirige a /foro después de eliminar
                                 });
                             } else {
-                                Swal.fire(
-                                    'Error',
-                                    'Hubo un problema al eliminar tu publicación.',
-                                    'error'
-                                );
+                                return response.text().then(text => { throw new Error(text) });
                             }
-                        }).catch(error => {
-                            Swal.fire(
-                                'Error',
-                                'Hubo un problema al eliminar tu publicación.',
-                                'error'
-                            );
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            // Manejar errores aquí, por ejemplo, mostrar un mensaje al usuario
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error al eliminar la publicación',
+                                text: 'Por favor, inténtalo de nuevo más tarde. Detalles: ' + error.message
+                            });
                         });
                     }
                 });
@@ -252,55 +260,165 @@
 </script>
 <script th:inline="javascript">
     document.addEventListener('DOMContentLoaded', function() {
-        // Selecciona el formulario de guardado de la publicación
-        const saveForm = document.querySelector('#save-post-form');
-
-        // Agrega un controlador de eventos para el evento submit del formulario
-        saveForm.addEventListener('submit', function(event) {
-            // Evita que el formulario se envíe normalmente
-            event.preventDefault();
-
-            // Realiza una solicitud POST al servidor
-            fetch('/save', {
-                method: 'POST',
-                body: new FormData(saveForm)
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Obtiene el mensaje y el tipo de la respuesta
-                const message = data.message;
-                const type = data.type;
-
-                // Muestra la notificación
+        document.querySelectorAll('.delete-answer').forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                var answerId = button.getAttribute('data-answer-id');
                 Swal.fire({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    icon: type,
-                    title: message,
-                    customClass: {
-                        // Personaliza la clase del Toast para ajustar el tamaño del texto y el padding
-                        title: 'swal-title',
-                        popup: 'swal-popup'
-                    },
-                    didOpen: (toast) => {
-                        toast.addEventListener('mouseenter', Swal.stopTimer)
-                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    title: '¿Estás seguro?',
+                    text: 'No podrás revertir esto',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Realizar la solicitud DELETE para eliminar la respuesta
+                        fetch('/answers/delete/' + answerId, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                // Eliminación exitosa
+                                console.log('Respuesta eliminada correctamente');
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Respuesta eliminada',
+                                    text: 'La respuesta ha sido eliminada correctamente.'
+                                }).then(() => {
+                                    window.location.reload(); // Recargar la página después de eliminar
+                                });
+                            } else {
+                                return response.text().then(text => { throw new Error(text) });
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            // Manejar errores aquí, por ejemplo, mostrar un mensaje al usuario
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error al eliminar la respuesta',
+                                text: 'Por favor, inténtalo de nuevo más tarde. Detalles: ' + error.message
+                            });
+                        });
                     }
                 });
-            })
-            .catch(error => {
-                console.error('Error:', error);
             });
         });
     });
-
-
 </script>
 
 
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        // Selecciona el formulario de guardado de la publicación si está presente
+        const saveForm = document.querySelector('#save-post-form');
+
+        // Verifica si el formulario está presente antes de agregar el evento de submit
+        if (saveForm) {
+            // Agrega un controlador de eventos para el evento submit del formulario
+            saveForm.addEventListener('submit', function(event) {
+                // Evita que el formulario se envíe normalmente
+                event.preventDefault();
+
+                // Realiza una solicitud POST al servidor
+                fetch('/save', {
+                    method: 'POST',
+                    body: new FormData(saveForm)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Obtiene el mensaje y el tipo de la respuesta
+                    const message = data.message;
+                    const type = data.type;
+
+                    // Muestra la notificación
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        icon: type,
+                        title: message,
+                        customClass: {
+                            // Personaliza la clase del Toast para ajustar el tamaño del texto y el padding
+                            title: 'swal-title',
+                            popup: 'swal-popup'
+                        },
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer);
+                            toast.addEventListener('mouseleave', Swal.resumeTimer);
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        }
+    });
+</script>
+
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.delete-answer').forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                var answerId = button.getAttribute('data-answer-id');
+                Swal.fire({
+                    title: '¿Quieres eliminar tu respuesta?',
+                    text: 'No podrás revertir esto',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Realizar la solicitud DELETE para eliminar la respuesta
+                        fetch('/answers/delete/' + answerId, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                // Eliminación exitosa
+                                console.log('Respuesta eliminada correctamente');
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Respuesta eliminada',
+                                    text: 'La respuesta ha sido eliminada correctamente.'
+                                }).then(() => {
+                                    window.location.reload(); // Recargar la página después de eliminar
+                                });
+                            } else {
+                                return response.text().then(text => { throw new Error(text) });
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            // Manejar errores aquí, por ejemplo, mostrar un mensaje al usuario
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error al eliminar la respuesta',
+                                text: 'Por favor, inténtalo de nuevo más tarde. Detalles: ' + error.message
+                            });
+                        });
+                    }
+                });
+            });
+        });
+    });
+</script>
 
 
 <script>

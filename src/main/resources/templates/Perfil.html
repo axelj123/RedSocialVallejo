@@ -104,11 +104,11 @@
                     </div>
 
                     <div class="profile-box">
-                        <h3>All Posts and Answers</h3>
+                        <h3>Todas las preguntas</h3>
                         <ul class="posts">
                             <li th:each="post : ${userPosts}">
-                                <a th:href="@{'/post/' + ${post.id}}"> <!-- Ajusta según la ruta real de tus posts -->
-                                    <span th:text="${post.title}"></span>
+                                <a th:href="@{'/postopen/' + ${post.id}}"> <!-- Ajusta según la ruta real de tus posts -->
+                                    <span th:text="${post.postTitle}"></span>
                                 </a>
                             </li>
                         </ul>

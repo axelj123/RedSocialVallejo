@@ -1,21 +1,20 @@
 package com.example.conexionVallejo.controlador;
 
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.*;
 
 import com.example.conexionVallejo.modelos.*;
 import com.example.conexionVallejo.repositorios.*;
-import com.example.conexionVallejo.servicios.FileService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class PostController {
@@ -33,14 +32,99 @@ public class PostController {
     private TagsRepository tagsRepository;
 
     @Autowired
-    private FileService fileService;
-@Autowired
-private SavedPostRepository savedPostRepository;
+    private SavedPostRepository savedPostRepository;
+
+    @Autowired
+    private PostTagRepository postTagRepository;
+
+
+    @DeleteMapping("/answers/delete/{id}")
+    public ResponseEntity<?> deleteAnswer(@PathVariable Long id) {
+        try {
+            deleteAnswerById(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+    public void deleteAnswerById(Long id) {
+        postRepository.deleteById(id);
+    }
+
+
+    @DeleteMapping("/posts/delete/{id}")
+    public ResponseEntity<?> deletePost(@PathVariable Long id) {
+        try {
+            Optional<Post> postOptional = postRepository.findById(id);
+            if (postOptional.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            Post postToDelete = postOptional.get();
+
+            // Verificar si el post es una respuesta (postType.id = 2)
+            if (postToDelete.getPostType().getId().equals(2)) {
+                // Si es una respuesta, eliminarla directamente
+                deleteSinglePost(postToDelete);
+            } else {
+                // Si es una pregunta, eliminarla y también sus respuestas asociadas
+                deleteQuestionWithAnswers(postToDelete);
+            }
+
+            // Devuelve un estado de éxito sin redirección
+            return ResponseEntity.ok().build();
+
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al eliminar la publicación: " + e.getMessage());
+        }
+    }
+
+    // Método para eliminar un solo post (respuesta)
+    private void deleteSinglePost(Post post) {
+        try {
+            // Eliminar las dependencias del post en otras tablas
+            savedPostRepository.deleteByPostId(post.getId().longValue());
+            postTagRepository.deleteByPostId(post.getId().longValue());
+
+            // Eliminar el post
+            postRepository.deleteById(post.getId().longValue());
+        } catch (Exception e) {
+            // Logging detallado del error
+            e.printStackTrace();
+            throw new RuntimeException("Error al eliminar el post hijo: " + e.getMessage());
+        }
+    }
+
+    // Método para eliminar una pregunta con todas sus respuestas
+    private void deleteQuestionWithAnswers(Post question) {
+        try {
+            // Obtener todas las respuestas asociadas a la pregunta y eliminarlas
+            List<Post> answersToDelete = postRepository.findAllByParentQuestionId(question.getId().longValue());
+            for (Post answer : answersToDelete) {
+                deleteSinglePost(answer); // Eliminar cada respuesta
+            }
+
+            // Eliminar las dependencias del post principal en otras tablas
+            savedPostRepository.deleteByPostId(question.getId().longValue());
+            postTagRepository.deleteByPostId(question.getId().longValue());
+
+            // Finalmente, eliminar la pregunta principal
+            postRepository.deleteById(question.getId().longValue());
+        } catch (Exception e) {
+            // Logging detallado del error
+            e.printStackTrace();
+            throw new RuntimeException("Error al eliminar la pregunta y sus respuestas: " + e.getMessage());
+        }
+    }
 
     @PostMapping("/post/new")
     public String submitNewPost(@ModelAttribute Post post,
                                 @RequestParam("tags") String[] tagIds
-                              ,
+            ,
                                 Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
             String emailAddress = authentication.getName();
@@ -74,25 +158,7 @@ private SavedPostRepository savedPostRepository;
         }
         return "redirect:/login";
     }
-    @DeleteMapping("/removeSavedPost/{savedPostId}")
-    public String removeSavedPost(@PathVariable Long savedPostId, Authentication authentication) {
-        if (authentication != null && authentication.isAuthenticated()) {
-            String emailAddress = authentication.getName();
-            Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
-            if (optionalUser.isPresent()) {
-                User user = optionalUser.get();
-                Optional<SavedPost> optionalSavedPost = savedPostRepository.findById(savedPostId);
-                if (optionalSavedPost.isPresent()) {
-                    SavedPost savedPost = optionalSavedPost.get();
-                    if (savedPost.getUser().getId().equals(user.getId())) {
-                        savedPostRepository.delete(savedPost);
-                        return "redirect:/perfil?tab=guardados"; // Redirigir al perfil del usuario donde se muestran los post guardados
-                    }
-                }
-            }
-        }
-        return "redirect:/login"; // Redirigir al inicio de sesión si no se pudo eliminar el post guardado
-    }
+
 
     @PostMapping("/answer/new")
     public String submitAnswer(@RequestParam("parentQuestionId") Long parentQuestionId,
@@ -237,6 +303,7 @@ private SavedPostRepository savedPostRepository;
 
 
     }
+
     @PostMapping("/postopen/{postId}")
     public String showPostDetails(@PathVariable Long postId, Model model, Authentication authentication) {
         // Obtener el post
@@ -259,10 +326,8 @@ private SavedPostRepository savedPostRepository;
             model.addAttribute("isPostSaved", isPostSaved);
         }
 
-return "";
+        return "";
     }
-
-
 
 
 }

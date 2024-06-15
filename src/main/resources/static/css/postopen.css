@@ -186,8 +186,10 @@ header {
 	width: 162px;
 }
 
+.edit-answer,
 .edit-post,
-.delete-post {
+.delete-post,
+.delete-answer {
     color: gray !important;
 }
 
