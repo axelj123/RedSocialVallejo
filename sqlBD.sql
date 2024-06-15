@@ -73,11 +73,11 @@ DROP TABLE IF EXISTS `comments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `comments` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `created_by_user_id` int DEFAULT NULL,
   `post_id` int DEFAULT NULL,
   `comment_text` text,
-  `created_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `created_by_user_id` (`created_by_user_id`),
   KEY `post_id` (`post_id`),
@@ -120,7 +120,7 @@ CREATE TABLE `posts` (
   CONSTRAINT `posts_ibfk_2` FOREIGN KEY (`parent_question_id`) REFERENCES `posts` (`id`),
   CONSTRAINT `posts_ibfk_3` FOREIGN KEY (`post_type_id`) REFERENCES `posttypes` (`id`),
   CONSTRAINT `posts_ibfk_4` FOREIGN KEY (`accepted_answer_id`) REFERENCES `posts` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=130 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,34 +129,37 @@ CREATE TABLE `posts` (
 
 LOCK TABLES `posts` WRITE;
 /*!40000 ALTER TABLE `posts` DISABLE KEYS */;
-INSERT INTO `posts` VALUES (21,19,NULL,1,NULL,'¿Cómo optimizar una consulta SQL para bases de datos grandes?','Estoy trabajando con una base de datos muy grande y mis consultas SQL están tardando demasiado en ejecutarse. ¿Cuáles son algunas técnicas o estrategias para optimizar consultas SQL?','2024-05-25 06:49:01'),(22,19,NULL,1,NULL,'Mejores prácticas para la programación orientada a objetos en Java','Quiero mejorar mis habilidades en programación orientada a objetos utilizando Java. ¿Cuáles son las mejores prácticas y patrones de diseño que debo seguir?','2024-05-25 06:49:34'),(23,19,NULL,1,NULL,'Diferencias entre SQL y NoSQL: ¿Cuál debería usar?','Estoy desarrollando una aplicación y no estoy seguro de si debería usar una base de datos SQL o NoSQL. ¿Cuáles son las principales diferencias y en qué casos es mejor usar una sobre la otra?','2024-05-25 06:56:54'),(24,19,NULL,1,NULL,'Consejos para realizar un proyecto de fin de curso en Ingeniería Informática','Estoy empezando mi proyecto de fin de curso en Ingeniería Informática y me gustaría recibir consejos sobre cómo gestionarlo y asegurarme de que sea un éxito.','2024-05-25 06:57:05'),(25,19,NULL,1,NULL,'Cómo prepararse para entrevistas técnicas en empresas de tecnología','Pronto tendré entrevistas técnicas con algunas empresas de tecnología. ¿Qué tipo de preguntas debo esperar y cómo puedo prepararme de la mejor manera?','2024-05-25 06:58:29'),(26,19,NULL,1,NULL,'¿Qué lenguajes de programación debo aprender para el desarrollo web?','Estoy interesado en convertirme en un desarrollador web. ¿Qué lenguajes de programación y tecnologías debo aprender para tener una carrera exitosa en este campo?','2024-05-25 06:59:05'),(27,18,NULL,1,NULL,'Recomendaciones de libros y recursos para aprender algoritmos y estructuras de datos','Estoy buscando libros y recursos recomendados para aprender algoritmos y estructuras de datos en profundidad. ¿Cuáles son los mejores?','2024-05-25 07:23:17'),(28,18,NULL,1,NULL,'Experiencias y consejos sobre la vida universitaria en el extranjero','Estoy considerando estudiar en el extranjero y me gustaría saber más sobre las experiencias de otros estudiantes. ¿Qué debo tener en cuenta y cómo puedo adaptarme mejor?','2024-05-25 22:36:40'),(29,18,NULL,1,NULL,'¿Cómo implementar una cola de prioridad en Python?','Estoy tratando de implementar una cola de prioridad en Python para un proyecto. ¿Cuál es la mejor manera de hacerlo y qué bibliotecas debo considerar?','2024-05-25 13:30:00'),(30,19,NULL,1,NULL,'Consejos para manejar la carga de trabajo en el primer año de universidad','El primer año de universidad puede ser abrumador con tantas materias y tareas. ¿Cuáles son algunos consejos para manejar esta carga de trabajo de manera efectiva?','2024-05-25 13:35:00'),(31,24,NULL,1,NULL,'Mejores prácticas para la seguridad en aplicaciones web','Estoy desarrollando una aplicación web y quiero asegurarme de que sea segura. ¿Cuáles son las mejores prácticas para la seguridad en aplicaciones web?','2024-05-25 13:40:00'),(32,25,NULL,1,NULL,'¿Cómo prepararse para los exámenes finales en la universidad?','Los exámenes finales están a la vuelta de la esquina y quiero asegurarme de estar bien preparado. ¿Qué estrategias recomiendan para estudiar y rendir bien en los exámenes finales?','2024-05-25 13:45:00'),(33,26,NULL,1,NULL,'Diferencias entre machine learning supervisado y no supervisado','Estoy aprendiendo sobre machine learning y me gustaría entender mejor las diferencias entre los enfoques supervisado y no supervisado. ¿Cuáles son los principales usos y ventajas de cada uno?','2024-05-25 13:50:00'),(34,27,NULL,1,NULL,'Recomendaciones de cursos online para aprender desarrollo móvil','Quiero aprender a desarrollar aplicaciones móviles. ¿Cuáles son los mejores cursos online disponibles para aprender desarrollo móvil tanto para iOS como para Android?','2024-05-25 13:55:00'),(35,28,NULL,1,NULL,'¿Cómo equilibrar el estudio y la vida social en la universidad?','Encontrar un equilibrio entre el estudio y la vida social puede ser un desafío en la universidad. ¿Qué consejos tienen para gestionar el tiempo de manera efectiva sin descuidar ninguna de las dos áreas?','2024-05-25 14:00:00'),(36,29,NULL,1,NULL,'Buenas prácticas para el desarrollo colaborativo en Git','Estamos empezando un proyecto en equipo y vamos a usar Git para el control de versiones. ¿Cuáles son las buenas prácticas para trabajar de forma colaborativa y evitar conflictos?','2024-05-25 14:05:00'),(37,30,NULL,1,NULL,'Cómo mejorar el rendimiento de una aplicación React','Mi aplicación React está funcionando lentamente en el navegador. ¿Qué técnicas y herramientas puedo usar para mejorar su rendimiento?','2024-05-25 14:10:00'),(38,31,NULL,1,NULL,'Mejores estrategias para la resolución de problemas algorítmicos','Estoy preparándome para competiciones de programación y entrevistas técnicas. ¿Cuáles son las mejores estrategias para abordar y resolver problemas algorítmicos complejos?','2024-05-25 14:15:00'),(39,32,NULL,1,NULL,'Consejos para escribir un CV efectivo para trabajos en tecnología','Estoy buscando trabajo en el sector tecnológico y quiero que mi CV se destaque. ¿Cuáles son algunos consejos para escribir un CV efectivo y relevante para trabajos en tecnología?','2024-05-25 14:20:00'),(40,33,NULL,1,NULL,'Cómo elegir un proyecto de investigación en ciencias de la computación','Estoy en el proceso de elegir un proyecto de investigación para mi tesis en ciencias de la computación. ¿Qué factores debo considerar y cómo puedo asegurarme de que el proyecto sea viable y relevante?','2024-05-25 14:25:00');
+INSERT INTO `posts` VALUES (100,27,NULL,1,NULL,'Cómo implementar un algoritmo de búsqueda binaria en Python','<p><span style=\"font-family:\'Courier New\', Courier, monospace;\">Estoy tratando de implementar un algoritmo de búsqueda binaria en Python. He leído sobre cómo funciona el algoritmo, pero tengo dificultades para traducir la lógica a código. A continuación, incluyo mi código actual y una descripción de los problemas que estoy encontrando:</span></p><p>&nbsp;</p><p>&nbsp;</p><pre><code class=\"language-plaintext\">def busqueda_binaria(lista, objetivo):\r\n    inicio = 0\r\n    fin = len(lista) - 1\r\n\r\n    while inicio &lt;= fin:\r\n        medio = (inicio + fin) // 2\r\n        if lista[medio] == objetivo:\r\n            return medio\r\n        elif lista[medio] &lt; objetivo:\r\n            inicio = medio + 1\r\n        else:\r\n            fin = medio - 1\r\n\r\n    return -1\r\n\r\n# Prueba de la función\r\nlista = [1, 3, 5, 7, 9, 11]\r\nobjetivo = 7\r\nresultado = busqueda_binaria(lista, objetivo)\r\nprint(f\'Índice del objetivo: {resultado}\')\r\n</code></pre>','2024-06-12 23:25:13'),(112,19,NULL,1,NULL,'Agregue \"etiquetas\" que ayuden a hacer llegar su pregunta a los miembros de la comunidad.','<ol style=\"-webkit-text-stroke-width:0px;background-color:rgb(240, 244, 252);box-sizing:border-box;color:rgb(0, 0, 0);font-family:Poppins, sans-serif;font-size:14px;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;list-style:none;margin-bottom:0px;margin-right:0px;margin-top:0px;orphans:2;padding:0px;text-align:start;text-decoration:none;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;\"><li style=\"box-sizing:border-box;font-family:Poppins, sans-serif;list-style:none;margin-bottom:0px;margin-right:0px;margin-top:0px;padding:0px;text-decoration:none;\"><p style=\"margin-left:0px;\">Agregue \"etiquetas\" que ayuden a hacer llegar su pregunta a los miembros de la comunidad.</p></li></ol><p><br>Agregue \"etiquetas\" que ayuden a hacer llegar su pregunta a los miembros de la comunidad.</p><p><br>Agregue \"etiquetas\" que ayuden a hacer llegar su pregunta a los miembros de la comunidad.</p><p><br>&nbsp;</p>','2024-06-15 03:25:09'),(121,19,100,2,NULL,NULL,'<p>ssasdsasdasadsadssadsadsadsadssad</p>\r\n','2024-06-15 03:43:48'),(124,18,100,2,NULL,NULL,'<p>sadsasadsadsad</p>\r\n','2024-06-15 03:54:45'),(127,18,112,2,NULL,NULL,'<p>JAJAJA CLARO</p>\r\n','2024-06-15 04:06:50'),(128,19,100,2,NULL,NULL,'<p>ssasadsadsadsa</p>\r\n','2024-06-15 04:22:09'),(129,18,NULL,1,NULL,'Agregue \"etiquetas\" que ayuden a hacer llegar su pregunta a los miembros de la comunidad.','<ol style=\"-webkit-text-stroke-width:0px;background-color:rgb(240, 244, 252);box-sizing:border-box;color:rgb(0, 0, 0);font-family:Poppins, sans-serif;font-size:14px;font-style:normal;font-variant-caps:normal;font-variant-ligatures:normal;font-weight:400;letter-spacing:normal;list-style:none;margin-bottom:0px;margin-right:0px;margin-top:0px;orphans:2;padding:0px;text-align:start;text-decoration:none;text-indent:0px;text-transform:none;white-space:normal;widows:2;word-spacing:0px;\"><li style=\"box-sizing:border-box;font-family:Poppins, sans-serif;list-style:none;margin-bottom:0px;margin-right:0px;margin-top:0px;padding:0px;text-decoration:none;\"><p style=\"margin-left:0px;\">Agregue \"etiquetas\" que ayuden a hacer llegar su pregunta a los miembros de la comunidad.</p></li></ol><p><br>Agregue \"etiquetas\" que ayuden a hacer llegar su pregunta a los miembros de la comunidad.</p><p><br>&nbsp;</p>','2024-06-15 05:05:21');
 /*!40000 ALTER TABLE `posts` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `posttags`
+-- Table structure for table `posttag`
 --
 
-DROP TABLE IF EXISTS `posttags`;
+DROP TABLE IF EXISTS `posttag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `posttags` (
+CREATE TABLE `posttag` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `post_id` int NOT NULL,
-  `tag_id` int NOT NULL,
-  PRIMARY KEY (`post_id`,`tag_id`),
-  KEY `tag_id` (`tag_id`),
-  CONSTRAINT `posttags_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`),
-  CONSTRAINT `posttags_ibfk_2` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `tag_id` bigint NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK7dh8j7x0lb14vgm6yl4l6cqwm` (`tag_id`),
+  KEY `FKk8ao1sog3ndkaa2is60c3gnjk` (`post_id`),
+  CONSTRAINT `FK7dh8j7x0lb14vgm6yl4l6cqwm` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`),
+  CONSTRAINT `FKk8ao1sog3ndkaa2is60c3gnjk` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `posttags`
+-- Dumping data for table `posttag`
 --
 
-LOCK TABLES `posttags` WRITE;
-/*!40000 ALTER TABLE `posttags` DISABLE KEYS */;
-/*!40000 ALTER TABLE `posttags` ENABLE KEYS */;
+LOCK TABLES `posttag` WRITE;
+/*!40000 ALTER TABLE `posttag` DISABLE KEYS */;
+INSERT INTO `posttag` VALUES (4,100,1),(35,112,17),(36,112,5),(37,112,21),(38,129,18),(39,129,21),(40,129,25);
+/*!40000 ALTER TABLE `posttag` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -208,6 +211,35 @@ INSERT INTO `rol` VALUES (1,'ROLE_USER'),(2,'ROLE_USER');
 UNLOCK TABLES;
 
 --
+-- Table structure for table `savedposts`
+--
+
+DROP TABLE IF EXISTS `savedposts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `savedposts` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `post_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_user_post` (`user_id`,`post_id`),
+  KEY `fk_saved_posts_post_id` (`post_id`),
+  CONSTRAINT `fk_saved_posts_post_id` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`),
+  CONSTRAINT `fk_saved_posts_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `savedposts`
+--
+
+LOCK TABLES `savedposts` WRITE;
+/*!40000 ALTER TABLE `savedposts` DISABLE KEYS */;
+INSERT INTO `savedposts` VALUES (11,18,100),(14,18,112),(12,19,100);
+/*!40000 ALTER TABLE `savedposts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tags`
 --
 
@@ -215,7 +247,7 @@ DROP TABLE IF EXISTS `tags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tags` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `tag_name` varchar(255) DEFAULT NULL,
   `tag_description` text,
   PRIMARY KEY (`id`)
@@ -246,7 +278,7 @@ CREATE TABLE `users` (
   `password` varchar(255) DEFAULT NULL,
   `about_me` text,
   `carrera` varchar(255) DEFAULT NULL,
-  `nacimiento` date DEFAULT NULL,
+  `nacimiento` datetime(6) DEFAULT NULL,
   `profile_image` varchar(255) DEFAULT NULL,
   `facebook_url` varchar(255) DEFAULT NULL,
   `linkedin_url` varchar(255) DEFAULT NULL,
@@ -263,8 +295,31 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (18,'Axel Jhosmell','axeljhosmell13@gmail.com','$2a$10$MWlA.yoOlfWl9N6oPDeNquBgfB55/0CLwzYWB2myQUuyPzW8DCu0m','\"Soy Axel Jhosmell Muñoz Silva, Ingeniero de Sistemas apasionado por la tecnología y la innovación. Siempre en búsqueda de nuevos desafíos y oportunidades para aprender y crecer. ¡Listo para conectar y compartir conocimientos!\"','ingenieria de sistemas',NULL,'/uploads/MarkZuckerberg.jpg','https://www.facebook.com/axel.jhosmell','https://www.linkedin.com/in/axeljhosmell','https://www.instagram.com/axeljhosmell','https://www.tiktok.com/@axeljhosmell'),(19,'Pedro Cano','Maria13@gmail.com','$2a$10$QIl7eM7reKvAqjhSrjQuy.h9SPBQ54ZyEgtanuxtUx/jTOc17y3H6','soy ingeniero','ingenieria de sistemas','2003-08-04','/uploads/D_NQ_NP_895537-MLM48940213120_012022-O.jpg',NULL,NULL,NULL,NULL),(24,'María López','maria.lopez@example.com','$2a$10$cFtyp6SSGWCbJg/benll5eo0SFZSVyHrlMvg8W7HNQcI8mgv0OY6i','¡Hola! Me llamo María y me encanta la fotografía.','Comunicación Social','1988-09-19','/uploads/images (1).jpeg',NULL,NULL,NULL,NULL),(25,'Juan Pérez','juan.perez@example.com','$2a$10$9KTC3lLrjPNRqOJe1Gk2xOKgAV.T/.VX.VrE0pcckvf0j0dximHA.','Saludos, soy Juan y me gusta el deporte y la lectura.','Educación Física','1995-03-09','/uploads/Alex_turner_2023_4k_background.jpg',NULL,NULL,NULL,NULL),(26,'Laura Martínez','laura.martinez@example.com','$2a$10$eQT5.tGI1E4vVTF8f6DiveggbOIHDA.dR.xt4C9Bs6AyCKMwJV50q','Hola a todos, soy Laura. Amo viajar y descubrir nuevas culturas.','Turismo','1992-11-27','/uploads/images (2).jpeg',NULL,NULL,NULL,NULL),(27,'Carlos Rodríguez','carlos.rodriguez@example.com','$2a$10$nNr7gsowTpoWXTIgq5CAEeJsk2gp.wWY4LplPNV1mibyNTkw60cCC','¡Hola! Soy Carlos y me apasiona la música y la tecnología.','Música','1987-07-04','/uploads/images (3).jpeg',NULL,NULL,NULL,NULL),(28,'Ana García','ana.garcia@example.com','$2a$10$9P7V795CNdQeGp9dqQ05YOgW9gClM5mZPZ59piFWjq7pcoC6yqojS','¡Hola! Me llamo Ana y soy una entusiasta de los libros y el arte.','Historia del Arte','1993-02-13','/uploads/480x624-eza-vip-la-belleza-segun-ana-garcia-sineriz-6906637-2-esl-es-la-belleza-segun-ana-garcia-sineriz-jpg.jpg',NULL,NULL,NULL,NULL),(29,'David Fernández','david.fernandez@example.com','$2a$10$NAd2H8JAmeKN.LdIAhic/OqT6hXpVSCzgjLLZg4PgysXV.nZUKZ26','Saludos, soy David y disfruto mucho del cine y la cocina.','Gastronomía','1991-06-29','/uploads/images (4).jpeg',NULL,NULL,NULL,NULL),(30,'Sofía Morales','sofia.morales@example.com','$2a$10$LwOlwR0ZNI4BvghBXPWsjexE3zkBGk8yO0Vymxl52eiKE9wElHvHW','¡Hola! Me llamo Sofía y me encanta el senderismo y la naturaleza.','Biología','1994-08-11','/uploads/images (5).jpeg',NULL,NULL,NULL,NULL),(31,'Pedro López','pedro.lopez@example.com','$2a$10$ZWhOB9fEt5up1xTvliTIs.dyWM9BKOGDAVDZYIESH64QMRGUGN.Iy','Hola, soy Pedro. Me interesan mucho las finanzas y la economía.','Economía','1989-04-24','/uploads/images (6).jpeg',NULL,NULL,NULL,NULL),(32,'Luisa Ramírez','luisa.ramirez@example.com','$2a$10$GGYpDP69W/.wcNvZwa1pzuUpCB4i7pmU2xW8jxZ4OOB81mQFvAnVK','¡Hola! Soy Luisa y disfruto del yoga y la meditación.','Psicología','1996-01-07','/uploads/DYITcAvWAAAege9.jpg',NULL,NULL,NULL,NULL),(33,'Eduardo Gómez','eduardo.gomez@example.com','$2a$10$Eq5Vq7lnMHTClbFVmbCzaeroP7ERmdXwzdrnKpjV7LY34UNJTWjwu','¡Hola! Soy Eduardo y me gusta la programación y los videojuegos.','Ingeniería en Sistemas','1990-07-17','/uploads/50fb108b-3121-4b42-a712-a26e59a66cb0-1673411269000.png',NULL,NULL,NULL,NULL),(46,'Ciro castillo','eduardo.gomez@ucvvirtual.edu.pe','$2a$10$kCN052BdsOu/TExpkXQtCO2sDpzI5SGPlBFKzsceq0EXM.mo7A3t.','Hola, soy Pedro. Me interesan mucho las finanzas y la economía.','Economía','1989-04-23',NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `users` VALUES (18,'Axel Jhosmell','axeljhosmell13@gmail.com','$2a$10$MWlA.yoOlfWl9N6oPDeNquBgfB55/0CLwzYWB2myQUuyPzW8DCu0m','\"Soy Axel Jhosmell Muñoz Silva, Ingeniero de Sistemas apasionado por la tecnología y la innovación. Siempre en búsqueda de nuevos desafíos y oportunidades para aprender y crecer. ¡Listo para conectar y compartir conocimientos!\"','ingenieria de chistemas',NULL,'/uploads/MarkZuckerberg.jpg','https://www.facebook.com/axel.jhosmell','https://www.linkedin.com/in/axeljhosmell','https://www.instagram.com/axeljhosmell','https://www.tiktok.com/@axeljhosmell'),(19,'Pedro Cano','Maria13@gmail.com','$2a$10$QIl7eM7reKvAqjhSrjQuy.h9SPBQ54ZyEgtanuxtUx/jTOc17y3H6','soy ingeniero','ingenieria de sistemas','2003-08-04 00:00:00.000000','/uploads/D_NQ_NP_895537-MLM48940213120_012022-O.jpg',NULL,NULL,NULL,NULL),(24,'María López','maria.lopez@example.com','$2a$10$cFtyp6SSGWCbJg/benll5eo0SFZSVyHrlMvg8W7HNQcI8mgv0OY6i','¡Hola! Me llamo María y me encanta la fotografía.','Comunicación Social','1988-09-19 00:00:00.000000','/uploads/images (1).jpeg',NULL,NULL,NULL,NULL),(25,'Juan Pérez','juan.perez@example.com','$2a$10$9KTC3lLrjPNRqOJe1Gk2xOKgAV.T/.VX.VrE0pcckvf0j0dximHA.','Saludos, soy Juan y me gusta el deporte y la lectura.','Educación Física','1995-03-09 00:00:00.000000','/uploads/Alex_turner_2023_4k_background.jpg',NULL,NULL,NULL,NULL),(26,'Laura Martínez','laura.martinez@example.com','$2a$10$eQT5.tGI1E4vVTF8f6DiveggbOIHDA.dR.xt4C9Bs6AyCKMwJV50q','Hola a todos, soy Laura. Amo viajar y descubrir nuevas culturas.','Turismo','1992-11-27 00:00:00.000000','/uploads/images (2).jpeg',NULL,NULL,NULL,NULL),(27,'Carlos Rodríguez','carlos.rodriguez@example.com','$2a$10$nNr7gsowTpoWXTIgq5CAEeJsk2gp.wWY4LplPNV1mibyNTkw60cCC','¡Hola! Soy Carlos y me apasiona la música y la tecnología.','Música','1987-07-04 00:00:00.000000','/uploads/images (3).jpeg',NULL,NULL,NULL,NULL),(28,'Ana García','ana.garcia@example.com','$2a$10$9P7V795CNdQeGp9dqQ05YOgW9gClM5mZPZ59piFWjq7pcoC6yqojS','¡Hola! Me llamo Ana y soy una entusiasta de los libros y el arte.','Historia del Arte','1993-02-13 00:00:00.000000','/uploads/480x624-eza-vip-la-belleza-segun-ana-garcia-sineriz-6906637-2-esl-es-la-belleza-segun-ana-garcia-sineriz-jpg.jpg',NULL,NULL,NULL,NULL),(29,'David Fernández','david.fernandez@example.com','$2a$10$NAd2H8JAmeKN.LdIAhic/OqT6hXpVSCzgjLLZg4PgysXV.nZUKZ26','Saludos, soy David y disfruto mucho del cine y la cocina.','Gastronomía','1991-06-29 00:00:00.000000','/uploads/images (4).jpeg',NULL,NULL,NULL,NULL),(30,'Sofía Morales','sofia.morales@example.com','$2a$10$LwOlwR0ZNI4BvghBXPWsjexE3zkBGk8yO0Vymxl52eiKE9wElHvHW','¡Hola! Me llamo Sofía y me encanta el senderismo y la naturaleza.','Biología','1994-08-11 00:00:00.000000','/uploads/images (5).jpeg',NULL,NULL,NULL,NULL),(31,'Pedro López','pedro.lopez@example.com','$2a$10$ZWhOB9fEt5up1xTvliTIs.dyWM9BKOGDAVDZYIESH64QMRGUGN.Iy','Hola, soy Pedro. Me interesan mucho las finanzas y la economía.','Economía','1989-04-24 00:00:00.000000','/uploads/images (6).jpeg',NULL,NULL,NULL,NULL),(32,'Luisa Ramírez','luisa.ramirez@example.com','$2a$10$GGYpDP69W/.wcNvZwa1pzuUpCB4i7pmU2xW8jxZ4OOB81mQFvAnVK','¡Hola! Soy Luisa y disfruto del yoga y la meditación.','Psicología','1996-01-07 00:00:00.000000','/uploads/DYITcAvWAAAege9.jpg',NULL,NULL,NULL,NULL),(33,'Eduardo Gómez','eduardo.gomez@example.com','$2a$10$Eq5Vq7lnMHTClbFVmbCzaeroP7ERmdXwzdrnKpjV7LY34UNJTWjwu','¡Hola! Soy Eduardo y me gusta la programación y los videojuegos.','Ingeniería en Sistemas','1990-07-17 00:00:00.000000','/uploads/50fb108b-3121-4b42-a712-a26e59a66cb0-1673411269000.png',NULL,NULL,NULL,NULL),(46,'Ciro castillo','eduardo.gomez@ucvvirtual.edu.pe','$2a$10$kCN052BdsOu/TExpkXQtCO2sDpzI5SGPlBFKzsceq0EXM.mo7A3t.','Hola, soy Pedro. Me interesan mucho las finanzas y la economía.','Economía','1989-04-23 00:00:00.000000',NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `vote_types`
+--
+
+DROP TABLE IF EXISTS `vote_types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `vote_types` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `vote_type` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `vote_types`
+--
+
+LOCK TABLES `vote_types` WRITE;
+/*!40000 ALTER TABLE `vote_types` DISABLE KEYS */;
+/*!40000 ALTER TABLE `vote_types` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -275,7 +330,7 @@ DROP TABLE IF EXISTS `votes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `votes` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   `post_id` int DEFAULT NULL,
   `user_id` int DEFAULT NULL,
   `vote_type_id` int DEFAULT NULL,
@@ -331,4 +386,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-28  0:32:36
+-- Dump completed on 2024-06-15  9:24:51
