@@ -29,4 +29,11 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT p FROM Post p WHERE p.createdByUser = :user AND p.postType.id = 1")
     List<Post> findByCreatedByUser(@Param("user") User user);
+    @Query(value = "SELECT DISTINCT p.* " +
+            "FROM Posts p " +  // Nombre de la tabla según tu configuración
+            "LEFT JOIN posttag pt ON p.id = pt.post_id " +  // Nombre correcto de la tabla de relación
+            "LEFT JOIN tags t ON pt.tag_id = t.id " +  // Nombre correcto de la tabla de etiquetas
+            "WHERE LOWER(p.post_title) LIKE LOWER(CONCAT('%', :query, '%')) " +
+            "OR LOWER(t.tag_name) LIKE LOWER(CONCAT('%', :query, '%'))", nativeQuery = true)
+    List<Post> searchPosts(@Param("query") String query);
 }

@@ -41,7 +41,7 @@ public class FormsControlador {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-private SavedPostRepository savedPostRepository;
+    private SavedPostRepository savedPostRepository;
 
     @Autowired
     private TagsRepository tagsRepository;
@@ -136,6 +136,45 @@ private SavedPostRepository savedPostRepository;
             return "hace " + minutes + (minutes == 1 ? " minuto" : " minutos");
         }
     }
+    @GetMapping("/search")
+    public String search(@RequestParam("q") String query, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String emailAddress = authentication.getName();
+            Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                model.addAttribute("user", user);
+            } else {
+                return "redirect:/login";
+            }
+        } else {
+            return "redirect:/login";
+        }
+
+        // Aquí se llama al método searchPosts del repositorio para obtener los resultados de búsqueda
+        List<Post> posts = postRepository.searchPosts(query);
+
+        // Obtener la fecha y hora actual en formato UTC
+        Instant currentInstant = Instant.now();
+
+        // Calcular la antigüedad de cada post y agregarla al modelo
+        Map<Integer, String> postAges = new HashMap<>();
+        for (Post post : posts) {
+            Instant postInstant = post.getCreatedDate().toInstant();
+            Duration duration = Duration.between(postInstant, currentInstant);
+            String age = calculateAge(duration);
+            postAges.put(post.getId(), age);
+        }
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("postAges", postAges);
+        return "search"; // Nombre de la plantilla Thymeleaf para mostrar los resultados de búsqueda
+    }
+
+
+
+
 
     @GetMapping("/foro")
     public String foro(Model model) {
@@ -200,6 +239,7 @@ private SavedPostRepository savedPostRepository;
             return "redirect:/login";
         }
     }
+
     @GetMapping("/answer/{id}/edit")
     public String answerEdit(@PathVariable Long id, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -253,15 +293,15 @@ private SavedPostRepository savedPostRepository;
                     model.addAttribute("numPreguntas", numPreguntas);
 
                     // Obtener las etiquetas más utilizadas por el usuario
-//                    List<Tag> topTags = tagsRepository.findTopTagsByUser(user);
-//                    model.addAttribute("topTags", topTags);
+                    List<Tag> topTags = tagsRepository.findTopTagsByUser(user);
+                    model.addAttribute("topTags", topTags);
 
                     // Obtener todas las publicaciones y respuestas del usuario
                     List<Post> userPosts = postRepository.findByCreatedByUser(user);
                     model.addAttribute("userPosts", userPosts);
 
                     // Si la pestaña activa es "guardados", carga las publicaciones guardadas
-                }  else  if ("guardados".equals(tab)) {
+                } else if ("guardados".equals(tab)) {
                     List<SavedPost> savedPosts = savedPostRepository.findByUser(user);
 
                     // Obtener la fecha y hora actual en formato UTC
@@ -293,7 +333,6 @@ private SavedPostRepository savedPostRepository;
     }
 
 
-
     @GetMapping("/users")
     public String users(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -317,6 +356,7 @@ private SavedPostRepository savedPostRepository;
 
         return "users";
     }
+
     @GetMapping("/users/{userId}")
     public String viewUserProfile(@PathVariable Long userId, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -452,11 +492,12 @@ private SavedPostRepository savedPostRepository;
     }
 
     @GetMapping("/adminLogin")
-    public String showLoginAdmin(){
+    public String showLoginAdmin() {
         return "adminLogin";
     }
+
     @GetMapping("/ControlPanel")
-    public String PanelDeControl(){
+    public String PanelDeControl() {
         return "panelControl";
     }
 

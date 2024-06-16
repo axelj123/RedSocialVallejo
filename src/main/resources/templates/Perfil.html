@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         .social-icons a {
             margin-right: 10px;
@@ -29,8 +31,11 @@
         <div class="fa fa-bars" id="menu-icon"></div>
         <a href="/foro" class="logo"><span class="logo-text">Talk</span></a>
         <div id="search-container" class="search-container">
-            <input class="search-input" type="text" placeholder="Buscar">
+            <input class="search-input" type="text" placeholder="Buscar" id="search-input">
+            <button onclick="searchPosts()">Buscar</button>
+            <div id="search-results" class="search-results"></div>
         </div>
+
         <div class="actions">
             <a class="search-icon" id="search-icon"><i class="fas fa-search"></i></a>
             <a href="/perfil" class="profile-btn"><img th:src="@{${user.profileImage}}"></a>
@@ -80,7 +85,6 @@
             <div class="flex-actions">
                 <div class="items-navigation">
                     <a th:href="@{/perfil(tab='info')}" th:classappend="${activeTab == 'info'} ? 'active' : ''">Perfil</a>
-                    <a th:href="@{/perfil(tab='actividades')}" th:classappend="${activeTab == 'actividades'} ? 'active' : ''">Actividades</a>
                     <a th:href="@{/perfil(tab='guardados')}" th:classappend="${activeTab == 'guardados'} ? 'active' : ''">Guardados</a>
                     <a th:href="@{/perfil(tab='configuracion')}" th:classappend="${activeTab == 'configuracion'} ? 'active' : ''">Configuración</a>
                 </div>
@@ -99,7 +103,7 @@
                     <div class="profile-box">
                         <h3>Top tags</h3>
                         <ul class="tags">
-                            <li th:each="tag : ${topTags}" th:text="${tag.name}"></li>
+                            <li th:each="tag : ${topTags}" th:text="${tag.tagName}"></li>
                         </ul>
                     </div>
 
@@ -169,10 +173,7 @@
                                     <label for="display_name">Nombre de usuario</label>
                                     <input type="text" id="display_name" name="displayName" th:value="${user.displayName}" required>
                                 </div>
-                                <div class="form-group">
-                                    <label for="email_address">Correo electrónico</label>
-                                    <input type="email" id="email_address" name="emailAddress" th:value="${user.emailAddress}" required>
-                                </div>
+
                                 <div class="form-group">
                                     <label for="about_me">Acerca de mí</label>
                                     <textarea id="about_me" name="aboutMe" rows="4" th:text="${user.aboutMe}"></textarea>
@@ -211,7 +212,87 @@
             </div>
         </div>
     </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<script>
+    function searchPosts() {
+      var query = document.getElementById('search-input').value.trim();
+      if (query.length === 0) {
+          alert('Por favor ingresa un término de búsqueda.');
+          return;
+      }
+      // Redirigir a la ruta manejada por Spring Boot
+      window.location.href = '/search?q=' + encodeURIComponent(query);
+  }
+
+</script>
+
+
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        const editProfileForm = document.querySelector('#edit-profile-form');
+
+        if (editProfileForm) {
+            editProfileForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                fetch('/perfil/actualizar', {
+                    method: 'POST',
+                    body: new FormData(editProfileForm)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const message = data.message;
+                    const type = data.type;
+
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        icon: type,
+                        title: message,
+                        customClass: {
+                            title: 'swal-title',
+                            popup: 'swal-popup'
+                        },
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer);
+                            toast.addEventListener('mouseleave', Swal.resumeTimer);
+                        }
+                    });
+
+                    if (type === 'success') {
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 3000);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        icon: 'error',
+                        title: 'Error al guardar los cambios',
+                        customClass: {
+                            title: 'swal-title',
+                            popup: 'swal-popup'
+                        },
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer);
+                            toast.addEventListener('mouseleave', Swal.resumeTimer);
+                        }
+                    });
+                });
+            });
+        }
+    });
+</script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const profilePictureInput = document.getElementById('profile_picture');

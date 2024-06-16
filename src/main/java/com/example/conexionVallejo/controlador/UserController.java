@@ -1,8 +1,12 @@
 package com.example.conexionVallejo.controlador;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,17 +28,20 @@ public class UserController {
 private UserRepository userRepository;
 
     @PostMapping("/perfil/actualizar")
-    public String actualizarPerfil(@RequestParam("profile_picture") MultipartFile file, User user, Model model, Authentication authentication) {
+    public ResponseEntity<Map<String, String>> actualizarPerfil(@RequestParam("profile_picture") MultipartFile file, User user, Authentication authentication) {
+        Map<String, String> response = new HashMap<>();
         try {
             userService.actualizarPerfilUsuario(authentication, user, file);
-            return "redirect:/perfil?tab=info"; // Redirigir a la página de perfil con la pestaña de información activa
+            response.put("message", "Perfil actualizado correctamente");
+            response.put("type", "success");
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (IOException e) {
             e.printStackTrace();
-            model.addAttribute("errorMessage", "Error al guardar la imagen de perfil.");
-            return "redirect:/perfil?tab=info"; // Redirigir a la página de perfil con un mensaje de error
+            response.put("message", "Error al guardar la imagen de perfil.");
+            response.put("type", "error");
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
 
     @GetMapping("/perfil/{userId}")
     public String verPerfilPublico(@PathVariable Long userId, Model model) {

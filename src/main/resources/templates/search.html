@@ -1,25 +1,16 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Foro</title>
-    <link rel="stylesheet" type="text/css" href="css/foro.css">
-
-    <link
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-            rel="stylesheet">
-
-
+    <title>Buscar - Foro</title>
+    <link rel="stylesheet" type="text/css" href="css/search.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="icon" href="assets/logo03.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-            href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-            rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
-
 <body>
 <header>
     <div class="header-content">
@@ -43,82 +34,59 @@
     </div>
 </header>
 
-
 <div class="container">
     <div class="sidebar">
         <div class="sidebar-content">
             <nav>
                 <ul>
                     <li><a href="/foro"><i class="fas fa-home"></i> Inicio</a></li>
-                    <li><a href="/preguntas"><i class="fas fa-question-circle"></i>
-                        Preguntas</a></li>
+                    <li><a href="/preguntas"><i class="fas fa-question-circle"></i> Preguntas</a></li>
                     <li><a href="/tags"><i class="fas fa-tag"></i> Tags</a></li>
-                    <li><a th:href="@{/perfil(tab='guardados')}"
-                           th:classappend="${activeTab == 'guardados'} ? 'active' : ''"><i
-                            class="fas fa-bookmark"></i> Guardado</a></li>
+                    <li><a th:href="@{/perfil(tab='guardados')}" th:classappend="${activeTab == 'guardados'} ? 'active' : ''"><i class="fas fa-bookmark"></i> Guardado</a></li>
                     <li><a href="/users"><i class="fas fa-user"></i> Usuarios</a></li>
                 </ul>
             </nav>
-
         </div>
-
-
     </div>
 
     <div id="content-center">
         <div id="mainbar">
             <div id="d-flex">
-                <h1>Preguntas Top</h1>
-                <a href="/createPost" class="ask-questions">Pregunta</a>
-
+                <h1>Resultados de la búsqueda</h1>
             </div>
 
             <div id="content-listas">
                 <div id="flex-questions">
-
-
                     <div th:each="post : ${posts}" class="card">
-
-
-                        <!-- Contenido del post -->
                         <div class="content">
                             <p th:text="${post.postTitle}"></p>
                             <ul class="chips">
                                 <li th:each="tag : ${post.tag}" class="chip" th:text="${tag.tagName}"></li>
                             </ul>
-
                             <div class="action-buttons-profile">
                                 <a th:href="@{'/postopen/' + ${post.id}}" class="view-more-button">Ayudar</a>
                                 <div class="profile-section">
-                                    <img th:src="@{${post.createdByUser.profileImage}}" alt="profile"
-                                         class="save-profile">
+                                    <img th:src="@{${post.createdByUser.profileImage}}" alt="profile" class="save-profile">
                                     <div class="profile-info">
                                         <a th:href="@{'/inicio/' + ${post.createdByUser.displayName}}">
                                             <span th:text="${post.createdByUser.displayName}"></span>
                                         </a>
-                                        <p>
-                                            <span th:text="${postAges[post.id]}"></span>
-                                        </p>
-
+                                        <p><span th:text="${postAges[post.id]}"></span></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-
+                    <!-- Mostrar mensaje si no hay resultados -->
+                    <div th:if="${posts.size()} == 0">
+                        <p>No se encontraron resultados para la búsqueda.</p>
+                    </div>
                 </div>
             </div>
-
         </div>
-
-
     </div>
 </div>
-
-
-</body>
-
 <script>
     function searchPosts() {
       var query = document.getElementById('search-input').value.trim();
@@ -133,41 +101,35 @@
 </script>
 
 <script>
-    document
-            .addEventListener(
-                    'DOMContentLoaded',
-                    function() {
-                        var menuItems = document
-                                .querySelectorAll('.sidebar-content nav ul li');
-
-                        document
-                                .querySelector('.sidebar-content nav ul li:first-child').classList
-                                .add('active');
-
-                    });
+    document.addEventListener('DOMContentLoaded', function() {
+        var menuItems = document.querySelectorAll('.sidebar-content nav ul li');
+        if (menuItems.length > 0) {
+            menuItems[0].classList.add('active');
+        }
+    });
 
     let menu = document.querySelector('#menu-icon');
     let navbar = document.querySelector('.sidebar');
 
-    menu.onclick = () => {
-        menu.classList.toggle('fa-times'); // Cambia el ícono de las barras a la cruz
-        navbar.classList.toggle('open'); // Abre o cierra la barra lateral
+    if (menu && navbar) {
+        menu.onclick = () => {
+            menu.classList.toggle('fa-times'); // Cambia el ícono de las barras a la cruz
+            navbar.classList.toggle('open'); // Abre o cierra la barra lateral
+        }
     }
 
     document.addEventListener('DOMContentLoaded', function() {
         const searchIcon = document.getElementById('search-icon');
         const searchContainer = document.getElementById('search-container');
 
-        // Agregar un controlador de eventos al icono de búsqueda
-        searchIcon.addEventListener('click', function(event) {
-            event.preventDefault(); // Evita que el enlace te lleve al inicio
-            searchContainer.style.display = searchContainer.style.display === 'none' ? 'flex' : 'none';
-
-
-        });
-
+        if (searchIcon && searchContainer) {
+            // Agregar un controlador de eventos al icono de búsqueda
+            searchIcon.addEventListener('click', function(event) {
+                event.preventDefault(); // Evita que el enlace te lleve al inicio
+                searchContainer.style.display = searchContainer.style.display === 'none' ? 'flex' : 'none';
+            });
+        }
     });
-
-
 </script>
+</body>
 </html>

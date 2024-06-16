@@ -30,9 +30,12 @@ public class UserService {
                 User existingUser = optionalUser.get();
                 // Actualiza el perfil del usuario con la información proporcionada
                 existingUser.setDisplayName(user.getDisplayName());
-                existingUser.setEmailAddress(user.getEmailAddress());
                 existingUser.setAboutMe(user.getAboutMe());
                 existingUser.setCarrera(user.getCarrera());
+                existingUser.setFacebookUrl(user.getFacebookUrl());
+                existingUser.setTiktokUrl(user.getTiktokUrl());
+                existingUser.setLinkedinUrl(user.getLinkedinUrl());
+                existingUser.setInstagramUrl(user.getInstagramUrl());
 
                 if (!file.isEmpty()) {
                     // Maneja la carga de la imagen de perfil

@@ -5,6 +5,7 @@ import java.util.*;
 
 import com.example.conexionVallejo.modelos.*;
 import com.example.conexionVallejo.repositorios.*;
+import com.example.conexionVallejo.servicios.SearchService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -33,9 +34,12 @@ public class PostController {
 
     @Autowired
     private SavedPostRepository savedPostRepository;
+    @Autowired
+    private SearchService searchService;
 
     @Autowired
     private PostTagRepository postTagRepository;
+
 
 
     @DeleteMapping("/answers/delete/{id}")
