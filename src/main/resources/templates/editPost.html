@@ -13,10 +13,58 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-    <script src="https://cdn.ckeditor.com/4.20.0/standard/ckeditor.js"></script>
+
+
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/super-build/ckeditor.js"></script>
+
 
 </head>
 
+<style>
+    /* Estilos para imágenes dentro de la clase image_resized */
+    .image_resized img {
+        max-width: 200px; /* Ajusta el ancho máximo de la figura */
+        height: 400px; /* Permite que la altura se ajuste automáticamente */
+        cursor: pointer; /* Cambia el cursor a pointer para indicar que es clickeable */
+    }
+
+    /* Cambia el cursor al pasar sobre la imagen */
+    .image_resized img:hover {
+        opacity: 0.7; /* Cambia la opacidad para indicar que está interactuable */
+    }
+
+    /* Estilo para el contenedor de la imagen que activa Fancybox */
+    .image_resized .fancybox-link {
+        display: inline-block;
+        position: relative;
+    }
+
+    /* Estilo para la imagen en el contenedor */
+    .image_resized .fancybox-link img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+
+    /* Estilo para el icono de lupa (opcional) */
+    .fancybox-link::after {
+        content: '\1F50D'; /* Puedes cambiar este contenido por un icono o texto deseado */
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #fff;
+        font-size: 36px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    /* Muestra el icono de lupa al pasar sobre el contenedor */
+    .image_resized .fancybox-link:hover::after {
+        opacity: 1;
+    }
+</style>
 <body>
 <header>
     <div class="header-content">
@@ -169,9 +217,132 @@
 
 </script>
 <script>
-    CKEDITOR.replace( 'details')
-
+    CKEDITOR.ClassicEditor
+        .create(document.getElementById("details"), {
+            toolbar: {
+                items: [
+                    'exportPDF', 'exportWord', '|',
+                    'findAndReplace', 'selectAll', '|',
+                    'heading', '|',
+                    'bold', 'italic', 'strikethrough', 'underline', 'code', 'subscript', 'superscript', 'removeFormat', '|',
+                    'bulletedList', 'numberedList', 'todoList', '|',
+                    'outdent', 'indent', '|',
+                    'undo', 'redo',
+                    '-',
+                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
+                    'alignment', '|',
+                    'link', 'uploadImage', 'blockQuote', 'insertTable', 'mediaEmbed', 'codeBlock', 'htmlEmbed', '|',
+                    'specialCharacters', 'horizontalLine', 'pageBreak', '|',
+                    'textPartLanguage', '|',
+                    'sourceEditing'
+                ],
+                shouldNotGroupWhenFull: true
+            },
+              mediaEmbed: {
+            previewsInData: true
+        },
+            image: {
+                toolbar: ['imageStyle:alignLeft', 'imageStyle:alignCenter', 'imageStyle:alignRight', '|', 'imageResize', '|', 'imageTextAlternative'],
+                styles: ['alignLeft', 'alignCenter', 'alignRight', 'fancybox-link'],
+                classes: ['fancybox-link']
+            },
+            placeholder: 'Welcome to CKEditor 5!',
+            fontFamily: {
+                options: [
+                    'default',
+                    'Arial, Helvetica, sans-serif',
+                    'Courier New, Courier, monospace',
+                    'Georgia, serif',
+                    'Lucida Sans Unicode, Lucida Grande, sans-serif',
+                    'Tahoma, Geneva, sans-serif',
+                    'Times New Roman, Times, serif',
+                    'Trebuchet MS, Helvetica, sans-serif',
+                    'Verdana, Geneva, sans-serif'
+                ],
+                supportAllValues: true
+            },
+            fontSize: {
+                options: [10, 12, 14, 'default', 18, 20, 22],
+                supportAllValues: true
+            },
+            htmlSupport: {
+                allow: [
+                    {
+                        name: /.*/,
+                        attributes: true,
+                        classes: true,
+                        styles: true
+                    }
+                ]
+            },
+            htmlEmbed: {
+                showPreviews: true
+            },
+            link: {
+                decorators: {
+                    addTargetToExternalLinks: true,
+                    defaultProtocol: 'https://',
+                    toggleDownloadable: {
+                        mode: 'manual',
+                        label: 'Downloadable',
+                        attributes: {
+                            download: 'file'
+                        }
+                    }
+                }
+            },
+            mention: {
+                feeds: [
+                    {
+                        marker: '@',
+                        feed: [
+                            '@apple', '@bears', '@brownie', '@cake', '@cake', '@candy', '@canes', '@chocolate', '@cookie', '@cotton', '@cream',
+                            '@cupcake', '@danish', '@donut', '@dragée', '@fruitcake', '@gingerbread', '@gummi', '@ice', '@jelly-o',
+                            '@liquorice', '@macaroon', '@marzipan', '@oat', '@pie', '@plum', '@pudding', '@sesame', '@snaps', '@soufflé',
+                            '@sugar', '@sweet', '@topping', '@wafer'
+                        ],
+                        minimumCharacters: 1
+                    }
+                ]
+            },
+            removePlugins: [
+                'AIAssistant',
+                'CKBox',
+                'CKFinder',
+                'EasyImage',
+                'MultiLevelList',
+                'RealTimeCollaborativeComments',
+                'RealTimeCollaborativeTrackChanges',
+                'RealTimeCollaborativeRevisionHistory',
+                'PresenceList',
+                'Comments',
+                'TrackChanges',
+                'TrackChangesData',
+                'RevisionHistory',
+                'Pagination',
+                'WProofreader',
+                'MathType',
+                'SlashCommand',
+                'Template',
+                'DocumentOutline',
+                'FormatPainter',
+                'TableOfContents',
+                'PasteFromOfficeEnhanced',
+                'CaseChange'
+            ]
+        })
+        .then(editor => {
+            editor.model.document.on('change:data', () => {
+                document.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightBlock(block);
+                });
+            });
+        })
+        .catch(error => {
+            console.error(error);
+        });
 </script>
+
 <script>
     document.querySelector('.publish-btn').addEventListener('click', function(event) {
         event.preventDefault();

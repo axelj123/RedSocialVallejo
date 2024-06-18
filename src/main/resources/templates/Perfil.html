@@ -130,7 +130,7 @@
                     <h2 style="font-weight:400"> Todos tus guardados</h2>
                     <div th:each="savedPost : ${savedPosts}" class="card-saved">
                         <div class="remove-icon">
-                            <a href="#" onclick="removeSavedPost(event, [[${savedPost.id}]])">
+                            <a href="#" th:onclick="|removeSavedPost(event, ${savedPost.id})|">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </div>
@@ -227,6 +227,73 @@
 
 </script>
 
+<script th:inline="javascript">
+    // Función para eliminar un post guardado
+    function removeSavedPost(event, savedPostId) {
+        event.preventDefault();
+
+        // Realizar una solicitud DELETE al servidor para eliminar el post guardado
+        fetch('/perfil/remove-saved-post/' + savedPostId, {
+            method: 'DELETE'
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al eliminar el post guardado');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data && data.message) {
+                // Mostrar un mensaje de éxito
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    icon: 'success',
+                    title: data.message,
+                    customClass: {
+                        title: 'swal-title',
+                        popup: 'swal-popup'
+                    },
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer);
+                        toast.addEventListener('mouseleave', Swal.resumeTimer);
+                    }
+                });
+
+                // Esperar a que el toast se muestre antes de recargar la página
+                setTimeout(() => {
+                    window.location.reload();
+                }, 3100); // Espera un poco más de 3000ms para asegurarse de que el toast se haya mostrado completamente
+            } else {
+                throw new Error('Respuesta del servidor inválida');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Mostrar un mensaje de error
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                icon: 'error',
+                title: 'Error al eliminar el post guardado',
+                customClass: {
+                    title: 'swal-title',
+                    popup: 'swal-popup'
+                },
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer);
+                    toast.addEventListener('mouseleave', Swal.resumeTimer);
+                }
+            });
+        });
+    }
+</script>
 
 <script th:inline="javascript">
     document.addEventListener('DOMContentLoaded', function() {

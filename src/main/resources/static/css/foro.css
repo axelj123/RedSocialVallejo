@@ -179,10 +179,70 @@ header {
 	background: white;
 	display: flex;
 	flex-direction: column;
+
 }
 
+.notification-popup {
+    display: none;
+    position: absolute;
+    top: 50px; /* Ajusta según sea necesario */
+    right: 10px; /* Ajusta según sea necesario */
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 1000;
+    width: 350px; /* Ajusta el ancho del popup según necesites */
+    max-height: 500px; /* Altura máxima */
+    overflow-y: auto; /* Scroll vertical si es necesario */
+}
+
+.notification-popup ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.notification-popup li {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.notification-popup li:last-child {
+    border-bottom: none;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+}
+
+.notification-message {
+    flex: 1;
+}
+
+.notification-profile {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+.notification-profile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+
+
+
+
+
 .sidebar-content {
-	height: 1900px;
+	height: auto;
 	padding-top: 20px;
 	width: 162px;
 }

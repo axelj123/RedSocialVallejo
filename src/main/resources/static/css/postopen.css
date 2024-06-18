@@ -252,6 +252,29 @@ nav a i {
 	height: 98%;
 	margin: 0;
 }
+pre, code {
+    white-space: pre-wrap; /* Ajusta el texto para que haga wrap y no desborde */
+    word-wrap: break-word; /* Permite el corte de palabras largas */
+    overflow: auto; /* Permite el desplazamiento si es necesario */
+    max-width: 100%; /* Asegura que el bloque de código no exceda el ancho del contenedor */
+    box-sizing: border-box; /* Incluye el padding y el borde en el cálculo del ancho total */
+}
+
+@media (max-width: 480px) {
+    pre, code {
+        font-size: 12px; /* Ajusta el tamaño de fuente para pantallas pequeñas */
+        padding: 10px; /* Agrega padding para mejorar la legibilidad */
+    }
+}
+/* Estilos para imágenes dentro de la clase image_resized */
+.image_resized img {
+    max-width: 100%; /* Ajusta el ancho máximo de la figura */
+    height: auto; /* Permite que la altura se ajuste automáticamente */
+    cursor: pointer; /* Cambia el cursor a pointer para indicar que es clickeable */
+    transition: opacity 0.3s ease; /* Transición para la opacidad al hacer hover */
+}
+
+
 
 #d-flex {
 	width: 100%;
@@ -502,6 +525,14 @@ margin-top:20px;
 }
 
 @media ( max-width : 480px) {
+
+.image_resized img {
+    max-width:220px; /* Ajusta el ancho máximo de la figura */
+    height: auto; /* Permite que la altura se ajuste automáticamente */
+    cursor: pointer; /* Cambia el cursor a pointer para indicar que es clickeable */
+    transition: opacity 0.3s ease; /* Transición para la opacidad al hacer hover */
+}
+
 	#menu-icon {
 		font-size: 20px;
 		color: var(--text-color);

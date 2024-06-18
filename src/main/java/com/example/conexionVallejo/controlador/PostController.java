@@ -39,7 +39,63 @@ public class PostController {
 
     @Autowired
     private PostTagRepository postTagRepository;
+    @Autowired
+    private NotificationRepository notificationRepository;
 
+    @DeleteMapping("/perfil/remove-saved-post/{savedPostId}")
+    public ResponseEntity<Map<String, String>> deletePostSave(@PathVariable Long savedPostId, Authentication authentication) {
+        Map<String, String> response = new HashMap<>();
+        try {
+            // Verificar la autenticación del usuario
+            if (authentication == null || !authentication.isAuthenticated()) {
+                response.put("message", "Usuario no autenticado");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+
+            // Obtener el nombre de usuario del usuario autenticado
+            String loggedInUsername = authentication.getName();
+
+            // Buscar el usuario en la base de datos por su dirección de correo electrónico (asumiendo que el campo es unique)
+            Optional<User> optionalUser = userRepository.findByEmailAddress(loggedInUsername);
+
+            if (optionalUser.isEmpty()) {
+                response.put("message", "Usuario no autenticado");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+
+            User user = optionalUser.get();
+
+            // Buscar el SavedPost que se desea eliminar
+            Optional<SavedPost> savedPostOptional = savedPostRepository.findById(savedPostId);
+            if (savedPostOptional.isEmpty()) {
+                response.put("message", "SavedPost no encontrado");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+
+            SavedPost savedPostToDelete = savedPostOptional.get();
+
+            // Verificar si el usuario autenticado es el propietario del SavedPost
+            if (!savedPostToDelete.getUser().equals(user)) {
+                response.put("message", "No tienes permiso para eliminar este SavedPost");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+            }
+
+            // Eliminar el SavedPost
+            savedPostRepository.delete(savedPostToDelete);
+
+            // Devuelve un estado de éxito con un mensaje
+            response.put("message", "Post guardado eliminado con éxito");
+            return ResponseEntity.ok(response);
+
+        } catch (EmptyResultDataAccessException e) {
+            response.put("message", "SavedPost no encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("message", "Error al eliminar el SavedPost: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 
 
     @DeleteMapping("/answers/delete/{id}")
@@ -189,15 +245,31 @@ public class PostController {
                 if (optionalParentPost.isPresent()) {
                     Post parentPost = optionalParentPost.get();
                     answer.setParentQuestion(parentPost);
+
+                    // Guardar la respuesta
+                    postRepository.save(answer);
+
+                    // Crear y guardar la notificación
+                    createNotification(parentPost.getCreatedByUser(), parentPost, user);
+
+                    return "redirect:/postopen/" + parentQuestionId; // Redirigir a la página original de la pregunta
                 }
-
-                postRepository.save(answer);
-
-                return "redirect:/postopen/" + parentQuestionId; // Redirect to the original post page
             }
         }
         return "redirect:/login";
     }
+
+    private void createNotification(User recipient, Post relatedPost, User responder) {
+        Notification notification = new Notification();
+        notification.setUser(recipient);
+        notification.setPost(relatedPost);
+        notification.setMessage(responder.getDisplayName() + " ha respondido a tu pregunta.");
+        notification.setProfileImage(responder.getProfileImage());
+        notification.setCreatedDate(relatedPost.getCreatedDate());
+        notification.setRead(false); // Notificación inicialmente no leída
+        notificationRepository.save(notification);
+    }
+
 
     @PostMapping("/post/edit")
     public String editPost(@RequestParam("postId") Long postId,

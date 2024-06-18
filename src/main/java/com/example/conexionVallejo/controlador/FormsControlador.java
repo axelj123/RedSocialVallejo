@@ -1,16 +1,14 @@
 package com.example.conexionVallejo.controlador;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import com.example.conexionVallejo.modelos.SavedPost;
 import com.example.conexionVallejo.repositorios.PostRepository;
 import com.example.conexionVallejo.repositorios.SavedPostRepository;
+import com.example.conexionVallejo.servicios.AgeCalculatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -81,14 +79,9 @@ public class FormsControlador {
                     // Convertir la fecha de creación del post a UTC
                     Instant postInstant = post.getCreatedDate().toInstant();
 
-                    // Calcular la diferencia de tiempo entre ambas fechas
-                    Duration duration = Duration.between(postInstant, currentInstant);
-
-                    // Obtener la antigüedad del post en minutos, horas, días o semanas
-                    String age = calculateAge(duration);
-
-                    // Pasar la antigüedad del post al modelo
-                    model.addAttribute("age", age);
+                    // Calcular la antigüedad del post principal
+                    String postAge = AgeCalculatorService.calculatePostAge(postInstant);
+                    model.addAttribute("age", postAge);
 
                     // Cargar las respuestas relacionadas
                     List<Post> answers = postService.obtenerRespuestas(id);
@@ -97,14 +90,12 @@ public class FormsControlador {
                     Map<Integer, String> answerAges = new HashMap<>();
                     for (Post answer : answers) {
                         Instant answerInstant = answer.getCreatedDate().toInstant();
-                        Duration answerDuration = Duration.between(answerInstant, currentInstant);
-                        String answerAge = calculateAge(answerDuration);
-                        answerAges.put(answer.getId(), answerAge);
+                        String answerAge = AgeCalculatorService.calculatePostAge(answerInstant);
+                        answerAges.put(answer.getId().intValue(), answerAge);
                     }
 
                     model.addAttribute("answerAges", answerAges);
                     model.addAttribute("answers", answers);
-
 
                     return "postopen"; // Nombre de la plantilla Thymeleaf
                 } else {
@@ -120,22 +111,9 @@ public class FormsControlador {
     }
 
 
-    private String calculateAge(Duration duration) {
-        long days = duration.toDays();
-        long hours = duration.toHours();
-        long minutes = duration.toMinutes();
 
-        if (days >= 7) {
-            long weeks = days / 7;
-            return "hace " + weeks + (weeks == 1 ? " semana" : " semanas");
-        } else if (days >= 1) {
-            return "hace " + days + (days == 1 ? " día" : " días");
-        } else if (hours >= 1) {
-            return "hace " + hours + (hours == 1 ? " hora" : " horas");
-        } else {
-            return "hace " + minutes + (minutes == 1 ? " minuto" : " minutos");
-        }
-    }
+
+
     @GetMapping("/search")
     public String search(@RequestParam("q") String query, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -155,18 +133,12 @@ public class FormsControlador {
         // Aquí se llama al método searchPosts del repositorio para obtener los resultados de búsqueda
         List<Post> posts = postRepository.searchPosts(query);
 
-        // Obtener la fecha y hora actual en formato UTC
-        Instant currentInstant = Instant.now();
-
         // Calcular la antigüedad de cada post y agregarla al modelo
-        Map<Integer, String> postAges = new HashMap<>();
-        for (Post post : posts) {
-            Instant postInstant = post.getCreatedDate().toInstant();
-            Duration duration = Duration.between(postInstant, currentInstant);
-            String age = calculateAge(duration);
-            postAges.put(post.getId(), age);
-        }
-
+        Map<Integer, String> postAges = posts.stream()
+                .collect(Collectors.toMap(
+                        Post::getId,
+                        post -> AgeCalculatorService.calculatePostAge(post.getCreatedDate().toInstant())
+                ));
         model.addAttribute("posts", posts);
         model.addAttribute("postAges", postAges);
         return "search"; // Nombre de la plantilla Thymeleaf para mostrar los resultados de búsqueda
@@ -194,17 +166,13 @@ public class FormsControlador {
 
         List<Post> posts = postService.obtenerPreguntas();
 
-        // Obtener la fecha y hora actual en formato UTC
-        Instant currentInstant = Instant.now();
-
         // Calcular la antigüedad de cada post y agregarla al modelo
-        Map<Integer, String> postAges = new HashMap<>();
-        for (Post post : posts) {
-            Instant postInstant = post.getCreatedDate().toInstant();
-            Duration duration = Duration.between(postInstant, currentInstant);
-            String age = calculateAge(duration);
-            postAges.put(post.getId(), age);
-        }
+        Map<Integer, String> postAges = posts.stream()
+                .collect(Collectors.toMap(
+                        Post::getId,
+                        post -> AgeCalculatorService.calculatePostAge(post.getCreatedDate().toInstant())
+                ));
+
 
         model.addAttribute("posts", posts);
         model.addAttribute("postAges", postAges);
@@ -311,8 +279,7 @@ public class FormsControlador {
                     Map<Long, String> savedPostAges = new HashMap<>();
                     for (SavedPost savedPost : savedPosts) {
                         Instant postInstant = savedPost.getPost().getCreatedDate().toInstant();
-                        Duration duration = Duration.between(postInstant, currentInstant);
-                        String age = calculateAge(duration);
+                        String age = AgeCalculatorService.calculatePostAge(postInstant);
                         savedPostAges.put(savedPost.getId(), age);
                     }
 
@@ -382,15 +349,14 @@ public class FormsControlador {
 
                         // Obtener la fecha y hora actual en formato UTC
                         Instant currentInstant = Instant.now();
-
                         // Calcular la antigüedad de cada publicación guardada y agregarla al modelo
                         Map<Long, String> savedPostAges = new HashMap<>();
                         for (SavedPost savedPost : savedPosts) {
                             Instant postInstant = savedPost.getPost().getCreatedDate().toInstant();
-                            Duration duration = Duration.between(postInstant, currentInstant);
-                            String age = calculateAge(duration);
+                            String age = AgeCalculatorService.calculatePostAge(postInstant);
                             savedPostAges.put(savedPost.getId(), age);
                         }
+
 
                         model.addAttribute("savedPosts", savedPosts);
                         model.addAttribute("savedPostAges", savedPostAges);

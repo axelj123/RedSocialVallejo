@@ -13,9 +13,29 @@
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <script src="https://cdn.ckeditor.com/4.20.0/standard/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/super-build/ckeditor.js"></script>
+
+
+
+    <!-- Incluir Fancybox CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
+    <!-- Incluir jQuery (necesario para Fancybox) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Incluir Fancybox JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+    <!-- Estilos adicionales -->
 </head>
+<style>
+    .fancybox-link {
+        cursor: pointer;
+        transition: opacity 0.3s ease;
+    }
+    .fancybox-link:hover {
+        opacity: 0.7;
+    }
+</style>
 
 <body>
 <header>
@@ -23,14 +43,19 @@
         <div class="fa fa-bars" id="menu-icon"></div>
         <a href="/foro" class="logo"><span class="logo-text">Talk</span></a>
         <div id="search-container" class="search-container">
-            <input type="text" placeholder="Buscar">
+            <input class="search-input" type="text" placeholder="Buscar" id="search-input">
+            <button onclick="searchPosts()">Buscar</button>
+            <div id="search-results" class="search-results"></div>
         </div>
+
         <div class="actions">
             <a class="search-icon" id="search-icon"><i class="fas fa-search"></i></a>
             <a href="/perfil" class="profile-btn"><img th:src="@{${user.profileImage}}"></a>
             <a href="#" class="notifications-btn"><i class="fas fa-bell"></i><span id="notification-count" class="notification-count">0</span></a>
             <a href="/perfil?tab=configuracion" class="settings-btn"><i class="fas fa-cog"></i></a>
-            <a href="/logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i></a>
+            <a href="/logout" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i>
+            </a>
         </div>
     </div>
 </header>
@@ -152,7 +177,7 @@
                                     <input type="hidden" name="parentQuestionId" th:value="${post.id}" required>
                                     <div class="question-inner">
                                         <label for="details">Detalles</label>
-                                        <textarea id="details" name="postDetails" placeholder="Presenta el problema y amplía lo que pusiste en el título. Mínimo 20 caracteres." required></textarea>
+                                        <textarea id="details" name="postDetails" placeholder="Presenta el problema y amplía lo que pusiste en el título. Mínimo 20 caracteres." ></textarea>
                                     </div>
                                     <button id="send-answer" type="submit">Responder</button>
                                 </form>
@@ -174,7 +199,158 @@
     var detailsTextArea = document.getElementById('details');
     if (detailsTextArea && window.getComputedStyle(detailsTextArea).display !== 'none') {
         // Si hay un textarea visible con ID "details", no inicializar CKEditor
-        CKEDITOR.replace('details');
+      // This sample still does not showcase all CKEditor&nbsp;5 features (!)
+    // Visit https://ckeditor.com/docs/ckeditor5/latest/features/index.html to browse all the features.
+    CKEDITOR.ClassicEditor.create(document.getElementById("details"), {
+        // https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format
+        toolbar: {
+            items: [
+                'exportPDF','exportWord', '|',
+                'findAndReplace', 'selectAll', '|',
+                'heading', '|',
+                'bold', 'italic', 'strikethrough', 'underline', 'code', 'subscript', 'superscript', 'removeFormat', '|',
+                'bulletedList', 'numberedList', 'todoList', '|',
+                'outdent', 'indent', '|',
+                'undo', 'redo',
+                '-',
+                'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
+                'alignment', '|',
+                'link', 'uploadImage', 'blockQuote', 'insertTable', 'mediaEmbed', 'codeBlock', 'htmlEmbed', '|',
+                'specialCharacters', 'horizontalLine', 'pageBreak', '|',
+                'textPartLanguage', '|',
+                'sourceEditing'
+            ],
+            shouldNotGroupWhenFull: true
+        },
+        // Changing the language of the interface requires loading the language file using the <script> tag.
+        // language: 'es',
+        list: {
+            properties: {
+                styles: true,
+                startIndex: true,
+                reversed: true
+            }
+        },
+        // https://ckeditor.com/docs/ckeditor5/latest/features/headings.html#configuration
+        heading: {
+            options: [
+                { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
+                { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
+                { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
+            ]
+        },
+        // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
+        placeholder: 'Welcome to CKEditor 5!',
+        // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
+        fontFamily: {
+            options: [
+                'default',
+                'Arial, Helvetica, sans-serif',
+                'Courier New, Courier, monospace',
+                'Georgia, serif',
+                'Lucida Sans Unicode, Lucida Grande, sans-serif',
+                'Tahoma, Geneva, sans-serif',
+                'Times New Roman, Times, serif',
+                'Trebuchet MS, Helvetica, sans-serif',
+                'Verdana, Geneva, sans-serif'
+            ],
+            supportAllValues: true
+        },
+        // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-size-feature
+        fontSize: {
+            options: [ 10, 12, 14, 'default', 18, 20, 22 ],
+            supportAllValues: true
+        },
+        // Be careful with the setting below. It instructs CKEditor to accept ALL HTML markup.
+        // https://ckeditor.com/docs/ckeditor5/latest/features/general-html-support.html#enabling-all-html-features
+        htmlSupport: {
+            allow: [
+                {
+                    name: /.*/,
+                    attributes: true,
+                    classes: true,
+                    styles: true
+                }
+            ]
+        },
+        // Be careful with enabling previews
+        // https://ckeditor.com/docs/ckeditor5/latest/features/html-embed.html#content-previews
+        htmlEmbed: {
+            showPreviews: true
+        },
+        // https://ckeditor.com/docs/ckeditor5/latest/features/link.html#custom-link-attributes-decorators
+        link: {
+            decorators: {
+                addTargetToExternalLinks: true,
+                defaultProtocol: 'https://',
+                toggleDownloadable: {
+                    mode: 'manual',
+                    label: 'Downloadable',
+                    attributes: {
+                        download: 'file'
+                    }
+                }
+            }
+        },
+        // https://ckeditor.com/docs/ckeditor5/latest/features/mentions.html#configuration
+        mention: {
+            feeds: [
+                {
+                    marker: '@',
+                    feed: [
+                        '@apple', '@bears', '@brownie', '@cake', '@cake', '@candy', '@canes', '@chocolate', '@cookie', '@cotton', '@cream',
+                        '@cupcake', '@danish', '@donut', '@dragée', '@fruitcake', '@gingerbread', '@gummi', '@ice', '@jelly-o',
+                        '@liquorice', '@macaroon', '@marzipan', '@oat', '@pie', '@plum', '@pudding', '@sesame', '@snaps', '@soufflé',
+                        '@sugar', '@sweet', '@topping', '@wafer'
+                    ],
+                    minimumCharacters: 1
+                }
+            ]
+        },
+        // The "superbuild" contains more premium features that require additional configuration, disable them below.
+        // Do not turn them on unless you read the documentation and know how to configure them and setup the editor.
+        removePlugins: [
+            // These two are commercial, but you can try them out without registering to a trial.
+            // 'ExportPdf',
+            // 'ExportWord',
+            'AIAssistant',
+            'CKBox',
+            'CKFinder',
+            'EasyImage',
+            // This sample uses the Base64UploadAdapter to handle image uploads as it requires no configuration.
+            // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/base64-upload-adapter.html
+            // Storing images as Base64 is usually a very bad idea.
+            // Replace it on production website with other solutions:
+            // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html
+            // 'Base64UploadAdapter',
+            'MultiLevelList',
+            'RealTimeCollaborativeComments',
+            'RealTimeCollaborativeTrackChanges',
+            'RealTimeCollaborativeRevisionHistory',
+            'PresenceList',
+            'Comments',
+            'TrackChanges',
+            'TrackChangesData',
+            'RevisionHistory',
+            'Pagination',
+            'WProofreader',
+            // Careful, with the Mathtype plugin CKEditor will not load when loading this sample
+            // from a local file system (file://) - load this site via HTTP server if you enable MathType.
+            'MathType',
+            // The following features are part of the Productivity Pack and require additional license.
+            'SlashCommand',
+            'Template',
+            'DocumentOutline',
+            'FormatPainter',
+            'TableOfContents',
+            'PasteFromOfficeEnhanced',
+            'CaseChange'
+        ]
+    });
     } else {
         // Si no hay un textarea visible con ID "details", inicializar CKEditor
     }
@@ -419,7 +595,18 @@
         });
     });
 </script>
+<script>
+    function searchPosts() {
+      var query = document.getElementById('search-input').value.trim();
+      if (query.length === 0) {
+          alert('Por favor ingresa un término de búsqueda.');
+          return;
+      }
+      // Redirigir a la ruta manejada por Spring Boot
+      window.location.href = '/search?q=' + encodeURIComponent(query);
+  }
 
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -446,5 +633,24 @@
         });
     });
 </script>
-
+<script>
+    // Configuración de Fancybox
+    $(document).ready(function() {
+        // Selector para aplicar Fancybox a imágenes con la clase fancybox-link
+        $(".fancybox-link").fancybox({
+            // Opciones de configuración de Fancybox (puedes personalizar según tus necesidades)
+            loop: true,
+            buttons: [
+                "zoom",
+                "share",
+                "slideShow",
+                "fullScreen",
+                "download",
+                "thumbs",
+                "close"
+            ],
+            animationEffect: "zoom-in-out"
+        });
+    });
+</script>
 </html>

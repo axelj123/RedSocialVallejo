@@ -182,7 +182,7 @@ header {
 }
 
 .sidebar-content {
-	height: 1900px;
+	height: auto;
 	padding-top: 20px;
 	width: 162px;
 }
