@@ -14,6 +14,7 @@ public class NotificationService {
     @Autowired
     private NotificationRepository notificationRepository;
 
+
     public void createNotification(Notification notification) {
         notificationRepository.save(notification);
     }
@@ -25,5 +26,12 @@ public class NotificationService {
     public void markNotificationAsRead(Notification notification) {
         notification.setRead(true);
         notificationRepository.save(notification);
+    }
+    // Método para calcular la antigüedad de las notificaciones
+    public void calculateNotificationAges(List<Notification> notifications) {
+        for (Notification notification : notifications) {
+            String age = AgeCalculatorService.calculatePostAge(notification.getCreatedDate().toInstant());
+            notification.setAge(age);
+        }
     }
 }

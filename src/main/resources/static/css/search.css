@@ -302,7 +302,11 @@ button[type="submit"]:hover {
 	background-color: #005ea2;
 }
 
-
+.no-results-message {
+    color: #666; /* Color de texto gris */
+    font-style: italic;
+    margin: 20px;
+}
 #menu-icon {
 	display: none;
 }

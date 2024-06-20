@@ -1,0 +1,106 @@
+  .notification-popup {
+        position: absolute;
+        top: 60px; /* Ajusta la posición vertical según sea necesario */
+        right: 20px; /* Alinea el contenedor a la derecha con un margen */
+        width: 400px; /* Ancho del contenedor de notificaciones */
+        background-color: #fff; /* Color de fondo */
+        border-radius: 8px; /* Borde redondeado */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 10px; /* Espaciado interno */
+        display: none; /* Oculto por defecto */
+        z-index: 100000; /* Ajusta el índice z si es necesario */
+    }
+.notifications-btn.active i {
+    color: #0077cc; /* Cambia esto al estilo que desees cuando el ícono esté activo */
+}
+
+    .notification-popup h2 {
+        margin-top: 0;
+        font-size: 1.5rem;
+        color: #333; /* Color del texto del encabezado */
+    }
+
+    .notification-list {
+        list-style-type: none; /* Elimina los puntos de la lista */
+        padding: 0;
+        margin: 0;
+        max-height: 300px; /* Altura máxima de la lista de notificaciones */
+        overflow-y: auto; /* Habilita el desplazamiento vertical si hay muchas notificaciones */
+    }
+
+    .notification-item {
+        padding: 10px;
+        border-bottom: 1px solid #eee; /* Borde inferior entre notificaciones */
+        cursor: pointer;
+    }
+    .notification-date{
+    font-size:12px;
+    }
+
+
+    .notification-item:hover {
+        background-color: #f0f0f0; /* Color de fondo al pasar el mouse */
+    }
+
+    .notification-content {
+        display: flex;
+        align-items: center;
+    }
+
+.notifications-btn {
+	position: relative;
+}
+
+.notification-count {
+	position: absolute;
+	/* Establece la posición absoluta para el contador */
+	top: -5px; /* Ajusta la posición vertical */
+	right: -8px; /* Ajusta la posición horizontal */
+	background-color: #ff3f3f;
+	color: white;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 2px 6px;
+	border-radius: 50%;
+}
+
+.notifications-btn:hover .notification-count {
+	background-color: #ff5f5f;
+	/* Cambia el color de fondo del contador de notificaciones al pasar el mouse */
+}
+
+    .notification-profile img {
+        width: 40px; /* Ancho de la imagen del perfil */
+        height: 40px; /* Altura de la imagen del perfil */
+        border-radius: 50%; /* Borde redondeado para la imagen del perfil */
+        margin-right: 10px; /* Espaciado derecho */
+    }
+
+    .notification-details {
+        flex: 1; /* Ocupa todo el espacio disponible */
+    }
+
+    .notification-message {
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .notification-post-title {
+        font-size: 0.9rem;
+        font-weight: bold;
+        margin-right: 5px;
+    }
+
+    .notification-post-author {
+        font-size: 0.8rem;
+        color: #666;
+    }
+
+    /* Media query para pantallas de hasta 480px de ancho */
+    @media (max-width: 480px) {
+
+   .notification-popup {
+ width:320px;
+ right:0;
+    }
+    }

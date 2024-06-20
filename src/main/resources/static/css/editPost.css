@@ -88,6 +88,16 @@ header {
 }
 
 
+.search-container button {
+	background-color: var(--main-color);
+	color: #fff;
+	border: none;
+	padding: 8px 15px;
+	cursor: pointer;
+	outline: none;
+	margin-left: 5px;
+	border-radius: 10px;
+}
 
 .actions {
 	display: flex;
@@ -435,6 +445,16 @@ ol li::before {
 	}
 
 
+.search-container button {
+	background-color: var(--main-color);
+	color: #fff;
+	border: none;
+	padding: 8px 15px;
+	cursor: pointer;
+	outline: none;
+	margin-left: 5px;
+	border-radius: 10px;
+}
 	#content-center {
 		width: 100%;
 		left: 0;

@@ -132,7 +132,6 @@ header {
 .actions a:hover i {
 	/* Estilos que se aplicarán al icono cuando el cursor esté sobre el enlace */
 	color: var(--main-color); /* Cambia el color del icono a rojo */
-	transform: scale(1.2); /* Aumenta ligeramente el tamaño del icono */
 }
 
 .container {
@@ -290,6 +289,8 @@ button[type="submit"]:hover {
 nav.open {
 	right: 20px;
 }
+
+/* DIVS PREGUNTAS */
 .card {
     position: relative;
     display: flex;

@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar respuesta</title>
-    <link rel="stylesheet" type="text/css" href="/css/editPost.css">
+    <link rel="stylesheet" type="text/css" href="/css/editAnswer.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}">
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="icon" href="assets/logo03.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,27 +16,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/super-build/ckeditor.js"></script>
+    <link th:replace="fragments/header :: header">
 
 </head>
 
 <body>
-<header>
-    <div class="header-content">
-        <div class="fa fa-bars" id="menu-icon"></div>
-        <a href="/foro" class="logo"><span class="logo-text">Talk</span></a>
-        <div id="search-container" class="search-container">
-            <input class="search-input" type="text" placeholder="Buscar">
-        </div>
-        <div class="actions">
-            <a class="search-icon" id="search-icon"><i class="fas fa-search"></i></a>
-            <a href="/perfil" class="profile-btn"><img th:src="@{${user.profileImage}}"></a>
-            <a href="#" class="notifications-btn"><i class="fas fa-bell"></i><span id="notification-count"
-                                                                                   class="notification-count">0</span></a>
-            <a href="/perfil?tab=configuracion" class="settings-btn"><i class="fas fa-cog"></i></a>
-            <a href="/logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i></a>
-        </div>
-    </div>
-</header>
 
 <div class="container">
     <div class="sidebar">
@@ -136,6 +122,19 @@
 
 
 </script>
+<script>
+    function searchPosts() {
+      var query = document.getElementById('search-input').value.trim();
+      if (query.length === 0) {
+          alert('Por favor ingresa un término de búsqueda.');
+          return;
+      }
+      // Redirigir a la ruta manejada por Spring Boot
+      window.location.href = '/search?q=' + encodeURIComponent(query);
+  }
+
+</script>
+
 <script>
     // This sample still does not showcase all CKEditor&nbsp;5 features (!)
       // Visit https://ckeditor.com/docs/ckeditor5/latest/features/index.html to browse all the features.
@@ -311,6 +310,7 @@
 
 
 </script>
+<script th:src="@{/js/header.js}"></script>
 
 </body>
 </html>

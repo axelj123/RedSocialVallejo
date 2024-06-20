@@ -27,11 +27,21 @@ public class Notification {
     @Column(name = "created_date")
     private Timestamp createdDate;
 
+    @Transient // Esto indica que no se persistirá en la base de datos
+    private String age;
 
     @Column(name="profile_image")
     private String profileImage;
     // Getters y setters
 
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
 
     public String getProfileImage() {
         return profileImage;

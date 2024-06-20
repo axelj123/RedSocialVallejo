@@ -1,5 +1,6 @@
 package com.example.conexionVallejo.controlador;
 
+import java.sql.Timestamp;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionRegistry;
@@ -73,8 +76,6 @@ public class FormsControlador {
                     Post post = optionalPost.get();
                     model.addAttribute("post", post);
 
-                    // Obtener la fecha y hora actual en formato UTC
-                    Instant currentInstant = Instant.now();
 
                     // Convertir la fecha de creación del post a UTC
                     Instant postInstant = post.getCreatedDate().toInstant();
@@ -272,8 +273,7 @@ public class FormsControlador {
                 } else if ("guardados".equals(tab)) {
                     List<SavedPost> savedPosts = savedPostRepository.findByUser(user);
 
-                    // Obtener la fecha y hora actual en formato UTC
-                    Instant currentInstant = Instant.now();
+
 
                     // Calcular la antigüedad de cada publicación guardada y agregarla al modelo
                     Map<Long, String> savedPostAges = new HashMap<>();
@@ -400,29 +400,117 @@ public class FormsControlador {
     }
 
     @GetMapping("/preguntas")
-    public String preguntas(Model model, @RequestParam(defaultValue = "0", required = false) Integer page, @RequestParam(defaultValue = "15", required = false) Integer size) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
+    public String preguntas(Model model,
+                            @RequestParam(defaultValue = "0", required = false) Integer page,
+                            @RequestParam(defaultValue = "15", required = false) Integer size,
+                            @RequestParam(required = false) Boolean unanswered,
+                            @RequestParam(required = false) List<String> tags,
+                            @RequestParam(defaultValue = "newest", required = false) String orderBy) {
+
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || !authentication.isAuthenticated()) {
+                return "redirect:/login"; // Redireccionar si no hay autenticación
+            }
+
             String emailAddress = authentication.getName();
             Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
-            if (optionalUser.isPresent()) {
-                User user = optionalUser.get();
-                model.addAttribute("user", user);
-            } else {
-                return "redirect:/login";
+            if (!optionalUser.isPresent()) {
+                return "redirect:/login"; // Redireccionar si el usuario no está presente
             }
-        } else {
-            return "redirect:/login";
-        }
+            User user = optionalUser.get();
+            model.addAttribute("user", user);
 
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Post> postsPage = postService.obtenerPostPaginados(pageable);
-        model.addAttribute("postsPage", postsPage);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", postsPage.getTotalPages());
+            Page<Post> postsPage;
+            Pageable pageable = PageRequest.of(page, size, orderBy.equals("newest") ? Sort.by("createdDate").descending() : Sort.by("createdDate").ascending());
+
+            if (unanswered != null && unanswered) {
+                if (tags != null && !tags.isEmpty()) {
+                    // Filtrar por tags y preguntas sin respuesta
+                    postsPage = postService.obtenerPostsSinRespuestaPaginadosPorTags(page, size, tags,orderBy);
+
+                } else {
+                    // Filtrar solo por preguntas sin respuesta
+                    postsPage = postService.obtenerPostsSinRespuestaPaginados(page, size,orderBy);
+                }
+            } else if (tags != null && !tags.isEmpty()) {
+                // Filtrar por tags
+                postsPage = postService.obtenerPostsPaginadosPorTags(page, size, tags,orderBy);
+            } else {
+                // No hay filtros seleccionados
+                postsPage = postService.obtenerPostsTipo1Paginados(page, size, orderBy);
+            }
+
+            // Verificar si no hay resultados y agregar un mensaje de advertencia
+            if (postsPage.isEmpty()) {
+                model.addAttribute("noResultsMessage", "No se encontraron publicaciones con los filtros seleccionados.");
+            } else {
+                Map<Integer, String> postAges = postsPage.stream()
+                        .collect(Collectors.toMap(
+                                Post::getId,
+                                post -> AgeCalculatorService.calculatePostAge(post.getCreatedDate().toInstant())
+                        ));
+                model.addAttribute("postAges", postAges);
+            }
+
+            model.addAttribute("postsPage", postsPage);
+            model.addAttribute("currentPage", page); // Usar 'page' en lugar de 'postsPage.getNumber()'
+            model.addAttribute("totalPages", postsPage.getTotalPages());
+            model.addAttribute("totalQuestions", postsPage.getTotalElements());
+            model.addAttribute("unanswered", unanswered); // Pasar el filtro como atributo
+            model.addAttribute("selectedTags", tags); // Pasar las etiquetas seleccionadas como atributo
+            model.addAttribute("orderBy", orderBy); // Pasar el orden seleccionado como atributo
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", "Hubo un error al cargar las preguntas. Por favor, intenta nuevamente más tarde.");
+        }
 
         return "preguntas";
     }
+
+
+
+
+//    @GetMapping("/api/preguntas")
+//    public String getPreguntasFiltradas(Model model,
+//                                        @RequestParam(required = false) Boolean unanswered) {
+//
+//        try {
+//            // Obtener la información del usuario autenticado si es necesario
+//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//            if (authentication == null || !authentication.isAuthenticated()) {
+//                return "redirect:/login"; // Redireccionar si no hay autenticación
+//            }
+//
+//            // Obtener el usuario autenticado
+//            String emailAddress = authentication.getName();
+//            Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
+//            if (!optionalUser.isPresent()) {
+//                return "redirect:/login"; // Redireccionar si el usuario no está presente
+//            }
+//            User user = optionalUser.get();
+//            model.addAttribute("user", user);
+//
+//            // Validar y obtener las preguntas filtradas sin respuesta si es necesario
+//            List<Post> posts;
+//            if (unanswered != null && unanswered) {
+//                posts = postRepository.findUnansweredPosts(pageable);
+//            } else {
+//                posts = postRepository.findAll();
+//            }
+//
+//            model.addAttribute("posts", posts);
+//
+//            // Redirigir a la vista de preguntas con el filtro aplicado
+//            return "redirect:/preguntas?unanswered=" + (unanswered != null && unanswered);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return "error"; // Manejar adecuadamente el error en producción
+//        }
+//    }
+
 
 
     @GetMapping("/createPost")
@@ -433,6 +521,8 @@ public class FormsControlador {
             Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
+
+
                 model.addAttribute("user", user);
             } else {
                 return "redirect:/login";

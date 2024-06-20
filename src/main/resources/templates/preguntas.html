@@ -10,7 +10,9 @@
     <link
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
             rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}">
 
     <link rel="icon" href="assets/logo03.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,32 +20,11 @@
     <link
             href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
             rel="stylesheet">
+    <link th:replace="fragments/header :: header">
+
 </head>
 
 <body>
-<header>
-    <div class="header-content">
-        <div class="fa fa-bars" id="menu-icon"></div>
-        <a href="/foro" class="logo"><span class="logo-text">Talk</span></a>
-        <div id="search-container" class="search-container">
-            <input type="text" placeholder="Buscar">
-
-        </div>
-        <div class="actions">
-            <a class="search-icon" id="search-icon"><i class="fas fa-search"></i></a>
-            <a href="/perfil" class="profile-btn"><img
-                    th:src="@{${user.profileImage}}" ></a> <a href="#"
-                                                              class="notifications-btn"><i class="fas fa-bell"></i><span
-                id="notification-count" class="notification-count">0</span></a> <a
-                href="/perfil?tab=configuracion" class="settings-btn"><i
-                class="fas fa-cog"></i></a>
-            <a href="/logout" class="logout-btn">
-                <i class="fas fa-sign-out-alt"></i>
-            </a>
-        </div>
-    </div>
-</header>
-
 
 
 <div class="container">
@@ -71,82 +52,133 @@
         <div id="mainbar">
             <div id="d-flex">
                 <h1>Todas las preguntas</h1>
-                <a  href="/createPost" class="ask-questions">Pregunta</a>
+                <a href="/createPost" class="ask-questions">Pregunta</a>
 
             </div>
             <!-- New Filter Section -->
             <div id="filters">
-                <p th:text="${totalQuestions} + ' preguntas'">24,176,461 preguntas</p>
-                <form action="/preguntas" method="get">
-                    <label>
-                        <input type="checkbox" name="unanswered">
-                        Solo sin respuesta
-                    </label>
-                    <label for="tag">Tag:</label>
-                    <select name="tag" id="tag">
-                        <option value="">Todos</option>
-                        <option value="React.js">React.js</option>
-                        <option value="Node.js">Node.js</option>
-                        <option value="PostgreSQL">PostgreSQL</option>
-                    </select>
-                    <button type="submit">Filtrar</button>
-                </form>
-            </div>
-            <!-- End Filter Section -->
-            <div id="content-listas">
-                <div id="flex-questions">
+                <!-- Mostrar el número total de preguntas -->
+                <p th:text="${totalQuestions} + ' preguntas'"></p>
 
-                    <div th:each="post : ${postsPage.content}" class="card">
-                        <div class="content">
-                            <p th:text="${post.postTitle}"></p>
-                            <ul class="chips">
-                                <li th:each="tag : ${post.tag}" class="chip" th:text="${tag.tagName}"></li>
+                <!-- Icono y botón para activar el filtro -->
+                <div class="filter-icon">
+                    <button id="filterIconBtn" class="icon-btn"><i class="fas fa-filter"></i> Filtrar</button>
+                </div>
 
-                            </ul>
-                            <div class="question-meta">
-                                <p th:text="${#dates.format(post.createdDate, 'dd/MM/yyyy HH:mm')}">
-                                    <span></span>
-                                </p>
+                <!-- Opciones de filtrado (inicialmente ocultas) -->
+                <div id="filterOptions" class="filter-options">
+                    <form action="/preguntas" method="get" class="filter-form">
+                        <!-- Checkbox para preguntas sin respuesta -->
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="unanswered" name="unanswered" th:checked="${unanswered}">
+                            <label class="form-check-label" for="unanswered">Solo sin respuesta</label>
+                        </div>
+
+                        <!-- Selección múltiple de etiquetas -->
+                        <div class="form-group">
+                            <label for="tagsSelect" class="filter-label">Tags:</label>
+                            <select name="tags" id="tagsSelect" class="form-control filter-select" multiple>
+                                <!-- Iterar sobre las etiquetas seleccionadas y agregarlas como opciones -->
+                                <option th:each="tagId : ${selectedTags}" th:value="${tagId}" th:text="${tagId}" selected="selected"></option>
+                                <!-- Iterar sobre todas las etiquetas disponibles y agregarlas como opciones -->
+                            </select>
+                        </div>
+
+                        <!-- Selección de ordenamiento -->
+                        <div class="form-group">
+                            <label class="filter-label">Ordenar por:</label>
+                            <div class="form-check">
+                                <input type="radio" class="form-check-input" id="orderByNewest" name="orderBy" value="newest" th:checked="${orderBy == 'newest'}">
+                                <label class="form-check-label" for="orderByNewest">Lo más nuevo</label>
                             </div>
-                            <div class="action-buttons">
-                                <a href="#book-a-mentor">Ayudar</a>
+                            <div class="form-check">
+                                <input type="radio" class="form-check-input" id="orderByOldest" name="orderBy" value="oldest" th:checked="${orderBy == 'oldest'}">
+                                <label class="form-check-label" for="orderByOldest">Lo más antiguo</label>
                             </div>
                         </div>
-                        <div class="background">
-                            <img th:src="@{${post.createdByUser.profileImage}}" alt="profile">
-                            <a th:href="@{'/inicio/' + ${post.createdByUser.displayName}}">
-                                <span th:text="${post.createdByUser.displayName}"></span>
-                            </a>
-                        </div>
-                    </div>
 
-                    <div class="pagination">
-                        <ul>
-                            <li th:if="${currentPage > 0}">
-                                <a th:href="@{/preguntas(page=${currentPage - 1}, size=${size})}">Anterior</a>
-                            </li>
-                            <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
-                                <a th:href="@{/preguntas(page=${i}, size=${size})}" th:text="${i + 1}" th:classappend="${i == currentPage} ? 'active' : ''"></a>
-                            </li>
-                            <li th:if="${currentPage < totalPages - 1}">
-                                <a th:href="@{/preguntas(page=${currentPage + 1}, size=${size})}">Siguiente</a>
-                            </li>
-                        </ul>
-                    </div>
+                        <!-- Botón para enviar el formulario de filtrado -->
+                        <button type="submit" class="btn btn-primary filter-button">Aplicar filtro</button>
+                    </form>
 
                 </div>
             </div>
 
+
+            <!-- End Filter Section -->
+            <div id="content-listas">
+                <div id="flex-questions">
+
+                    <div th:if="${not #lists.isEmpty(postsPage.content)}" th:each="post : ${postsPage.content}"
+                         class="card">
+                        <div class="content">
+                            <p th:text="${post.postTitle}"></p>
+                            <ul class="chips">
+                                <li th:each="tag : ${post.tag}">
+                                    <a th:href="@{/preguntas(tags=${{tag.tagName}})}" class="chip" th:text="${tag.tagName}"></a>
+                                </li>
+                            </ul>
+
+                            <div class="action-buttons-profile">
+                                <a th:href="@{'/postopen/' + ${post.id}}" class="view-more-button">Ayudar</a>
+                                <div class="profile-section">
+                                    <img th:src="@{${post.createdByUser.profileImage}}" alt="profile"
+                                         class="save-profile">
+                                    <div class="profile-info">
+                                        <a th:href="@{'/inicio/' + ${post.createdByUser.displayName}}">
+                                            <span th:text="${post.createdByUser.displayName}"></span>
+                                        </a>
+                                        <p>
+                                            <span th:text="${postAges[post.id]}"></span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div th:if="${#lists.isEmpty(postsPage.content)}" class="no-results-message">
+                        <p>No se encontraron publicaciones con los filtros seleccionados.</p>
+                    </div>
+
+                </div>
+
+                <!-- Paginación -->
+                <div th:if="${not #lists.isEmpty(postsPage.content)}" class="pagination">
+                    <ul>
+                        <li th:if="${currentPage > 0}">
+                            <a th:href="@{/preguntas(page=${currentPage - 1}, size=${size}, unanswered=${unanswered}, tags=${selectedTags}, orderBy=${orderBy})}">Anterior</a>
+                        </li>
+                        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                            <a th:href="@{/preguntas(page=${i}, size=${size}, unanswered=${unanswered}, tags=${selectedTags}, orderBy=${orderBy})}" th:text="${i + 1}"
+                               th:classappend="${i == currentPage} ? 'active' : ''"></a>
+                        </li>
+                        <li th:if="${currentPage < totalPages - 1}">
+                            <a th:href="@{/preguntas(page=${currentPage + 1}, size=${size}, unanswered=${unanswered}, tags=${selectedTags}, orderBy=${orderBy})}">Siguiente</a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+
         </div>
-
-
     </div>
+
 </div>
-
-
-
-
 </body>
+<script>
+    function searchPosts() {
+      var query = document.getElementById('search-input').value.trim();
+      if (query.length === 0) {
+          alert('Por favor ingresa un término de búsqueda.');
+          return;
+      }
+      // Redirigir a la ruta manejada por Spring Boot
+      window.location.href = '/search?q=' + encodeURIComponent(query);
+  }
+
+</script>
 <script>
     document
             .addEventListener(
@@ -184,7 +216,70 @@
     });
 
 
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const filterIconBtn = document.getElementById('filterIconBtn');
+    const filterOptions = document.getElementById('filterOptions');
 
+    filterIconBtn.addEventListener('click', function () {
+        filterOptions.classList.toggle('show');
+    });
+});
+</script>
+<script th:src="@{/js/header.js}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var select = new Choices('#tagsSelect', {
+            removeItemButton: true,
+            maxItemCount: 5,
+            allowHTML: true
+        });
+
+        fetch('/api/tags')
+            .then(response => response.json())
+            .then(data => {
+                var options = data.map(function(tag) {
+                    return { value: tag, label: tag };
+                });
+                select.setChoices(options, 'value', 'label', true);
+            })
+            .catch(error => console.error('Error fetching tags:', error));
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var menuItems = document.querySelectorAll('.sidebar-content nav ul li');
+        document.querySelector('.sidebar-content nav ul li:first-child').classList.add('active');
+
+        let menu = document.querySelector('#menu-icon');
+        let navbar = document.querySelector('.sidebar');
+
+        menu.onclick = () => {
+            menu.classList.toggle('fa-times');
+            navbar.classList.toggle('open');
+        }
+
+        const searchIcon = document.getElementById('search-icon');
+        const searchContainer = document.getElementById('search-container');
+
+        searchIcon.addEventListener('click', function(event) {
+            event.preventDefault();
+            searchContainer.style.display = searchContainer.style.display === 'flex' ? 'none' : 'flex';
+        });
+    });
+
+    function discardChanges() {
+        var inputs = document.querySelectorAll('#question-form input');
+        var textareas = document.querySelectorAll('#question-form textarea');
+
+        inputs.forEach(function(input) {
+            input.value = '';
+        });
+
+        textareas.forEach(function(textarea) {
+            textarea.value = '';
+        });
+    }
 
 
 </script>

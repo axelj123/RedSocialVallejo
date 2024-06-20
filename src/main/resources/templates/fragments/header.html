@@ -1,0 +1,46 @@
+<!-- src/main/resources/templates/fragments/header.html -->
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foro</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/foro.css}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="icon" th:href="@{/assets/logo03.png}" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+</head>
+<body>
+<header>
+    <div class="header-content">
+        <div class="fa fa-bars" id="menu-icon"></div>
+        <a th:href="@{/foro}" class="logo"><span class="logo-text">Talk</span></a>
+        <div id="search-container" class="search-container">
+            <input class="search-input" type="text" placeholder="Buscar" id="search-input">
+            <button onclick="searchPosts()">Buscar</button>
+            <div id="search-results" class="search-results"></div>
+        </div>
+        <div class="actions">
+            <a class="search-icon" id="search-icon"><i class="fas fa-search"></i></a>
+            <a th:href="@{/perfil}" class="profile-btn"><img th:src="@{${user.profileImage}}"></a>
+            <a href="#" class="notifications-btn" id="notifications-btn">
+                <i class="fas fa-bell"></i>
+                <span id="notification-count" class="notification-count"></span>
+            </a>
+            <div id="notification-popup" class="notification-popup">
+                <h2>Notificaciones</h2>
+                <ul id="notification-list" class="notification-list">
+                    <!-- Aquí se cargarán las notificaciones -->
+                </ul>
+            </div>
+            <a th:href="@{/perfil?tab=configuracion}" class="settings-btn"><i class="fas fa-cog"></i></a>
+            <a th:href="@{/logout}" class="logout-btn"><i class="fas fa-sign-out-alt"></i></a>
+        </div>
+    </div>
+</header>
+</body>
+
+</html>

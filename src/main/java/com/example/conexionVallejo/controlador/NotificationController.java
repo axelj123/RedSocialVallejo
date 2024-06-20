@@ -22,6 +22,7 @@ public class NotificationController {
     @Autowired
     private UserRepository userRepository;
 
+
     @GetMapping("/notifications")
     public ResponseEntity<List<Notification>> getNotifications(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
@@ -36,6 +37,10 @@ public class NotificationController {
         }
 
         List<Notification> notifications = notificationService.getNotificationsForUser(user);
+
+        // Calcular la antigüedad de las notificaciones
+        notificationService.calculateNotificationAges(notifications);
+
         return ResponseEntity.ok(notifications);
     }
 

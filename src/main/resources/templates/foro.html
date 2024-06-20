@@ -10,6 +10,7 @@
     <link
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
             rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}">
 
 
     <link rel="icon" href="assets/logo03.png" type="image/png">
@@ -18,40 +19,11 @@
     <link
             href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
             rel="stylesheet">
+    <link th:replace="fragments/header :: header">
+
 </head>
 
 <body>
-<header>
-    <div class="header-content">
-        <div class="fa fa-bars" id="menu-icon"></div>
-        <a href="/foro" class="logo"><span class="logo-text">Talk</span></a>
-        <div id="search-container" class="search-container">
-            <input class="search-input" type="text" placeholder="Buscar" id="search-input">
-            <button onclick="searchPosts()">Buscar</button>
-            <div id="search-results" class="search-results"></div>
-        </div>
-
-        <div class="actions">
-            <a class="search-icon" id="search-icon"><i class="fas fa-search"></i></a>
-            <a href="/perfil" class="profile-btn"><img th:src="@{${user.profileImage}}"></a>
-            <a href="#" class="notifications-btn" id="notifications-btn">
-                <i class="fas fa-bell"></i>
-                <span id="notification-count" class="notification-count"></span>
-            </a>
-
-            <div id="notification-popup" class="notification-popup">
-                <h2>Notificaciones</h2>
-                <ul id="notification-list" class="notification-list">
-                    <!-- Aquí se cargarán las notificaciones -->
-                </ul>
-            </div>
-            <a href="/perfil?tab=configuracion" class="settings-btn"><i class="fas fa-cog"></i></a>
-            <a href="/logout" class="logout-btn">
-                <i class="fas fa-sign-out-alt"></i>
-            </a>
-        </div>
-    </div>
-</header>
 
 
 <div class="container">
@@ -88,13 +60,12 @@
 
 
                     <div th:each="post : ${posts}" class="card">
-
-
-                        <!-- Contenido del post -->
                         <div class="content">
                             <p th:text="${post.postTitle}"></p>
                             <ul class="chips">
-                                <li th:each="tag : ${post.tag}" class="chip" th:text="${tag.tagName}"></li>
+                                <li th:each="tag : ${post.tag}">
+                                    <a th:href="@{/preguntas(tags=${{tag.tagName}})}" class="chip" th:text="${tag.tagName}"></a>
+                                </li>
                             </ul>
 
                             <div class="action-buttons-profile">
@@ -181,217 +152,12 @@
 
 </script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const notificationsBtn = document.getElementById('notifications-btn');
-        const notificationPopup = document.getElementById('notification-popup');
-        const notificationList = document.getElementById('notification-list');
-        const notificationCount = document.getElementById('notification-count');
 
-        // Función para obtener y mostrar las notificaciones al cargar la página
-        function fetchNotificationsAndCount() {
-            fetch('/notifications')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Error al obtener las notificaciones');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    notificationCount.innerText = data.length; // Actualiza el conteo de notificaciones
-                })
-                .catch(error => {
-                    console.error('Error al obtener las notificaciones:', error);
-                });
-        }
-
-        // Evento al hacer clic en el botón de notificaciones
-        notificationsBtn.addEventListener('click', function(event) {
-            event.preventDefault();
-
-            if (notificationPopup.style.display === 'block') {
-                notificationPopup.style.display = 'none';
-            } else {
-                fetchNotificationsAndShowList(); // Muestra la lista completa al hacer clic
-            }
-        });
-
-        // Función para mostrar la lista completa de notificaciones
-        function fetchNotificationsAndShowList() {
-            fetch('/notifications')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Error al obtener las notificaciones');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    notificationList.innerHTML = '';
-
-                    data.forEach(notification => {
-                        const listItem = document.createElement('li');
-                        listItem.classList.add('notification-item');
-                        listItem.innerHTML = `
-                            <div class="notification-content">
-                                <div class="notification-profile">
-                                    <img src="${notification.profileImage}" alt="Perfil">
-                                </div>
-                                <div class="notification-details">
-                                    <div class="notification-message">${notification.message}</div>
-                                    <div class="notification-post">
-                                        <span class="notification-post-title">${notification.postTitle}</span>
-                                        <span class="notification-post-author">Por ${notification.postAuthor}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-
-                        listItem.addEventListener('click', function() {
-                            markNotificationAsRead(notification.id);
-                        });
-
-                        notificationList.appendChild(listItem);
-                    });
-
-                    notificationPopup.style.display = 'block';
-                })
-                .catch(error => {
-                    console.error('Error al obtener las notificaciones:', error);
-                });
-        }
-
-        // Función para marcar una notificación como leída
-        function markNotificationAsRead(id) {
-            fetch(`/notifications/markAsRead/${id}`, { method: 'POST' })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Error al marcar la notificación como leída');
-                    }
-                    return response.json();
-                })
-                .then(() => {
-                    fetchNotificationsAndCount(); // Actualiza el conteo después de marcar como leída
-                })
-                .catch(error => {
-                    console.error('Error al marcar la notificación como leída:', error);
-                });
-        }
-
-        // Función para cerrar el popup si se hace clic fuera de él
-        document.addEventListener('click', function(event) {
-            if (!notificationPopup.contains(event.target) && event.target !== notificationsBtn) {
-                notificationPopup.style.display = 'none';
-            }
-        });
-
-        // Cargar las notificaciones al cargar la página por primera vez
-        fetchNotificationsAndCount();
-    });
 </script>
 <style>
-    .notification-popup {
-        position: absolute;
-        top: 60px; /* Ajusta la posición vertical según sea necesario */
-        right: 20px; /* Alinea el contenedor a la derecha con un margen */
-        width: 400px; /* Ancho del contenedor de notificaciones */
-        background-color: #fff; /* Color de fondo */
-        border-radius: 8px; /* Borde redondeado */
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        padding: 10px; /* Espaciado interno */
-        display: none; /* Oculto por defecto */
-        z-index: 100000; /* Ajusta el índice z si es necesario */
-    }
 
-    .notification-popup h2 {
-        margin-top: 0;
-        font-size: 1.5rem;
-        color: #333; /* Color del texto del encabezado */
-    }
-
-    .notification-list {
-        list-style-type: none; /* Elimina los puntos de la lista */
-        padding: 0;
-        margin: 0;
-        max-height: 300px; /* Altura máxima de la lista de notificaciones */
-        overflow-y: auto; /* Habilita el desplazamiento vertical si hay muchas notificaciones */
-    }
-
-    .notification-item {
-        padding: 10px;
-        border-bottom: 1px solid #eee; /* Borde inferior entre notificaciones */
-        cursor: pointer;
-    }
-
-    .notification-item:hover {
-        background-color: #f0f0f0; /* Color de fondo al pasar el mouse */
-    }
-
-    .notification-content {
-        display: flex;
-        align-items: center;
-    }
-
-.notifications-btn {
-	position: relative;
-}
-
-.notifications-btn a:hover {
-	background: red;
-}
-
-.notification-count {
-	position: absolute;
-	/* Establece la posición absoluta para el contador */
-	top: -5px; /* Ajusta la posición vertical */
-	right: -8px; /* Ajusta la posición horizontal */
-	background-color: #ff3f3f;
-	color: white;
-	font-size: 12px;
-	font-weight: bold;
-	padding: 2px 6px;
-	border-radius: 50%;
-}
-
-.notifications-btn:hover .notification-count {
-	background-color: #ff5f5f;
-	/* Cambia el color de fondo del contador de notificaciones al pasar el mouse */
-}
-
-    .notification-profile img {
-        width: 40px; /* Ancho de la imagen del perfil */
-        height: 40px; /* Altura de la imagen del perfil */
-        border-radius: 50%; /* Borde redondeado para la imagen del perfil */
-        margin-right: 10px; /* Espaciado derecho */
-    }
-
-    .notification-details {
-        flex: 1; /* Ocupa todo el espacio disponible */
-    }
-
-    .notification-message {
-        font-weight: 600;
-        margin-bottom: 5px;
-    }
-
-    .notification-post-title {
-        font-size: 0.9rem;
-        font-weight: bold;
-        margin-right: 5px;
-    }
-
-    .notification-post-author {
-        font-size: 0.8rem;
-        color: #666;
-    }
-
-    /* Media query para pantallas de hasta 480px de ancho */
-    @media (max-width: 480px) {
-
-   .notification-popup {
- width:320px;
- right:0;
-    }
-    }
 </style>
+<script th:src="@{/js/header.js}"></script>
 
 
 </html>

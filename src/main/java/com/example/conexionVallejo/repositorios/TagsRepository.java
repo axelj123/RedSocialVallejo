@@ -23,4 +23,6 @@ public interface TagsRepository extends JpaRepository<Tag, Long>{
     @Query("SELECT t FROM Tag t JOIN PostTag pt ON t.id = pt.tag.id JOIN Post p ON pt.post.id = p.id WHERE p.createdByUser = :user GROUP BY t ORDER BY COUNT(p) DESC")
     List<Tag> findTopTagsByUser(@Param("user") User user);
 
+    List<Tag> findByTagNameIn(List<String> tagNames);
+
 }

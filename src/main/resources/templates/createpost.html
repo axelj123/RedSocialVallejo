@@ -8,37 +8,19 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="icon" href="assets/logo03.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}">
+
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/super-build/ckeditor.js"></script>
-
+    <link th:replace="fragments/header :: header">
 </head>
 
 <body>
-<header>
-    <div class="header-content">
-        <div class="fa fa-bars" id="menu-icon"></div>
-        <a href="/foro" class="logo"><span class="logo-text">Talk</span></a>
-        <div id="search-container" class="search-container">
-            <input class="search-input" type="text" placeholder="Buscar" id="search-input">
-            <button onclick="searchPosts()">Buscar</button>
-            <div id="search-results" class="search-results"></div>
-        </div>
 
-        <div class="actions">
-            <a class="search-icon" id="search-icon"><i class="fas fa-search"></i></a>
-            <a href="/perfil" class="profile-btn"><img th:src="@{${user.profileImage}}"></a>
-            <a href="#" class="notifications-btn"><i class="fas fa-bell"></i><span id="notification-count" class="notification-count">0</span></a>
-            <a href="/perfil?tab=configuracion" class="settings-btn"><i class="fas fa-cog"></i></a>
-            <a href="/logout" class="logout-btn">
-                <i class="fas fa-sign-out-alt"></i>
-            </a>
-        </div>
-    </div>
-</header>
 
 <div class="container">
     <div class="sidebar">
@@ -390,7 +372,7 @@
     });
 </script>
 
-
+<script th:src="@{/js/header.js}"></script>
 
 </body>
 </html>

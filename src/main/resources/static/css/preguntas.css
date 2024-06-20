@@ -316,113 +316,114 @@ nav.open {
 }
 
 /* DIVS PREGUNTAS */
+
+
 .card {
-	display: flex;
-	transition: all 0.3s;
-	min-height: 20%;
-	border-bottom: 1px solid var(--line-color);
-}
-
-.background {
-	width: 20%;
-	height: 20%;
-}
-
-.background span {
-	font-size: 12px;
-	padding: 2px;
-	display: flex;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s;
+    min-height: 100px;
+    border: 1px solid var(--line-color);
+    padding: 10px;
+    margin
+    background-color: #fff;
 }
 
 .content {
-	flex: 3 1 22rem;
-	display: flex;
-	flex-direction: column;
-	justify-content: start;
-	padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
 }
 
 .content>p {
-	font-size: 14px;
-	font-weight: 400;
-	margin: 0.4rem 0;
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0.4rem 0;
 }
 
 .content a {
-	color: var(--primary-violet);
+    color: var(--primary-violet);
 }
 
 .chips {
-	display: flex;
-	gap: 1.5rem;
-	flex-wrap: wrap;
-	list-style-type: none;
-	padding: 0.75rem 0px 1rem 0px;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    list-style-type: none;
+    padding: 0.5rem 0;
 }
 
 .chip {
-	border-radius: 0.5rem;
-	padding: 0.25rem 0.5rem;
-	font-size: 10px;
-	background-color: var(--gray);
-	transition: all 0.3s;
-	font-weight: 500;
+    border-radius: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 10px;
+    background-color: var(--gray);
+    transition: all 0.3s;
+    font-weight: 500;
+    cursor: pointer;
+
 }
 
 .chip:hover {
-	background-color: var(--primary-violet);
-	color: var(--gray);
+    background-color: var(--primary-violet);
+    color: var(--gray);
 }
 
-.background img {
-	width: 50px;
-	height: 50px;
-	padding: 5px;
+.action-buttons-profile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
 }
 
-.action-buttons {
-	display: flex; /* Hace que los botones se muestren en línea */
-	align-items: center; /* Centra verticalmente los botones */
-	min-width: 100%;
+.view-more-button {
+    background-color: var(--bg-color);
+    color
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 0.75rem;
+    outline: none;
+    border: none;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s;
 }
 
-.action-buttons a {
-	background-color: var(--primary);
-	color: white;
-	padding: 2px;
-	text-decoration: none;
-	border-radius: 0.75rem;
-	outline: none;
-	border: none;
-	font-size: 12px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex: 1 0 15rem;
-	max-width: 20%;
-	min-width: 150px; /* Establece un ancho mínimo para los botones */
+.view-more-button:hover {
+    background-color: darken(var(--primary), 10%);
+    text-decoration: underline;
 }
 
-.action-buttons a:hover {
-	text-decoration: underline;
+.profile-section {
+    display: flex;
+    align-items: center;
 }
 
-.action-buttons a.secondary {
-	background-color: inherit;
-	color: var(--primary);
-	border: 1px solid var(--primary);
-	flex: 1 0 5rem;
+.profile-section img {
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    border-radius: 50%;
+    margin-right: 10px;
 }
 
-.question-meta {
-	font-size: 12px;
-	color: #999; /* Color de texto gris */
-	margin-bottom: 10px; /* Espacio inferior */
+.profile-info {
+    display: flex;
+    flex-direction: column;
 }
 
-.question-meta span {
-	font-weight: bold; /* Texto en negrita */
-	color: #333; /* Color de texto oscuro */
+.profile-info a {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.profile-info p {
+    font-size: 12px;
+    color: #777;
+    margin: 0;
 }
 
  .pagination {
@@ -455,6 +456,113 @@ nav.open {
             font-weight: bold;
             pointer-events: none;
         }
+/* Estilo para el contenedor de filtros */
+#filters {
+  display: flex;
+  flex-direction: column; /* Cambiado a columna para apilar verticalmente */
+  align-items: flex-start; /* Alineación al inicio */
+  justify-content: space-between;
+  margin-bottom: 20px;
+  background-color: #ffffff;
+  padding:10px;
+}
+
+/* Estilo para el título de las preguntas */
+#filters p {
+  font-size: 18px;
+  font-weight: 400;
+  margin: 0; /* Eliminamos el margen superior e inferior */
+  margin-bottom: 10px; /* Separación entre el título y el número de preguntas */
+}
+
+/* Estilo para el icono de filtro */
+.filter-icon {
+  margin-left: 10px; /* Espacio a la izquierda del icono */
+}
+
+/* Estilo para el botón de filtro */
+#filterIconBtn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 3px;
+  margin-top: 10px; /* Separación entre el botón y el título */
+}
+
+#filterIconBtn:hover {
+  background-color: #0056b3;
+}
+
+/* Estilo para las opciones de filtro */
+#filterOptions {
+  margin-top: 10px; /* Espacio arriba */
+  display: none;
+  background-color: #fff;
+  padding: 10px;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+.no-results-message {
+    color: #666; /* Color de texto gris */
+    font-style: italic;
+    margin: 20px;
+}
+#filterOptions.show {
+  display: block;
+}
+.filter-form{
+display:flex;
+margin-top:10px;
+background:  #fff;
+}
+/* Estilos para cada sección de filtro */
+.filter-section {
+  margin-bottom: 10px;
+}
+.form-check{
+margin-bottom:20px;
+}
+.filter-label {
+  font-weight: 400  ;
+  display: block;
+  margin-bottom: 10px;
+}
+.form-group{
+width:250px;
+  margin-left: 80px;
+
+}
+.filter-button{
+width:100px;
+height:50px;
+}
+.filter-select,
+.filter-input {
+  width: calc(100% - 10px); /* Ajuste para el padding */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 14px;
+
+}
+
+.filter-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.filter-button:hover {
+  background-color: #0056b3;
+}
+
 
 @media ( max-width : 480px) {
 	#menu-icon {
@@ -552,5 +660,13 @@ nav.open {
 		.profile-btn img {
 
 	margin-top:5px;
+}
+.form-group{
+
+  margin-left: 10px;
+
+}
+.filter-form{
+display:block;
 }
 }

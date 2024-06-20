@@ -147,9 +147,9 @@ public class PostController {
     private void deleteSinglePost(Post post) {
         try {
             // Eliminar las dependencias del post en otras tablas
+            notificationRepository.deleteByPost_Id(post.getId().longValue());
             savedPostRepository.deleteByPostId(post.getId().longValue());
             postTagRepository.deleteByPostId(post.getId().longValue());
-
             // Eliminar el post
             postRepository.deleteById(post.getId().longValue());
         } catch (Exception e) {
@@ -168,7 +168,7 @@ public class PostController {
                 deleteSinglePost(answer); // Eliminar cada respuesta
             }
 
-            // Eliminar las dependencias del post principal en otras tablas
+            notificationRepository.deleteByPost_Id(question.getId().longValue());
             savedPostRepository.deleteByPostId(question.getId().longValue());
             postTagRepository.deleteByPostId(question.getId().longValue());
 
@@ -250,7 +250,7 @@ public class PostController {
                     postRepository.save(answer);
 
                     // Crear y guardar la notificación
-                    createNotification(parentPost.getCreatedByUser(), parentPost, user);
+                    createNotification(parentPost.getCreatedByUser(), parentPost, user, answer.getCreatedDate());
 
                     return "redirect:/postopen/" + parentQuestionId; // Redirigir a la página original de la pregunta
                 }
@@ -259,13 +259,13 @@ public class PostController {
         return "redirect:/login";
     }
 
-    private void createNotification(User recipient, Post relatedPost, User responder) {
+    private void createNotification(User recipient, Post relatedPost, User responder,Timestamp answerDate) {
         Notification notification = new Notification();
         notification.setUser(recipient);
         notification.setPost(relatedPost);
         notification.setMessage(responder.getDisplayName() + " ha respondido a tu pregunta.");
         notification.setProfileImage(responder.getProfileImage());
-        notification.setCreatedDate(relatedPost.getCreatedDate());
+        notification.setCreatedDate(answerDate);
         notification.setRead(false); // Notificación inicialmente no leída
         notificationRepository.save(notification);
     }
