@@ -1,233 +1,135 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Perfil</title>
-<link rel="stylesheet" type="text/css" href="css/perfil.css">
-<link
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-	rel="stylesheet">
-<link rel="icon" href="assets/logo03.png" type="image/png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
-	href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
-	rel="stylesheet">
-<style>
-.social-icons a {
-	margin-right: 10px;
-	color: #333;
-	text-decoration: none;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil Público</title>
+    <link rel="stylesheet" type="text/css" href="/css/perfil.css">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="/assets/logo03.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Incluye el header existente sin modificaciones -->
+    <link th:replace="fragments/header :: header">
+    <style>
+        .social-icons a {
+            margin-right: 10px;
+            color: #333;
+            text-decoration: none;
+        }
 
-.social-icons a:hover {
-	color: #0073e6;
-}
-</style>
-
+        .social-icons a:hover {
+            color: #0073e6;
+        }
+    </style>
 </head>
-
 <body>
-	<header>
-		<div class="header-content">
-			<div class="fa fa-bars" id="menu-icon"></div>
-			<a href="/foro" class="logo"><span class="logo-text">Talk</span></a>
-			<div id="search-container" class="search-container">
-				<input class="search-input" type="text" placeholder="Buscar">
+<div class="container">
+    <div class="sidebar">
+        <div class="sidebar-content">
+            <nav>
+                <ul>
+                    <li><a href="/foro"><i class="fas fa-home"></i> Inicio</a></li>
+                    <li><a href="/preguntas"><i class="fas fa-question-circle"></i> Preguntas</a></li>
+                    <li><a href="/tags"><i class="fas fa-tag"></i> Tags</a></li>
+                    <li><a href="/users"><i class="fas fa-user"></i> Usuarios</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
 
-			</div>
-			<div class="actions">
-				<a class="search-icon" id="search-icon"><i class="fas fa-search"></i></a>
-				<a href="/perfil" class="profile-btn"><img
-					th:src="@{${user.profileImage}}"></a> <a href="#"
-					class="notifications-btn"><i class="fas fa-bell"></i><span
-					id="notification-count" class="notification-count">0</span></a> <a
-					href="/perfil?tab=configuracion" class="settings-btn"><i
-					class="fas fa-cog"></i></a>
-					<a href="/logout" class="logout-btn">
-    <i class="fas fa-sign-out-alt"></i>
-</a>
-					
-			</div>
-		</div>
-	</header>
-
-	<div class="container">
-		<div class="sidebar">
-			<div class="sidebar-content">
-				<nav>
-					<ul>
-						<li><a href="/foro"><i class="fas fa-home"></i> Inicio</a></li>
-						<li><a href="#"><i class="fas fa-question-circle"></i>
-								Preguntas</a></li>
-						<li><a href="#"><i class="fas fa-tag"></i> Tags</a></li>
-						<li><a th:href="@{/perfil(tab='guardados')}"
-							data-page="perfil"
-							th:classappend="${activeTab == 'guardados'} ? 'active' : ''"><i
-								class="fas fa-bookmark"></i> Guardado</a></li>
-
-						<li><a href="/users"><i class="fas fa-user"></i> Usuarios</a></li>
-					</ul>
-				</nav>
-			</div>
-		</div>
-
-		<div id="content-center">
-			<div id="mainbar">
-				<div class="card">
-					<div class='background'>
-						<img src="assets/profile.png" alt="background"
-							th:src="@{${user.profileImage}}" class="img-profile" />
-					</div>
-
-					<div class='content'>
-						<h2 th:text="${user.displayName}">Nombre de Usuario</h2>
-						<p th:text="${user.aboutMe}">correo@example.com</p>
-						<p>
-							<em></em>
-						</p>
-						<div class="social-icons">
-							<a th:href="${user.facebookUrl}" target="_blank"
-								th:if="${user.facebookUrl}"> <i class="fab fa-facebook"></i>
-							</a> <a th:href="${user.linkedinUrl}" target="_blank"
-								th:if="${user.linkedinUrl}"> <i class="fab fa-linkedin"></i>
-							</a> <a th:href="${user.instagramUrl}" target="_blank"
-								th:if="${user.instagramUrl}"> <i class="fab fa-instagram"></i>
-							</a> <a th:href="${user.tiktokUrl}" target="_blank"
-								th:if="${user.tiktokUrl}"> <i class="fab fa-tiktok"></i>
-							</a>
-						</div>
-					</div>
-				</div>
-				<div class="flex-actions">
-					<div class="items-navigation">
-						<a th:href="@{/perfil(tab='info')}"
-							th:classappend="${activeTab == 'info'} ? 'active' : ''">Perfil</a>
-						<a th:href="@{/perfil(tab='actividades')}"
-							th:classappend="${activeTab == 'actividades'} ? 'active' : ''">Actividades</a>
-						
-					</div>
-				</div>
-				<div class="action-items">
-					<div id="perfil" class="section-content"
-						th:style="${activeTab == 'info'} ? 'display:block;' : 'display:none;'">
-						<h3>Estado</h3>
-						<ul>
-							<li><strong>11</strong> reputation</li>
-							<li><strong>1k</strong> reached</li>
-							<li><strong>0</strong> answers</li>
-							<li><strong>2</strong> questions</li>
-						</ul>
-
-						<h3>Acerca de mí</h3>
-						<p th:text="${user.aboutMe}">Soy Axel Jhosmell Muñoz Silva,
-							Ingeniero de Sistemas apasionado por la tecnología y la
-							innovación. Siempre en búsqueda de nuevos desafíos y
-							oportunidades para aprender y crecer. ¡Listo para conectar y
-							compartir conocimientos!</p>
+    <div id="content-center">
+        <div id="mainbar">
+            <div class="card">
+                <div class='background'>
+                    <img src="assets/profile.png" alt="background" th:src="@{${userpublic.profileImage}}" class="img-profile"/>
+                </div>
+                <div class='content-card'>
+                    <h2 th:text="${userpublic.displayName}">Nombre de Usuario</h2>
+                    <p th:text="${userpublic.aboutMe}">correo@example.com</p>
+                    <div class="social-icons">
+                        <a th:href="${userpublic.facebookUrl}" target="_blank" th:if="${userpublic.facebookUrl}"><i class="fab fa-facebook"></i></a>
+                        <a th:href="${userpublic.linkedinUrl}" target="_blank" th:if="${userpublic.linkedinUrl}"><i class="fab fa-linkedin"></i></a>
+                        <a th:href="${userpublic.instagramUrl}" target="_blank" th:if="${userpublic.instagramUrl}"><i class="fab fa-instagram"></i></a>
+                        <a th:href="${userpublic.tiktokUrl}" target="_blank" th:if="${userpublic.tiktokUrl}"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="info-users">
+                <div id="perfil" class="section-content" style="display:block;">
+                    <div class="profile-box">
+                        <h3>Stats</h3>
+                        <ul class="stats">
+                            <li><strong th:text="${numRespuestas}"></strong><br>respuestas</li>
+                            <li><strong th:text="${numPreguntas}"></strong><br>preguntas</li>
+                        </ul>
+                    </div>
+                    <div class="profile-box">
+                        <h3>Top tags</h3>
+                        <ul class="tags">
+                            <li th:each="tag : ${topTags}">
+                                <a th:href="@{/preguntas(tags=${tag.tagName})}" th:text="${tag.tagName}"></a>
+                            </li>
+                        </ul>
 
 
-
-						<h3>Top Tags</h3>
-						<table>
-							<tr>
-								<th>Tag</th>
-								<th>Score</th>
-								<th>Posts</th>
-								<th>Posts %</th>
-							</tr>
-							<tr>
-								<td>google-apps-script</td>
-								<td>0</td>
-								<td>1</td>
-								<td>50%</td>
-							</tr>
-							<tr>
-								<td>java</td>
-								<td>0</td>
-								<td>1</td>
-								<td>50%</td>
-							</tr>
-							<tr>
-								<td>php</td>
-								<td>0</td>
-								<td>1</td>
-								<td>50%</td>
-							</tr>
-							<tr>
-								<td>sql</td>
-								<td>0</td>
-								<td>1</td>
-								<td>50%</td>
-							</tr>
-						</table>
-
-						<h3>Preguntas realizadas</h3>
-						<ul>
-							<li>1. Como hacer algo (Aug 21, 2020)</li>
-							<li>0. Select with Group By</li>
-						</ul>
-					</div>
-					<div id="actividades" class="section-content"
-						th:style="${activeTab == 'actividades'} ? 'display:block;' : 'display:none;'">
-						Contenido de Actividades</div>
-						
-					<div id="guardados" class="section-content" th:style="${activeTab == 'guardados'} ? 'display:block;' : 'display:none;'">
-    <h3>Todos los guardados</h3>
-        <p>1 item guardado</p>
-
-   
+                    </div>
+                    <div class="profile-box">
+                        <h3>Todas las preguntas</h3>
+                        <ul class="posts">
+                            <li th:each="post : ${userPosts}">
+                                <a th:href="@{'/postopen/' + ${post.id}}"><!-- Ajusta según la ruta real de tus posts -->
+                                    <span th:text="${post.postTitle}"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-				
-				</div>
-			</div>
-		</div>
-	</div>
-	<script>
+<script>
+    function searchPosts() {
+      var query = document.getElementById('search-input').value.trim();
+      if (query.length === 0) {
+          alert('Por favor ingresa un término de búsqueda.');
+          return;
+      }
+      // Redirigir a la ruta manejada por Spring Boot
+      window.location.href = '/search?q=' + encodeURIComponent(query);
+  }
+</script>
+
+<script th:inline="javascript">
     document.addEventListener('DOMContentLoaded', function() {
-        const profilePictureInput = document.getElementById('profile_picture');
-        const profileImage = document.getElementById('profile-image');
+        var menuItems = document.querySelectorAll('.sidebar-content nav ul li');
 
-        profilePictureInput.addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    profileImage.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
+        document.querySelector('.sidebar-content nav ul li:first-child').classList.add('active');
+
+        let menu = document.querySelector('#menu-icon');
+        let navbar = document.querySelector('.sidebar');
+
+        menu.onclick = () => {
+            menu.classList.toggle('fa-times');
+            navbar.classList.toggle('open');
+        }
+
+        const searchIcon = document.getElementById('search-icon');
+        const searchContainer = document.getElementById('search-container');
+
+        searchIcon.addEventListener('click', function(event) {
+            event.preventDefault();
+            searchContainer.style.display = searchContainer.style.display === 'none' ? 'flex' : 'none';
         });
     });
 </script>
+<script th:src="@{/js/header.js}"></script>
 
-	<script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var menuItems = document.querySelectorAll('.sidebar-content nav ul li');
-
- 
-
-            document.querySelector('.sidebar-content nav ul li:first-child').classList.add('active');
-
-            let menu = document.querySelector('#menu-icon');
-            let navbar = document.querySelector('.sidebar');
-
-            menu.onclick = () => {
-                menu.classList.toggle('fa-times');
-                navbar.classList.toggle('open');
-            }
-
-            const searchIcon = document.getElementById('search-icon');
-            const searchContainer = document.getElementById('search-container');
-
-            searchIcon.addEventListener('click', function(event) {
-                event.preventDefault();
-    	        searchContainer.style.display = searchContainer.style.display === 'none' ? 'flex' : 'none';
-            });
-        });
-    </script>
 </body>
 </html>
-

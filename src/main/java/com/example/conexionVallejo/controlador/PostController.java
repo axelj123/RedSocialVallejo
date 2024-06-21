@@ -46,16 +46,13 @@ public class PostController {
     public ResponseEntity<Map<String, String>> deletePostSave(@PathVariable Long savedPostId, Authentication authentication) {
         Map<String, String> response = new HashMap<>();
         try {
-            // Verificar la autenticación del usuario
             if (authentication == null || !authentication.isAuthenticated()) {
                 response.put("message", "Usuario no autenticado");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
             }
 
-            // Obtener el nombre de usuario del usuario autenticado
             String loggedInUsername = authentication.getName();
 
-            // Buscar el usuario en la base de datos por su dirección de correo electrónico (asumiendo que el campo es unique)
             Optional<User> optionalUser = userRepository.findByEmailAddress(loggedInUsername);
 
             if (optionalUser.isEmpty()) {
@@ -65,7 +62,6 @@ public class PostController {
 
             User user = optionalUser.get();
 
-            // Buscar el SavedPost que se desea eliminar
             Optional<SavedPost> savedPostOptional = savedPostRepository.findById(savedPostId);
             if (savedPostOptional.isEmpty()) {
                 response.put("message", "SavedPost no encontrado");
@@ -74,16 +70,13 @@ public class PostController {
 
             SavedPost savedPostToDelete = savedPostOptional.get();
 
-            // Verificar si el usuario autenticado es el propietario del SavedPost
             if (!savedPostToDelete.getUser().equals(user)) {
                 response.put("message", "No tienes permiso para eliminar este SavedPost");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
             }
 
-            // Eliminar el SavedPost
             savedPostRepository.delete(savedPostToDelete);
 
-            // Devuelve un estado de éxito con un mensaje
             response.put("message", "Post guardado eliminado con éxito");
             return ResponseEntity.ok(response);
 

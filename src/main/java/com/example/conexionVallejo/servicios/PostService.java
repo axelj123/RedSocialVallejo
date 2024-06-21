@@ -64,4 +64,5 @@ public class PostService {
         Pageable pageable = PageRequest.of(page, size, orderBy.equals("newest") ? Sort.by("createdDate").descending() : Sort.by("createdDate").ascending());
         return postRepository.findUnansweredPostsByTags(tags, pageable);
     }
+
 }

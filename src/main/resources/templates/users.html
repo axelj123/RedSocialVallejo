@@ -67,6 +67,7 @@
                             <h3 th:text="${user.displayName}"></h3>
                             <p th:text="'Correo electrónico: ' + ${user.emailAddress}"></p>
                             <!-- Aquí puedes mostrar otros atributos del usuario si lo deseas -->
+                            <a th:href="@{/perfilUsuario/{id}/{displayName}(id=${user.id}, displayName=${user.displayName})}" class="profile-link">Ver perfil</a>
                         </div>
                     </div>
 
@@ -78,7 +79,15 @@
     </div>
 
 </div>
-
+<script>
+    function redirectUserProfile(selectedUserId, authenticatedUserId) {
+        if (selectedUserId === authenticatedUserId) {
+            window.location.href = '/perfil';
+        } else {
+            window.location.href = '/perfilUsuario/' + selectedUserId;
+        }
+    }
+</script>
 <script>
     function searchPosts() {
       var query = document.getElementById('search-input').value.trim();

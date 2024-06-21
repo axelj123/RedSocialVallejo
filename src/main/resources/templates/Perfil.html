@@ -80,16 +80,17 @@
                     <div class="profile-box">
                         <h3>Stats</h3>
                         <ul class="stats">
-                            <li><strong th:text="${numRespuestas}"></strong><br>answers</li>
-                            <li><strong th:text="${numPreguntas}"></strong><br>questions</li>
+                            <li><strong th:text="${numRespuestas}"></strong><br>respuestas</li>
+                            <li><strong th:text="${numPreguntas}"></strong><br>preguntas</li>
                         </ul>
                     </div>
 
                     <div class="profile-box">
                         <h3>Top tags</h3>
                         <ul class="tags">
-                            <li th:each="tag : ${topTags}" th:text="${tag.tagName}"></li>
-                        </ul>
+                            <li th:each="tag : ${topTags}">
+                                <a th:href="@{/preguntas(tags=${tag.tagName})}" th:text="${tag.tagName}"></a>
+                            </li>                        </ul>
                     </div>
 
                     <div class="profile-box">
