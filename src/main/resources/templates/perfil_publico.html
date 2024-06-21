@@ -81,7 +81,7 @@
                         <h3>Todas las preguntas</h3>
                         <ul class="posts">
                             <li th:each="post : ${userPosts}">
-                                <a th:href="@{'/postopen/' + ${post.id}}"><!-- Ajusta según la ruta real de tus posts -->
+                                <a th:href="@{'/postopen/' + ${post.id}}">
                                     <span th:text="${post.postTitle}"></span>
                                 </a>
                             </li>

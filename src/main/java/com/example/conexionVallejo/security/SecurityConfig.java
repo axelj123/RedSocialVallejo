@@ -31,7 +31,7 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/", "/register/**", "/email/send", "/nuevoPass","/adminLogin","/ControlPanel",  "/email/send-correo","/send-reset-email", "/recuperarPassword","/css/**", "/assets/**", "/js/**").permitAll();
+                        auth.requestMatchers("/","/send-confirmation-email","/confirmRegistration", "/register/**", "/email/send", "/nuevoPass","/adminLogin","/ControlPanel",  "/email/send-correo","/send-reset-email", "/recuperarPassword","/css/**", "/assets/**", "/js/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(httpSecurityFormLoginConfigurer ->{

@@ -39,8 +39,7 @@ public class User  {
 
     private String carrera;
     
-    @JsonFormat(pattern="yyyy-MM-dd")
-    private Date nacimiento;
+
     
 
     @Column(name = "profile_image")
@@ -115,13 +114,7 @@ public class User  {
 		this.carrera = carrera;
 	}
 
-	public Date getNacimiento() {
-		return nacimiento;
-	}
 
-	public void setNacimiento(Date nacimiento) {
-		this.nacimiento = nacimiento;
-	}
 
 	public String getFacebookUrl() {
 		return facebookUrl;

@@ -1,16 +1,15 @@
 package com.example.conexionVallejo.security;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.conexionVallejo.servicios.EmailRequest;
 import com.example.conexionVallejo.servicios.EmailService;
+
+import java.util.UUID;
 
 @RestController
 
@@ -43,10 +42,8 @@ public class EmailController {
 	    emailService.sendResetEmail(email);
 	    return ResponseEntity.ok("Correo enviado con éxito");
 	}
-	
 
 
-	
 
 
 }

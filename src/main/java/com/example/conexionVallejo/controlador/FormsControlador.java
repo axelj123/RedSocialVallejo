@@ -366,55 +366,6 @@ public class FormsControlador {
         return "users";
     }
 
-    @GetMapping("/users/{userId}")
-    public String viewUserProfile(@PathVariable Long userId, Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            String emailAddress = authentication.getName();
-            Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
-            if (optionalUser.isPresent()) {
-                User loggedInUser = optionalUser.get();
-                model.addAttribute("user", loggedInUser);
-
-                Optional<User> optionalProfileUser = userRepository.findById(userId);
-                if (optionalProfileUser.isPresent()) {
-                    User profileUser = optionalProfileUser.get();
-                    model.addAttribute("profileUser", profileUser);
-
-                    // Verificar si el perfil es del usuario autenticado
-                    boolean isCurrentUser = loggedInUser.getId().equals(profileUser.getId());
-                    model.addAttribute("isCurrentUser", isCurrentUser);
-
-                    if (!isCurrentUser) {
-                        // Cargar las publicaciones guardadas del perfil seleccionado
-                        List<SavedPost> savedPosts = savedPostRepository.findByUser(profileUser);
-
-                        // Obtener la fecha y hora actual en formato UTC
-                        Instant currentInstant = Instant.now();
-                        // Calcular la antigüedad de cada publicación guardada y agregarla al modelo
-                        Map<Long, String> savedPostAges = new HashMap<>();
-                        for (SavedPost savedPost : savedPosts) {
-                            Instant postInstant = savedPost.getPost().getCreatedDate().toInstant();
-                            String age = AgeCalculatorService.calculatePostAge(postInstant);
-                            savedPostAges.put(savedPost.getId(), age);
-                        }
-
-
-                        model.addAttribute("savedPosts", savedPosts);
-                        model.addAttribute("savedPostAges", savedPostAges);
-                    }
-
-                    return "perfil"; // Nombre del archivo HTML de la vista del perfil
-                } else {
-                    return "redirect:/error"; // Manejar el caso en que el usuario no existe
-                }
-            } else {
-                return "redirect:/login";
-            }
-        } else {
-            return "redirect:/login";
-        }
-    }
 
 
     @GetMapping("/tags")
@@ -514,44 +465,6 @@ public class FormsControlador {
 
 
 
-//    @GetMapping("/api/preguntas")
-//    public String getPreguntasFiltradas(Model model,
-//                                        @RequestParam(required = false) Boolean unanswered) {
-//
-//        try {
-//            // Obtener la información del usuario autenticado si es necesario
-//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//            if (authentication == null || !authentication.isAuthenticated()) {
-//                return "redirect:/login"; // Redireccionar si no hay autenticación
-//            }
-//
-//            // Obtener el usuario autenticado
-//            String emailAddress = authentication.getName();
-//            Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
-//            if (!optionalUser.isPresent()) {
-//                return "redirect:/login"; // Redireccionar si el usuario no está presente
-//            }
-//            User user = optionalUser.get();
-//            model.addAttribute("user", user);
-//
-//            // Validar y obtener las preguntas filtradas sin respuesta si es necesario
-//            List<Post> posts;
-//            if (unanswered != null && unanswered) {
-//                posts = postRepository.findUnansweredPosts(pageable);
-//            } else {
-//                posts = postRepository.findAll();
-//            }
-//
-//            model.addAttribute("posts", posts);
-//
-//            // Redirigir a la vista de preguntas con el filtro aplicado
-//            return "redirect:/preguntas?unanswered=" + (unanswered != null && unanswered);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return "error"; // Manejar adecuadamente el error en producción
-//        }
-//    }
 
 
 

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Registro por Pasos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="css/RegistrationForm.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+
+    </style>
+</head>
+<body>
+<div class="form-wrapper">
+    <form id="registrationForm" method="post" action="/register/user">
+        <input type="hidden" id="emailAddress" name="emailAddress" th:value="${user.emailAddress}" />
+
+        <!-- Paso 1: Información básica -->
+        <div class="step active" id="step1">
+            <div class="form-group">
+                <label for="displayName">Nombre de usuario:</label>
+                <input type="text" id="displayName" name="displayName" placeholder="Ingrese su nombre de usuario" required />
+            </div>
+            <div class="form-group">
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" name="password" placeholder="Ingrese su contraseña" required />
+            </div>
+            <div class="step-indicator">
+                <i class="fas fa-circle"></i>
+                <i class="far fa-circle"></i>
+                <i class="far fa-circle"></i>
+            </div>
+            <div>
+                <button type="button" onclick="nextStep('step2')">Siguiente</button>
+            </div>
+        </div>
+
+        <!-- Paso 2: Información personal -->
+        <div class="step" id="step2">
+            <div class="form-group">
+                <label for="aboutMe">Sobre mí:</label>
+                <textarea id="aboutMe" name="aboutMe" placeholder="Cuéntenos algo sobre usted"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="carrera">Carrera:</label>
+                <input type="text" id="carrera" name="carrera" placeholder="Ingrese su carrera" />
+
+            </div>
+            <div class="step-indicator">
+                <i class="fas fa-check-circle"></i>
+                <i class="fas fa-circle"></i>
+                <i class="far fa-circle"></i>
+            </div>
+            <div>
+                <button type="button" onclick="prevStep('step1')">Anterior</button>
+                <button type="button" onclick="nextStep('step3')">Siguiente</button>
+            </div>
+        </div>
+
+        <!-- Paso 3: Redes sociales -->
+        <div class="step" id="step3">
+            <div class="form-group">
+                <label for="profileImage">URL de la imagen de perfil:</label>
+                <input type="text" id="profileImage" name="profileImage" placeholder="Ingrese la URL de su imagen de perfil" />
+            </div>
+            <div class="form-group">
+                <label for="facebookUrl">URL de Facebook:</label>
+                <input type="text" id="facebookUrl" name="facebookUrl" placeholder="Ingrese la URL de su perfil de Facebook" />
+            </div>
+            <div class="form-group">
+                <label for="linkedinUrl">URL de LinkedIn:</label>
+                <input type="text" id="linkedinUrl" name="linkedinUrl" placeholder="Ingrese la URL de su perfil de LinkedIn" />
+            </div>
+            <div class="form-group">
+                <label for="instagramUrl">URL de Instagram:</label>
+                <input type="text" id="instagramUrl" name="instagramUrl" placeholder="Ingrese la URL de su perfil de Instagram" />
+            </div>
+            <div class="form-group">
+                <label for="tiktokUrl">URL de TikTok:</label>
+                <input type="text" id="tiktokUrl" name="tiktokUrl" placeholder="Ingrese la URL de su perfil de TikTok" />
+            </div>
+            <div class="step-indicator">
+                <i class="fas fa-check-circle"></i>
+                <i class="fas fa-check-circle"></i>
+                <i class="fas fa-circle"></i>
+            </div>
+            <div>
+                <button type="button" onclick="prevStep('step2')">Anterior</button>
+                <button type="submit">Registrarse</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    function nextStep(nextStepId) {
+        const currentStep = document.querySelector('.step.active');
+        const nextStep = document.getElementById(nextStepId);
+        currentStep.classList.remove('active');
+        nextStep.classList.add('active');
+        nextStep.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function prevStep(prevStepId) {
+        const currentStep = document.querySelector('.step.active');
+        const prevStep = document.getElementById(prevStepId);
+        currentStep.classList.remove('active');
+        prevStep.classList.add('active');
+        prevStep.scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>

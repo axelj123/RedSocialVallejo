@@ -45,19 +45,15 @@
             </form>
 
 
-            <form action="" class="sign-up-form">
-                <h2 class="title">Registrarse</h2>
-                <div class="input-field">
-                    <i class="fas fa-user"></i> <input type="email"
-                                                       placeholder="Correo institucional"/>
-                </div>
-
-
-                <input type="submit" value="Registrarse" class="btn solid"/>
-
-                <p class="social-text">Accede con tu correo institucional</p>
-
-            </form>
+                <form action="/send-confirmation-email" method="POST" class="sign-up-form">
+                    <h2 class="title">Registrarse</h2>
+                    <div class="input-field">
+                        <i class="fas fa-user"></i>
+                        <input type="email" name="email" placeholder="Correo institucional" required/>
+                    </div>
+                    <input type="submit" value="Registrarse" class="btn solid"/>
+                    <p class="social-text">Accede con tu correo institucional</p>
+                </form>
 
         </div>
     </div>

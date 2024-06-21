@@ -78,4 +78,21 @@ public void sendResetEmail(String email) {
 		// Validar el dominio del correo electrónico (ejemplo: ucvvirtual.edu.pe)
 		return email.endsWith("ucvvirtual.edu.pe");
 	}
+
+	public void sendConfirmationEmail(String email, String subject, String confirmationUrl) {
+		MimeMessage message = javaMailSender.createMimeMessage();
+		try {
+			MimeMessageHelper helper = new MimeMessageHelper(message, true);
+			Context context = new Context();
+			context.setVariable("confirmationUrl", confirmationUrl);
+			String htmlText = templateEngine.process("confirmation-email-template", context);
+			helper.setFrom("axeljhosmell13@gmail.com");
+			helper.setTo(email);
+			helper.setSubject(subject);
+			helper.setText(htmlText, true);
+			javaMailSender.send(message);
+		} catch (MessagingException e) {
+			throw new RuntimeException("Failed to send email", e);
+		}
+	}
 }

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmación de Email</title>
+</head>
+<body>
+<p>Estimado/a usuario/a,</p>
+<p>Gracias por registrarte. Por favor, haz clic en el siguiente enlace para confirmar tu dirección de correo electrónico:</p>
+<p><a th:href="${confirmationUrl}">Confirmar Email</a></p>
+<p>Si no solicitaste este registro, puedes ignorar este correo de manera segura.</p>
+<p>Saludos cordiales,<br>Equipo de tu Aplicación</p>
+</body>
+</html>

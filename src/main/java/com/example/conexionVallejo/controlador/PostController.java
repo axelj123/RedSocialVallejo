@@ -373,30 +373,7 @@ public class PostController {
 
     }
 
-    @PostMapping("/postopen/{postId}")
-    public String showPostDetails(@PathVariable Long postId, Model model, Authentication authentication) {
-        // Obtener el post
-        Optional<Post> optionalPost = postRepository.findById(postId);
-        if (optionalPost.isPresent()) {
-            Post post = optionalPost.get();
-            model.addAttribute("post", post);
 
-            // Verificar si el post está guardado por el usuario actual
-            boolean isPostSaved = false;
-            if (authentication != null && authentication.isAuthenticated()) {
-                String emailAddress = authentication.getName();
-                Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
-                if (optionalUser.isPresent()) {
-                    User user = optionalUser.get();
-                    Optional<SavedPost> existingSavedPost = savedPostRepository.findByUserAndPost(user, post);
-                    isPostSaved = existingSavedPost.isPresent();
-                }
-            }
-            model.addAttribute("isPostSaved", isPostSaved);
-        }
-
-        return "";
-    }
 
 
 }
