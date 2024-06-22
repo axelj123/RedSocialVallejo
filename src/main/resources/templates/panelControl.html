@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -8,52 +8,122 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
     <!-- Añadir Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-    <style>
-        @media (min-width: 640px) {
-            .sidebar {
-                width: 16rem;
-            }
-
-            .content {
-                margin-left: 16rem;
-            }
-        }
-    </style>
 </head>
 
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
-<div class="flex flex-col md:flex-row">
-    <!-- Sidebar -->
-    <div class="bg-gray-800 text-gray-100 flex justify-between items-center md:flex-col sidebar w-full md:w-auto">
-        <div class="p-4">
-            <h1 class="text-lg font-semibold">Panel de Control</h1>
-        </div>
-        <nav class="md:mt-4">
-            <a href="#" class="block p-4 hover:bg-gray-700">
-                <i class="fas fa-newspaper mr-2"></i> Publicaciones
-            </a>
-            <a href="#" class="block p-4 hover:bg-gray-700">
-                <i class="fas fa-users mr-2"></i> Usuarios
-            </a>
-            <a href="#" class="block p-4 hover:bg-gray-700">
-                <i class="fas fa-bell mr-2"></i> Notificaciones
-            </a>
-            <a href="#" class="block p-4 hover:bg-gray-700">
-                <i class="fas fa-cog mr-2"></i> Configuraciones
-            </a>
-            <a href="#" class="block p-4 hover:bg-gray-700">
-                <i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión
-            </a>
-        </nav>
-
-    </div>
-
-    <!-- Content -->
-    <div class="bg-gray-200 flex-1 min-h-screen p-8 content">
-        <h2 class="text-xl font-semibold mb-4">Bienvenido al Panel de Control</h2>
-        <p>Este es el contenido principal.</p>
+<!-- Barra superior -->
+<div class="bg-blue-500 p-4">
+    <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-white text-xl font-bold">Panel de Control</h1>
+        <a href="/logout" class="text-white hover:underline">Cerrar sesión</a>
     </div>
 </div>
+
+<!-- Contenido principal -->
+<div class="container mx-auto px-4 py-8">
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <div class="px-6 py-4">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-xl font-bold text-gray-800">Usuarios</h1>
+                <div class="relative">
+                    <input type="text" id="search-user"
+                           class="block w-full px-3 py-2 rounded-lg bg-gray-200 border-transparent focus:bg-white focus:border-gray-300"
+                           placeholder="Buscar usuarios..." oninput="filtrarUsuarios()">
+                    <span class="absolute right-3 top-3 text-gray-400"><i class="fas fa-search"></i></span>
+                </div>
+            </div>
+            <div id="user-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Iteración sobre la lista de usuarios -->
+                <div th:each="user : ${userList}" class="user-card bg-white rounded-lg shadow-md p-4 relative">
+                    <div class="flex justify-between items-center mb-3">
+                        <div>
+                            <img th:src="${user.profileImage}" alt="Avatar" class="rounded-full w-12 h-12">
+                        </div>
+                        <div>
+                            <button type="button" class="inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-2 py-1 bg-white text-xs text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500" onclick="toggleMenu(this)">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800" th:text="${user.displayName}"></h3>
+                    <p class="text-gray-600 mb-3" th:text="'Correo electrónico: ' + ${user.emailAddress}"></p>
+
+                    <!-- Menú de opciones -->
+                    <div class="hidden absolute right-0 top-14 w-30 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none menu-content z-50" role="menu">
+                        <div class="py-1" role="none">
+                            <a th:href="@{/perfilUsuario/{id}/{displayName}(id=${user.id}, displayName=${user.displayName})}"
+                               class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem">Ver perfil</a>
+                            <button onclick="eliminarUsuario('${user.id}')"
+                                    class="text-gray-700 block w-full text-left px-4 py-2 text-sm hover:bg-gray-100" role="menuitem">Eliminar</button>
+                            <a th:href="'mailto:' + ${user.emailAddress}"
+                               class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem">Enviar mensaje</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Fin de iteración -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts de Font Awesome -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+
+<!-- Script para eliminar usuario (simulado) -->
+<script>
+    function eliminarUsuario(userId) {
+        // Aquí puedes implementar la lógica para eliminar al usuario
+        // Por ejemplo, puedes enviar una petición AJAX al backend para eliminar al usuario
+        console.log('Eliminar usuario con ID: ' + userId);
+        // Aquí puedes agregar tu lógica para eliminar el usuario
+    }
+</script>
+
+<!-- Script para manejar el menú desplegable -->
+<script>
+    function toggleMenu(button) {
+        var menu = button.closest('.user-card').querySelector('.menu-content');
+        var isHidden = menu.classList.contains('hidden');
+
+        // Cerrar todos los menús
+        document.querySelectorAll('.menu-content').forEach(function (m) {
+            m.classList.add('hidden');
+        });
+
+        // Abrir el menú si estaba oculto
+        if (isHidden) {
+            menu.classList.remove('hidden');
+        }
+    }
+
+    // Filtrar usuarios por nombre
+    function filtrarUsuarios() {
+        var input, filter, cards, cardContainer, h3, i, txtValue;
+        input = document.getElementById('search-user');
+        filter = input.value.toUpperCase();
+        cardContainer = document.getElementById('user-list');
+        cards = cardContainer.getElementsByClassName('user-card');
+        for (i = 0; i < cards.length; i++) {
+            h3 = cards[i].getElementsByTagName('h3')[0];
+            txtValue = h3.textContent || h3.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                cards[i].style.display = "";
+            } else {
+                cards[i].style.display = "none";
+            }
+        }
+    }
+
+    document.addEventListener('click', function (event) {
+        var target = event.target;
+        var isMenuButton = target.closest('button[onclick="toggleMenu(this)"]') !== null || target.closest('.menu-content') !== null;
+        if (!isMenuButton) {
+            document.querySelectorAll('.menu-content').forEach(function (menu) {
+                menu.classList.add('hidden');
+            });
+        }
+    });
+</script>
 </body>
 
 </html>

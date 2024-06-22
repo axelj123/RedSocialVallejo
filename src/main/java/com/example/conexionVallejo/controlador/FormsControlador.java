@@ -508,7 +508,26 @@ public class FormsControlador {
     }
 
     @GetMapping("/ControlPanel")
-    public String PanelDeControl() {
+    public String PanelDeControl(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String emailAddress = authentication.getName();
+            Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                model.addAttribute("user", user);
+            } else {
+                return "redirect:/login";
+            }
+        } else {
+            return "redirect:/login";
+        }
+
+        // Obtener todos los usuarios de la base de datos
+        List<User> userList = userRepository.findAll();
+        // Agregar la lista de usuarios al modelo
+        model.addAttribute("userList", userList);
+
         return "panelControl";
     }
 

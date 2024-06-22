@@ -3,6 +3,7 @@
     padding: 0;
     box-sizing: border-box;
 }
+
 body {
     font-family: 'Poppins', sans-serif;
     background-color: #f0f0f0;
@@ -13,6 +14,7 @@ body {
     margin: 0;
     padding: 20px;
 }
+
 .form-wrapper {
     max-width: 550px;
     width: 100%;
@@ -24,16 +26,19 @@ body {
     flex-direction: column;
     align-items: stretch;
 }
+
 .form-group {
     margin-bottom: 20px;
 }
+
 label {
     display: block;
     font-weight: 500;
     font-size: 16px;
-    color: #0077cc; /* Cambio de color a #0077cc */
-    margin-bottom: 12px;
+    color: #0077cc;
+    margin-bottom: 8px; /* Ajuste para un margen inferior más pequeño */
 }
+
 input[type="text"],
 input[type="password"],
 input[type="email"],
@@ -41,47 +46,57 @@ textarea {
     width: 100%;
     padding: 12px;
     border-radius: 6px;
-    border: 1px solid #e0e0e0;
-    background: white;
+    border: 1px solid #ccc; /* Cambio de color de borde para mayor contraste */
+    background: #f9f9f9; /* Fondo ligeramente más claro */
     font-weight: 500;
     font-size: 16px;
-    color: #6b7280;
+    color: #333; /* Texto más oscuro para mejor legibilidad */
     outline: none;
-    resize: none;
+    transition: border-color 0.3s ease;
 }
+
 input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="email"]:focus,
 textarea:focus {
-    border-color: #0077cc; /* Cambio de color a #0077cc */
-    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
+    border-color: #0077cc;
+    box-shadow: 0px 3px 8px rgba(0, 119, 204, 0.2); /* Sutil cambio de sombra en enfoque */
 }
+
 .step {
     display: none;
 }
+
 .step.active {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
 .step.active .form-group {
     width: 100%;
     max-width: 400px;
 }
+
 .step.active button {
     margin-top: 20px;
 }
+
 .step.active .form-group input,
 .step.active .form-group textarea {
     width: 100%;
 }
+
 .step.active .form-group label {
     width: 100%;
     text-align: left;
+    margin-bottom: 6px; /* Ajuste para un margen inferior más pequeño */
 }
+
 .step.active .form-group:last-child {
-    margin-bottom: 40px;
+    margin-bottom: 30px; /* Ajuste del margen inferior final */
 }
+
 button[type="button"],
 button[type="submit"] {
     text-align: center;
@@ -90,7 +105,7 @@ button[type="submit"] {
     padding: 14px 32px;
     border: none;
     font-weight: 600;
-    background-color: #0077cc; /* Cambio de color a #0077cc */
+    background-color: #0077cc;
     color: white;
     width: auto;
     cursor: pointer;
@@ -101,7 +116,8 @@ button[type="submit"] {
 
 button[type="button"]:hover,
 button[type="submit"]:hover {
-    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
+    background-color: #005ea8; /* Color de fondo más oscuro en hover */
+    box-shadow: 0px 3px 8px rgba(0, 119, 204, 0.4); /* Sutil cambio de sombra en hover */
 }
 
 .step-indicator {
@@ -113,12 +129,31 @@ button[type="submit"]:hover {
 
 .step-indicator i {
     font-size: 24px;
-    color: #0077cc; /* Cambio de color a #0077cc */
+    color: #0077cc;
     margin: 0 10px;
 }
 
 .step-indicator .step-number {
     font-size: 18px;
     font-weight: bold;
-    color: #0077cc; /* Cambio de color a #0077cc */
+    color: #0077cc;
+}
+
+@media screen and (max-width: 600px) {
+    .form-wrapper {
+        padding: 20px;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="email"],
+    textarea {
+        font-size: 14px;
+    }
+
+    button[type="button"],
+    button[type="submit"] {
+        font-size: 14px;
+        padding: 12px 24px;
+    }
 }

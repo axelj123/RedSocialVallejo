@@ -9,12 +9,20 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Incluir SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-
+        .error-message {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
 <div class="form-wrapper">
+    <h1 class="form-title">Registrate Ya!</h1>
+
     <form id="registrationForm" method="post" action="/register/user">
         <input type="hidden" id="emailAddress" name="emailAddress" th:value="${user.emailAddress}" />
 
@@ -23,10 +31,12 @@
             <div class="form-group">
                 <label for="displayName">Nombre de usuario:</label>
                 <input type="text" id="displayName" name="displayName" placeholder="Ingrese su nombre de usuario" required />
+                <span class="error-message" id="displayNameError"></span>
             </div>
             <div class="form-group">
                 <label for="password">Contraseña:</label>
                 <input type="password" id="password" name="password" placeholder="Ingrese su contraseña" required />
+                <span class="error-message" id="passwordError"></span>
             </div>
             <div class="step-indicator">
                 <i class="fas fa-circle"></i>
@@ -47,7 +57,6 @@
             <div class="form-group">
                 <label for="carrera">Carrera:</label>
                 <input type="text" id="carrera" name="carrera" placeholder="Ingrese su carrera" />
-
             </div>
             <div class="step-indicator">
                 <i class="fas fa-check-circle"></i>
@@ -63,24 +72,20 @@
         <!-- Paso 3: Redes sociales -->
         <div class="step" id="step3">
             <div class="form-group">
-                <label for="profileImage">URL de la imagen de perfil:</label>
-                <input type="text" id="profileImage" name="profileImage" placeholder="Ingrese la URL de su imagen de perfil" />
-            </div>
-            <div class="form-group">
                 <label for="facebookUrl">URL de Facebook:</label>
-                <input type="text" id="facebookUrl" name="facebookUrl" placeholder="Ingrese la URL de su perfil de Facebook" />
+                <input type="text" id="facebookUrl" name="facebookUrl" placeholder="(opcional)" />
             </div>
             <div class="form-group">
                 <label for="linkedinUrl">URL de LinkedIn:</label>
-                <input type="text" id="linkedinUrl" name="linkedinUrl" placeholder="Ingrese la URL de su perfil de LinkedIn" />
+                <input type="text" id="linkedinUrl" name="linkedinUrl" placeholder="(opcional)" />
             </div>
             <div class="form-group">
                 <label for="instagramUrl">URL de Instagram:</label>
-                <input type="text" id="instagramUrl" name="instagramUrl" placeholder="Ingrese la URL de su perfil de Instagram" />
+                <input type="text" id="instagramUrl" name="instagramUrl" placeholder="(opcional)" />
             </div>
             <div class="form-group">
                 <label for="tiktokUrl">URL de TikTok:</label>
-                <input type="text" id="tiktokUrl" name="tiktokUrl" placeholder="Ingrese la URL de su perfil de TikTok" />
+                <input type="text" id="tiktokUrl" name="tiktokUrl" placeholder="(opcional)" />
             </div>
             <div class="step-indicator">
                 <i class="fas fa-check-circle"></i>
@@ -89,19 +94,30 @@
             </div>
             <div>
                 <button type="button" onclick="prevStep('step2')">Anterior</button>
-                <button type="submit">Registrarse</button>
+                <button type="button" onclick="submitForm()">Registrarse</button>
             </div>
         </div>
     </form>
 </div>
 
-<script>
+<script th:inline="javascript">
     function nextStep(nextStepId) {
         const currentStep = document.querySelector('.step.active');
         const nextStep = document.getElementById(nextStepId);
+
+        // Validación de campos (ejemplo básico, puedes mejorar usando bibliotecas como Parsley)
+        if (currentStep.id === 'step1' && (!validateStep1())) {
+            return; // No avanzar si la validación falla en el paso 1
+        } else if (currentStep.id === 'step2' && (!validateStep2())) {
+            return; // No avanzar si la validación falla en el paso 2
+        }
+
         currentStep.classList.remove('active');
         nextStep.classList.add('active');
         nextStep.scrollIntoView({ behavior: 'smooth' });
+
+        // Actualizar indicadores de paso
+        updateStepIndicators(nextStepId);
     }
 
     function prevStep(prevStepId) {
@@ -110,6 +126,72 @@
         currentStep.classList.remove('active');
         prevStep.classList.add('active');
         prevStep.scrollIntoView({ behavior: 'smooth' });
+
+        // Actualizar indicadores de paso
+        updateStepIndicators(prevStepId);
+    }
+
+    function validateStep1() {
+        const displayName = document.getElementById('displayName').value;
+        const password = document.getElementById('password').value;
+        const displayNameError = document.getElementById('displayNameError');
+        const passwordError = document.getElementById('passwordError');
+
+        displayNameError.textContent = '';
+        passwordError.textContent = '';
+
+        let isValid = true;
+
+        if (displayName.trim() === '') {
+            displayNameError.textContent = 'Por favor, ingrese un nombre de usuario.';
+            isValid = false;
+        }
+
+        if (password.trim() === '') {
+            passwordError.textContent = 'Por favor, ingrese una contraseña.';
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    function validateStep2() {
+        // Ejemplo de validación para el paso 2 (puedes implementar la lógica según sea necesario)
+        return true;
+    }
+
+    function updateStepIndicators(stepId) {
+        const steps = document.querySelectorAll('.step');
+        steps.forEach(step => {
+            step.classList.remove('active');
+        });
+
+        const currentStep = document.getElementById(stepId);
+        currentStep.classList.add('active');
+
+        const stepIndicators = currentStep.querySelectorAll('.step-indicator i');
+        stepIndicators.forEach((indicator, index) => {
+            if (index < stepIndicators.length - 1) {
+                indicator.classList.replace('far', 'fas'); // Marca como completado
+            } else {
+                indicator.classList.replace('fas', 'far'); // Marca como activo
+            }
+        });
+    }
+
+    function submitForm() {
+        // Mostrar mensaje de éxito con SweetAlert
+        Swal.fire({
+            icon: 'success',
+            title: '¡Registro exitoso!',
+            text: 'El usuario se ha registrado correctamente. Dirigiendo a login, inicia con tus credenciales.',
+            showConfirmButton: false,
+            timer: 5000, // Cierra automáticamente después de 5 segundos
+            didClose: () => {
+                // Enviar el formulario después de mostrar el mensaje de éxito
+                document.getElementById('registrationForm').submit();
+            }
+        });
     }
 </script>
 

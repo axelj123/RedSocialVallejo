@@ -3,8 +3,10 @@ package com.example.conexionVallejo.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
@@ -31,17 +33,15 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                        auth.requestMatchers("/","/send-confirmation-email","/confirmRegistration", "/register/**", "/email/send", "/nuevoPass","/adminLogin","/ControlPanel",  "/email/send-correo","/send-reset-email", "/recuperarPassword","/css/**", "/assets/**", "/js/**").permitAll();
+                    auth.requestMatchers("/","/send-confirmation-email","/confirmRegistration", "/register/**", "/email/send", "/nuevoPass","/adminLogin","/ControlPanel",  "/email/send-correo","/send-reset-email", "/recuperarPassword","/css/**", "/assets/**", "/js/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
-                .formLogin(httpSecurityFormLoginConfigurer ->{
-                	httpSecurityFormLoginConfigurer.loginPage("/login")
-                	.successHandler(successHandler())
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .successHandler(successHandler())
+                        .permitAll()
+                )
 
-                	.permitAll();
-                	
-                	
-                })
                 .build();
     }
 
@@ -64,16 +64,22 @@ public class SecurityConfig {
     }
 
     @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+    @Bean
     public SessionRegistry sessionRegistry() {
         return new SessionRegistryImpl();
     }
 
+    @Bean
     public AuthenticationSuccessHandler successHandler() {
         return (request, response, authentication) -> {
+            System.out.println("Successful login by: " + authentication.getName());
             response.sendRedirect("/foro");
-            
         };
     }
+
     @Bean
     public AuthenticationFailureHandler authenticationFailureHandler() {
         return (request, response, exception) -> {
