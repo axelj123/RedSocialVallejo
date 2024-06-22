@@ -1,17 +1,10 @@
 package com.example.conexionVallejo.modelos;
 
 
-import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
+import java.util.Set;
 
 
 @Entity
@@ -38,8 +31,9 @@ public class User  {
     private String aboutMe;
 
     private String carrera;
-    
 
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Set<UserRole> roles;
     
 
     @Column(name = "profile_image")
@@ -57,6 +51,14 @@ public class User  {
 
     @Column(name = "tiktok_url")
     private String tiktokUrl;
+
+	public Set<UserRole> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<UserRole> roles) {
+		this.roles = roles;
+	}
 
 	public String getProfileImage() {
 		return profileImage;

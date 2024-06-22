@@ -1,5 +1,6 @@
 package com.example.conexionVallejo.security;
 
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.conexionVallejo.servicios.EmailRequest;
 import com.example.conexionVallejo.servicios.EmailService;
+import org.thymeleaf.context.Context;
 
 import java.util.UUID;
 
@@ -20,13 +22,23 @@ public class EmailController {
 
 	@Autowired
 	UserService userService;
-	@GetMapping("/email/send")
 
-	public ResponseEntity<?> sendEmail(){
-		emailService.sendEmail();
-		return new ResponseEntity("Corre enviado con exito",HttpStatus.OK);
+	@PostMapping("/send-email")
+	public ResponseEntity<String> sendEmail(@RequestBody EmailRequest emailRequest) {
+		try {
+			// Preparar el contexto para la plantilla Thymeleaf
+			Context context = new Context();
+			context.setVariable("message", emailRequest.getMessage());
+
+			// Enviar el correo electrónico
+			emailService.sendEmail(emailRequest.getTo(), emailRequest.getSubject(), "email-template", context);
+
+			return ResponseEntity.ok("Correo enviado correctamente.");
+		} catch (MessagingException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Error al enviar el correo: " + e.getMessage());
+		}
 	}
-	
 	@GetMapping("/email/send-correo")
 
 	public ResponseEntity<?> sendEmailHtml(){

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil Público</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="/assets/logo03.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+<!-- Barra superior -->
+<div class="bg-blue-500 p-4">
+    <div class="container mx-auto flex justify-between items-center flex-wrap">
+        <div class="flex items-center space-x-4">
+            <h1 class="text-white text-xl font-bold mb-2 md:mb-0">Panel de Control - <span th:text="${user.displayName}"></span></h1>
+            <img th:src="${user.profileImage}" alt="Avatar" class="rounded-full w-12 h-12">
+        </div>
+        <a href="/logout" class="text-white hover:underline mt-2 md:mt-0">Cerrar sesión</a>
+    </div>
+</div>
+<div class="container mx-auto py-8">
+    <div class="lg:w-3/4 xl:w-2/3 mx-auto">
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="relative">
+                <div class="w-full h-64 relative overflow-hidden rounded-t-lg">
+                    <img th:src="@{${userpublic.profileImage}}" alt="background"
+                         class="absolute inset-0 w-full h-full object-cover object-center transform hover:scale-105 transition duration-300">
+                </div>
+                <div class="absolute bottom-0 left-0 mb--4 ml-4">
+                    <img th:src="${userpublic.profileImage}" alt="profile picture"
+                         class="rounded-full w-20 h-20 border-4 border-white">
+                </div>
+                <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-lg">
+                    <h2 class="text-white text-3xl font-bold text-center">
+                        <span th:text="${userpublic.displayName}">Nombre de Usuario</span>
+                    </h2>
+                </div>
+            </div>
+
+            <div class="p-6">
+                <p class="text-gray-700 my-4" th:text="${userpublic.aboutMe}">correo@example.com</p>
+                <div class="flex items-center space-x-4">
+                    <a th:href="${userpublic.facebookUrl}" target="_blank" th:if="${userpublic.facebookUrl}"
+                       class="text-gray-600 hover:text-blue-500 transition duration-300"><i
+                            class="fab fa-facebook fa-lg"></i></a>
+                    <a th:href="${userpublic.linkedinUrl}" target="_blank" th:if="${userpublic.linkedinUrl}"
+                       class="text-gray-600 hover:text-blue-500 transition duration-300"><i
+                            class="fab fa-linkedin fa-lg"></i></a>
+                    <a th:href="${userpublic.instagramUrl}" target="_blank" th:if="${userpublic.instagramUrl}"
+                       class="text-gray-600 hover:text-pink-500 transition duration-300"><i
+                            class="fab fa-instagram fa-lg"></i></a>
+                    <a th:href="${userpublic.tiktokUrl}" target="_blank" th:if="${userpublic.tiktokUrl}"
+                       class="text-gray-600 hover:text-black transition duration-300"><i
+                            class="fab fa-tiktok fa-lg"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="mt-8">
+            <div class="bg-white rounded-lg shadow-md">
+                <div class="p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Stats</h3>
+                    <ul class="grid grid-cols-2 gap-4">
+                        <li
+                                class="flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 rounded-md px-4 py-2 transition duration-300">
+                            <strong th:text="${numRespuestas}"></strong>
+                            <span>respuestas</span>
+                        </li>
+                        <li
+                                class="flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 rounded-md px-4 py-2 transition duration-300">
+                            <strong th:text="${numPreguntas}"></strong>
+                            <span>preguntas</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-8 bg-white rounded-lg shadow-md">
+                <div class="p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Todas las preguntas</h3>
+                    <ul>
+                        <li th:each="post : ${userPosts}"
+                            class="text-gray-700 mb-2 bg-gray-100 hover:bg-gray-200 rounded-md px-4 py-2 transition duration-300">
+                            <a th:href="@{'/postopen/' + ${post.id}}" th:text="${post.postTitle}"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    function searchPosts() {
+        var query = document.getElementById('search-input').value.trim();
+        if (query.length === 0) {
+            alert('Por favor ingresa un término de búsqueda.');
+            return;
+        }
+        // Redirigir a la ruta manejada por Spring Boot
+        window.location.href = '/search?q=' + encodeURIComponent(query);
+    }
+</script>
+</body>
+
+</html>

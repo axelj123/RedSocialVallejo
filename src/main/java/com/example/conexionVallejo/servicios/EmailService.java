@@ -1,38 +1,42 @@
-package com.example.conexionVallejo.servicios;
+	package com.example.conexionVallejo.servicios;
 
-import jakarta.mail.internet.AddressException;
-import jakarta.mail.internet.InternetAddress;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
+	import jakarta.mail.internet.AddressException;
+	import jakarta.mail.internet.InternetAddress;
+	import org.springframework.beans.factory.annotation.Autowired;
+	import org.springframework.mail.SimpleMailMessage;
+	import org.springframework.mail.javamail.JavaMailSender;
+	import org.springframework.mail.javamail.MimeMessageHelper;
+	import org.springframework.stereotype.Service;
+	import org.thymeleaf.TemplateEngine;
+	import org.thymeleaf.context.Context;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
+	import jakarta.mail.MessagingException;
+	import jakarta.mail.internet.MimeMessage;
 
-@Service
-public class EmailService {
+	@Service
+	public class EmailService {
 
-	
 
-@Autowired
-JavaMailSender javaMailSender;
-@Autowired
-TemplateEngine templateEngine;
 
-public void sendEmail() {
-	SimpleMailMessage message= new SimpleMailMessage();
-	message.setFrom("axeljhosmell13@gmail.com");
-	message.setTo("axeljhosmell13@gmail.com");
-	message.setSubject("Prueba de envio email simple");
-	message.setText("Esto es el contenido del email");
-	
-	javaMailSender.send(message);
+	@Autowired
+	JavaMailSender javaMailSender;
+	@Autowired
+	TemplateEngine templateEngine;
 
-}
+		public void sendEmail(String to, String subject, String templateName, Context context) throws MessagingException {
+			MimeMessage message = javaMailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+			helper.setFrom("axeljhosmell13@gmail.com");
+			helper.setTo(to);
+			helper.setSubject(subject);
+
+			// Procesar plantilla Thymeleaf
+			String htmlContent = templateEngine.process(templateName, context);
+			helper.setText(htmlContent, true); // true indica que es HTML
+
+			javaMailSender.send(message);
+		}
 
 
 public void sendEmailTemplate() {

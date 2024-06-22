@@ -33,7 +33,9 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/","/send-confirmation-email","/confirmRegistration", "/register/**", "/email/send", "/nuevoPass","/adminLogin","/ControlPanel",  "/email/send-correo","/send-reset-email", "/recuperarPassword","/css/**", "/assets/**", "/js/**").permitAll();
+                    auth.requestMatchers("/", "/send-confirmation-email", "/confirmRegistration", "/register/**", "/email/send",
+                            "/nuevoPass", "/adminLogin", "/email/send-correo", "/send-reset-email", "/recuperarPassword", "/css/**", "/assets/**", "/js/**").permitAll();
+                    auth.requestMatchers("/ControlPanel").hasRole("ADMIN");
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(form -> form
@@ -52,7 +54,7 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); 
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
@@ -67,19 +69,28 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+
     @Bean
     public SessionRegistry sessionRegistry() {
         return new SessionRegistryImpl();
     }
 
-    @Bean
-    public AuthenticationSuccessHandler successHandler() {
+    private AuthenticationSuccessHandler successHandler() {
         return (request, response, authentication) -> {
-            System.out.println("Successful login by: " + authentication.getName());
-            response.sendRedirect("/foro");
+            if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+                response.sendRedirect("/ControlPanel");
+            } else {
+                response.sendRedirect("/foro");
+            }
         };
     }
-
+    @Bean
+    public AuthenticationSuccessHandler successHandlerAdmin() {
+        return (request, response, authentication) -> {
+            System.out.println("Successful login by: " + authentication.getName());
+            response.sendRedirect("/ControlPanel");
+        };
+    }
     @Bean
     public AuthenticationFailureHandler authenticationFailureHandler() {
         return (request, response, exception) -> {

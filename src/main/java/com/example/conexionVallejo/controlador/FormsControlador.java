@@ -341,7 +341,47 @@ public class FormsControlador {
         }
     }
 
+    @GetMapping("/perfil/{id}/{displayName}")
+    public String perfiByAdmin(@PathVariable("id") Long id, Model model) {
+        // Obtener el usuario autenticado
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated()) {
+            String emailAddress = auth.getName();
+            Optional<User> authenticatedUserOpt = userRepository.findByEmailAddress(emailAddress);
+            if (authenticatedUserOpt.isPresent()) {
+                User authenticatedUser = authenticatedUserOpt.get();
+                if (authenticatedUser.getId().equals(id)) {
+                    return "redirect:/perfil"; // Redirigir a /perfil si es el mismo usuario
+                }
+                model.addAttribute("user", authenticatedUser);
+            }
 
+        }
+
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            model.addAttribute("userpublic", user);
+
+            // Obtener número de respuestas y preguntas del usuario
+            long numPreguntas = postRepository.countQuestionsByCreatedByUser(user);
+            long numRespuestas = postRepository.countAnswersByCreatedByUser(user);
+            model.addAttribute("numRespuestas", numRespuestas);
+            model.addAttribute("numPreguntas", numPreguntas);
+
+            // Obtener las etiquetas más utilizadas por el usuario
+            List<Tag> topTags = tagsRepository.findTopTagsByUser(user);
+            model.addAttribute("topTags", topTags);
+
+            // Obtener todas las publicaciones y respuestas del usuario
+            List<Post> userPosts = postRepository.findByCreatedByUser(user);
+            model.addAttribute("userPosts", userPosts);
+
+            return "userProfileByAdmin"; // Plantilla para el perfil público
+        } else {
+            return "redirect:/users"; // Redirigir a la lista de usuarios si el usuario no existe
+        }
+    }
     @GetMapping("/users")
     public String users(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -506,6 +546,7 @@ public class FormsControlador {
     public String showLoginAdmin() {
         return "adminLogin";
     }
+
 
     @GetMapping("/ControlPanel")
     public String PanelDeControl(Model model) {
