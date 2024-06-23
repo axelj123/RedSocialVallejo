@@ -34,6 +34,17 @@ public class Notification {
     private String profileImage;
     // Getters y setters
 
+    @Column(name="leido")
+    private boolean leido; // Esta debe ser la propiedad que estás intentando usar
+
+
+    public boolean isLeido() {
+        return leido;
+    }
+
+    public void setLeido(boolean leido) {
+        this.leido = leido;
+    }
 
     public String getAge() {
         return age;

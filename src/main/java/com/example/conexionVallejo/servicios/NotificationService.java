@@ -23,15 +23,19 @@ public class NotificationService {
         return notificationRepository.findByUserOrderByCreatedDateDesc(user);
     }
 
-    public void markNotificationAsRead(Notification notification) {
-        notification.setRead(true);
-        notificationRepository.save(notification);
-    }
+
     // Método para calcular la antigüedad de las notificaciones
     public void calculateNotificationAges(List<Notification> notifications) {
         for (Notification notification : notifications) {
             String age = AgeCalculatorService.calculatePostAge(notification.getCreatedDate().toInstant());
             notification.setAge(age);
         }
+    }
+    public void markNotificationAsRead(Notification notification) {
+        notification.setLeido(true);
+        notificationRepository.save(notification);
+    }
+    public long getUnreadNotificationCountForUser(User user) {
+        return notificationRepository.countByUserAndLeidoFalse(user);
     }
 }

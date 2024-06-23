@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 @Controller
@@ -45,7 +46,7 @@ public class NotificationController {
     }
 
 
-    @GetMapping("/notifications/markAsRead/{id}")
+    @PostMapping("/notifications/markAsRead/{id}")
     public ResponseEntity<?> markAsRead(@PathVariable Long id, Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario no autenticado");
@@ -68,6 +69,10 @@ public class NotificationController {
         }
 
         notificationService.markNotificationAsRead(notification);
-        return ResponseEntity.ok().build();
+
+        // Obtener el nuevo conteo de notificaciones no leídas
+        long unreadCount = notificationService.getUnreadNotificationCountForUser(user);
+
+        return ResponseEntity.ok(unreadCount);
     }
 }
