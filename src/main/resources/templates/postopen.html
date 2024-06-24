@@ -29,15 +29,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
     <!-- Estilos adicionales -->
 </head>
-<style>
-    .fancybox-link {
-        cursor: pointer;
-        transition: opacity 0.3s ease;
-    }
-    .fancybox-link:hover {
-        opacity: 0.7;
-    }
-</style>
+
 
 <body>
 
@@ -181,6 +173,27 @@
     </div>
 </div>
 </body>
+<style>
+    /* Estilos para el icono de like cuando está activado */
+    .icon-like i {
+        color: inherit; /* Color por defecto */
+    }
+
+    .icon-like.liked i {
+        color: blue; /* Color cuando está activado */
+    }
+
+    /* Estilos para el icono de dislike cuando está activado */
+    .icon-dislike i {
+        color: inherit; /* Color por defecto */
+    }
+
+    .icon-dislike.disliked i {
+        color: red; /* Color cuando está activado */
+    }
+
+
+</style>
 <script th:inline="javascript">
     // Función para manejar el clic en el icono de like
     function likeAnswer(answerId) {

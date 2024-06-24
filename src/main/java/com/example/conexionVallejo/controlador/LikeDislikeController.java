@@ -27,36 +27,41 @@ public class LikeDislikeController {
     private UserServicios userServicios;
 
     @PostMapping("/like/{postId}")
-    public ResponseEntity<LikeDislike> likePost(@PathVariable Long postId, @RequestParam Long userId) {
+    public ResponseEntity<Map<String, Long>> likePost(@PathVariable Long postId, @RequestParam Long userId) {
         Post post = postService.postByID(postId);
         User user = userServicios.findById(userId);
-        LikeDislike likeDislike = likeDislikeService.likePost(user, post);
-        return ResponseEntity.ok(likeDislike);
-    }
-
-    @PostMapping("/dislike/{postId}")
-    public ResponseEntity<LikeDislike> dislikePost(@PathVariable Long postId, @RequestParam Long userId) {
-        Post post = postService.postByID(postId);
-        User user = userServicios.findById(userId);
-        LikeDislike likeDislike = likeDislikeService.dislikePost(user, post);
-        return ResponseEntity.ok(likeDislike);
-    }
-
-    // Método GET para obtener contadores de likes y dislikes
-    @GetMapping("/api/likeDislike/{postId}")
-    public ResponseEntity<Map<String, Long>> getLikeDislikeCounts(@PathVariable Long postId) {
-        Post post = postService.postByID(postId);
-
-        // Obtener contadores actualizados
+        likeDislikeService.toggleLike(user, post);
         long likeCount = likeDislikeService.countLikesForPost(post);
         long dislikeCount = likeDislikeService.countDisLikesForPost(post);
-
         Map<String, Long> response = new HashMap<>();
         response.put("likes", likeCount);
         response.put("dislikes", dislikeCount);
-
         return ResponseEntity.ok(response);
     }
 
-    // Otros métodos de controlador
+    @PostMapping("/dislike/{postId}")
+    public ResponseEntity<Map<String, Long>> dislikePost(@PathVariable Long postId, @RequestParam Long userId) {
+        Post post = postService.postByID(postId);
+        User user = userServicios.findById(userId);
+        likeDislikeService.toggleDislike(user, post);
+        long likeCount = likeDislikeService.countLikesForPost(post);
+        long dislikeCount = likeDislikeService.countDisLikesForPost(post);
+        Map<String, Long> response = new HashMap<>();
+        response.put("likes", likeCount);
+        response.put("dislikes", dislikeCount);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/api/likeDislike/{postId}")
+    public ResponseEntity<Map<String, Long>> getLikeDislikeCounts(@PathVariable Long postId) {
+        Post post = postService.postByID(postId);
+        long likeCount = likeDislikeService.countLikesForPost(post);
+        long dislikeCount = likeDislikeService.countDisLikesForPost(post);
+        Map<String, Long> response = new HashMap<>();
+        response.put("likes", likeCount);
+        response.put("dislikes", dislikeCount);
+        return ResponseEntity.ok(response);
+    }
+
+
 }
