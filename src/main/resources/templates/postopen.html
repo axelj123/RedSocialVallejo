@@ -145,10 +145,15 @@
                                     <!-- Mostrar botones de guardar y votar solo si el usuario actual no es el autor -->
                                     <div class="additional-options" th:unless="${answer.createdByUser != null and answer.createdByUser.id == user.id}">
 
-                                        <!-- Icono de likes -->
-                                        <i class="fas fa-thumbs-up"></i>
+                                        <div class="icon-like" th:attr="data-answer-id=${answer.id}">
+                                            <i class="fas fa-thumbs-up"></i>
+                                            <span class="like-count">0</span>
+                                        </div>
                                         <!-- Icono de dislikes -->
-                                        <i class="fas fa-thumbs-down"></i>
+                                        <div class="icon-dislike" th:attr="data-answer-id=${answer.id}">
+                                            <i class="fas fa-thumbs-down"></i>
+                                            <span class="dislike-count">0</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -176,6 +181,109 @@
     </div>
 </div>
 </body>
+<script th:inline="javascript">
+    // Función para manejar el clic en el icono de like
+    function likeAnswer(answerId) {
+        // Obtener el id del usuario actual desde Thymeleaf
+        var userId = /*[[${user.id}]]*/ null;  // Asegúrate de que user.id esté disponible en el modelo
+
+        // Realizar una solicitud POST a /like/{postId}?userId={userId}
+        fetch('/like/' + answerId + '?userId=' + userId, {
+            method: 'POST'
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al dar like');
+            }
+            return response.json();
+        })
+        .then(data => {
+                 updateLikeDislikeCounts();
+
+        })
+        .catch(error => console.error('Error al dar like:', error));
+    }
+
+    // Función para manejar el clic en el icono de dislike
+    function dislikeAnswer(answerId) {
+        // Obtener el id del usuario actual desde Thymeleaf
+        var userId = /*[[${user.id}]]*/ null;  // Asegúrate de que user.id esté disponible en el modelo
+
+        // Realizar una solicitud POST a /dislike/{postId}?userId={userId}
+        fetch('/dislike/' + answerId + '?userId=' + userId, {
+            method: 'POST'
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al dar dislike');
+            }
+            return response.json();
+        })
+        .then(data => {
+                   updateLikeDislikeCounts();
+
+        })
+        .catch(error => console.error('Error al dar dislike:', error));
+    }
+
+    // Escuchar los clics en los iconos de like y dislike
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.icon-like').forEach(item => {
+            item.addEventListener('click', event => {
+                const answerId = event.currentTarget.getAttribute('data-answer-id');
+                likeAnswer(answerId);
+            });
+        });
+
+        document.querySelectorAll('.icon-dislike').forEach(item => {
+            item.addEventListener('click', event => {
+                const answerId = event.currentTarget.getAttribute('data-answer-id');
+                dislikeAnswer(answerId);
+            });
+        });
+
+        // Al cargar la página, actualizar los contadores de likes y dislikes
+        updateLikeDislikeCounts();
+    });
+
+    // Función para actualizar los contadores de likes y dislikes
+    function updateLikeDislikeCounts(answerId) {
+        document.querySelectorAll('.icon-like').forEach(item => {
+            const answerId = item.getAttribute('data-answer-id');
+            fetchLikeDislikeCounts(answerId);
+        });
+
+        document.querySelectorAll('.icon-dislike').forEach(item => {
+            const answerId = item.getAttribute('data-answer-id');
+            fetchLikeDislikeCounts(answerId);
+        });
+    }
+
+    // Función para realizar una solicitud GET para obtener los contadores de likes y dislikes
+    function fetchLikeDislikeCounts(answerId) {
+        fetch('/api/likeDislike/' + answerId)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al obtener los contadores de likes y dislikes');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Actualizar el contador de likes
+            const likeCount = document.querySelector('.icon-like[data-answer-id="' + answerId + '"] .like-count');
+            likeCount.textContent = data.likes;
+
+            // Actualizar el contador de dislikes
+            const dislikeCount = document.querySelector('.icon-dislike[data-answer-id="' + answerId + '"] .dislike-count');
+            dislikeCount.textContent = data.dislikes;
+        })
+        .catch(error => console.error('Error al obtener los contadores de likes y dislikes:', error));
+    }
+</script>
+
+
+
+
 <script>
     // Verificar si hay un textarea visible con ID "details"
     var detailsTextArea = document.getElementById('details');

@@ -46,6 +46,8 @@ public class Post {
     )
     private List<Tag> tag;
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LikeDislike> likesDislikes;
 
     public Post() {
         super();

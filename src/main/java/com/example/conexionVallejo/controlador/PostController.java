@@ -25,7 +25,8 @@ public class PostController {
 
     @Autowired
     private UserRepository userRepository;
-
+@Autowired
+private LikeDislikeRepository likeDislikeRepository;
     @Autowired
     private PostTypeRepository postTypeRepository;
 
@@ -101,6 +102,7 @@ public class PostController {
         }
     }
     public void deleteAnswerById(Long id) {
+
         postRepository.deleteById(id);
     }
 
@@ -140,6 +142,7 @@ public class PostController {
     private void deleteSinglePost(Post post) {
         try {
             // Eliminar las dependencias del post en otras tablas
+            likeDislikeRepository.deleteByPostId(post.getId().longValue());
             notificationRepository.deleteByPost_Id(post.getId().longValue());
             savedPostRepository.deleteByPostId(post.getId().longValue());
             postTagRepository.deleteByPostId(post.getId().longValue());
@@ -160,6 +163,7 @@ public class PostController {
             for (Post answer : answersToDelete) {
                 deleteSinglePost(answer); // Eliminar cada respuesta
             }
+            likeDislikeRepository.deleteByPostId(question.getId().longValue());
 
             notificationRepository.deleteByPost_Id(question.getId().longValue());
             savedPostRepository.deleteByPostId(question.getId().longValue());

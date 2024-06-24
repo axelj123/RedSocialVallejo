@@ -44,7 +44,11 @@ public class PostService {
     public Optional<Post> findPostById(Long id) {
         return postRepository.findById(id);
     }
+public Post postByID(Long id){
 
+        return postRepository.findById(id)                .orElseThrow(() -> new RuntimeException("Post not found with id: " + id));
+
+}
 
 
     // Método para obtener posts sin respuesta paginados
