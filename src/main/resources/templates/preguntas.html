@@ -108,22 +108,18 @@
             <!-- End Filter Section -->
             <div id="content-listas">
                 <div id="flex-questions">
-
-                    <div th:if="${not #lists.isEmpty(postsPage.content)}" th:each="post : ${postsPage.content}"
-                         class="card">
+                    <div th:if="${postsPage != null and not #lists.isEmpty(postsPage.content)}" th:each="post : ${postsPage.content}" class="card">
                         <div class="content">
                             <p th:text="${post.postTitle}"></p>
                             <ul class="chips">
                                 <li th:each="tag : ${post.tag}">
-                                    <a th:href="@{/preguntas(tags=${{tag.tagName}})}" class="chip" th:text="${tag.tagName}"></a>
+                                    <a th:href="@{/preguntas(tags=${tag.tagName})}" class="chip" th:text="${tag.tagName}"></a>
                                 </li>
                             </ul>
-
                             <div class="action-buttons-profile">
                                 <a th:href="@{'/postopen/' + ${post.id}}" class="view-more-button">Ayudar</a>
                                 <div class="profile-section">
-                                    <img th:src="@{${post.createdByUser.profileImage}}" alt="profile"
-                                         class="save-profile">
+                                    <img th:src="@{${post.createdByUser.profileImage}}" alt="profile" class="save-profile">
                                     <div class="profile-info">
                                         <a th:href="@{'/inicio/' + ${post.createdByUser.displayName}}">
                                             <span th:text="${post.createdByUser.displayName}"></span>
@@ -140,7 +136,6 @@
                     <div th:if="${#lists.isEmpty(postsPage.content)}" class="no-results-message">
                         <p>No se encontraron publicaciones con los filtros seleccionados.</p>
                     </div>
-
                 </div>
 
                 <!-- Paginación -->

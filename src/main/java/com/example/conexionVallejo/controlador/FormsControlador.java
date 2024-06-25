@@ -454,28 +454,28 @@ public class FormsControlador {
             User user = optionalUser.get();
             model.addAttribute("user", user);
 
-            Page<Post> postsPage;
+            Page<Post> postsPage = null;
             Pageable pageable = PageRequest.of(page, size, orderBy.equals("newest") ? Sort.by("createdDate").descending() : Sort.by("createdDate").ascending());
 
             if (unanswered != null && unanswered) {
                 if (tags != null && !tags.isEmpty()) {
                     // Filtrar por tags y preguntas sin respuesta
-                    postsPage = postService.obtenerPostsSinRespuestaPaginadosPorTags(page, size, tags,orderBy);
+                    postsPage = postService.obtenerPostsSinRespuestaPaginadosPorTags(page, size, tags, orderBy);
 
                 } else {
                     // Filtrar solo por preguntas sin respuesta
-                    postsPage = postService.obtenerPostsSinRespuestaPaginados(page, size,orderBy);
+                    postsPage = postService.obtenerPostsSinRespuestaPaginados(page, size, orderBy);
                 }
             } else if (tags != null && !tags.isEmpty()) {
                 // Filtrar por tags
-                postsPage = postService.obtenerPostsPaginadosPorTags(page, size, tags,orderBy);
+                postsPage = postService.obtenerPostsPaginadosPorTags(page, size, tags, orderBy);
             } else {
                 // No hay filtros seleccionados
                 postsPage = postService.obtenerPostsTipo1Paginados(page, size, orderBy);
             }
 
             // Verificar si no hay resultados y agregar un mensaje de advertencia
-            if (postsPage.isEmpty()) {
+            if (postsPage == null || postsPage.isEmpty()) {
                 model.addAttribute("noResultsMessage", "No se encontraron publicaciones con los filtros seleccionados.");
             } else {
                 Map<Integer, String> postAges = postsPage.stream()
@@ -501,10 +501,6 @@ public class FormsControlador {
 
         return "preguntas";
     }
-
-
-
-
 
 
 

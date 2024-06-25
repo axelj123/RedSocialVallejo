@@ -63,7 +63,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "  FROM Posts pq " +
             "  WHERE pq.parent_question_id = p.id " +
             ") " +
-            "AND t.tag_name IN (:tagNames)",
+            "AND t.tag_name IN (:tagNames) " +
+            "ORDER BY p.created_date DESC", // Asegúrate de usar el alias p para created_date
             nativeQuery = true)
     Page<Post> findUnansweredPostsByTags(@Param("tagNames") List<String> tagNames, Pageable pageable);
 
