@@ -43,12 +43,12 @@ header {
 	border-bottom: 1px solid var(--line-color);
 }
 
-.header-content {
-	width: 1264px; /* Ancho del contenido del encabezado */
-	margin: 0 auto; /* Centra horizontalmente el contenido */
-	display: flex;
-	justify-content: space-between; /* Espacio entre los elementos */
-}
+    .header-content {
+        width: 1264px; /* Ancho del contenido del encabezado */
+        margin: 0 auto; /* Centra horizontalmente el contenido */
+        display: flex;
+        justify-content: space-between; /* Espacio entre los elementos */
+    }
 
 .logo {
 	display: flex;

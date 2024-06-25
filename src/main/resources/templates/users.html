@@ -6,6 +6,7 @@
     <title>Usuarios</title>
     <link rel="stylesheet" type="text/css" href="css/users.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}">
+    <link rel="stylesheet" type="text/css" href="css/chatbot.css">
 
     <link
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
@@ -21,8 +22,8 @@
           href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
     <script
             src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-
-
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
 </head>
 <link th:replace="fragments/header :: header">
 
@@ -75,7 +76,8 @@
                 </div>
             </div>
         </div>
-
+        <!-- Incluir el fragmento del chatbot -->
+        <div th:insert="fragments/chatbot :: chatbot-fragment"></div>
     </div>
 
 </div>
@@ -150,6 +152,7 @@
 
 </script>
 <script th:src="@{/js/header.js}"></script>
+<script th:src="@{/js/chatbot.js}"></script>
 
 </body>
 </html>

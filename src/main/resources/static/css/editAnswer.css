@@ -44,14 +44,12 @@ header {
 	transition: all .50s ease;
 	border-bottom: 1px solid var(--line-color);
 }
-
 .header-content {
 	width: 1264px; /* Ancho del contenido del encabezado */
 	margin: 0 auto; /* Centra horizontalmente el contenido */
 	display: flex;
 	justify-content: space-between; /* Espacio entre los elementos */
 }
-
 .logo {
 	display: flex;
 	align-items: center;
@@ -431,3 +429,42 @@ ol li::before {
 		position: absolute;
 		right: 20px;
 		top: 50%;
+		transform: translate(-20%, -50%);
+		margin:0;
+	}
+	.search-container {
+		display: none;
+		position: fixed;
+		top: 40px;
+		width: 90%;
+		z-index: 1000;
+		box-shadow: 3px 4px 10px rgba(0, 0, 0, 0.1);
+	}
+
+
+.search-container button {
+	background-color: var(--main-color);
+	color: #fff;
+	border: none;
+	padding: 8px 15px;
+	cursor: pointer;
+	outline: none;
+	margin-left: 5px;
+	border-radius: 10px;
+}
+	#content-center {
+		width: 100%;
+		left: 0;
+		margin: 0;
+		height: 100%;
+		padding: 20px;
+	}
+	#mainbar {
+		width: auto; /* Ajusta el ancho automáticamente */
+		height: auto; /* Ajusta la altura automáticamente */
+	}
+	.profile-btn img {
+
+	margin-top:5px;
+}
+}

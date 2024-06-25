@@ -6,6 +6,7 @@
     <title>Editar respuesta</title>
     <link rel="stylesheet" type="text/css" href="/css/editAnswer.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}">
+    <link rel="stylesheet" type="text/css" href="/css/chatbot.css">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="icon" href="assets/logo03.png" type="image/png">
@@ -17,7 +18,8 @@
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/super-build/ckeditor.js"></script>
     <link th:replace="fragments/header :: header">
-
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
 </head>
 
 <body>
@@ -75,6 +77,8 @@
             </div>
         </div>
     </div>
+    <div th:insert="fragments/chatbot :: chatbot-fragment"></div>
+
 </div>
 
 <style>
@@ -311,6 +315,7 @@
 
 </script>
 <script th:src="@{/js/header.js}"></script>
+<script th:src="@{/js/chatbot.js}"></script>
 
 </body>
 </html>

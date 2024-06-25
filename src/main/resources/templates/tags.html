@@ -1,148 +1,151 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Crear Post</title>
-<link rel="stylesheet" type="text/css" href="css/tags.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Post</title>
+    <link rel="stylesheet" type="text/css" href="css/tags.css">
 
-<link
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-	rel="stylesheet">
-<link rel="icon" href="assets/logo03.png" type="image/png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
-	href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
-	rel="stylesheet">
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+            rel="stylesheet">
+    <link rel="icon" href="assets/logo03.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+            rel="stylesheet">
     <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}">
+    <link rel="stylesheet" type="text/css" href="css/chatbot.css">
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
-<script
-	src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+    <script
+            src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"/>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0"/>
 
 </head>
 <link th:replace="fragments/header :: header">
 
 <body>
 
-	<div class="container">
-		<div class="sidebar">
-			<div class="sidebar-content">
-				<nav>
-					<ul>
-						<li><a href="/foro"><i class="fas fa-home"></i> Inicio</a></li>
-                        <li><a href="/preguntas"><i class="fas fa-question-circle"></i>
-                            Preguntas</a></li>
-						<li><a href="#"><i class="fas fa-tag"></i> Tags</a></li>
-						<li><a th:href="@{/perfil(tab='guardados')}"
-							th:classappend="${activeTab == 'guardados'} ? 'active' : ''"><i
-								class="fas fa-bookmark"></i> Guardado</a></li>
-						<li><a href="/users"><i class="fas fa-user"></i> Usuarios</a></li>
-					</ul>
-				</nav>
-			</div>
-		</div>
+<div class="container">
+    <div class="sidebar">
+        <div class="sidebar-content">
+            <nav>
+                <ul>
+                    <li><a href="/foro"><i class="fas fa-home"></i> Inicio</a></li>
+                    <li><a href="/preguntas"><i class="fas fa-question-circle"></i>
+                        Preguntas</a></li>
+                    <li><a href="#"><i class="fas fa-tag"></i> Tags</a></li>
+                    <li><a th:href="@{/perfil(tab='guardados')}"
+                           th:classappend="${activeTab == 'guardados'} ? 'active' : ''"><i
+                            class="fas fa-bookmark"></i> Guardado</a></li>
+                    <li><a href="/users"><i class="fas fa-user"></i> Usuarios</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
 
-		<div id="content-center">
-			<div id="mainbar">
-				<div class="user-main">
-					<div class="flex-h1">
-						<h1>Tags</h1>
-					</div>
-					<div class="search-user">
-						<input type="text" id="search-tag"
-							placeholder="Buscar usuarios...">
-					</div>
-					<div class="user-list">
-
-
-                        <div th:each="tag : ${userList}" class="user-card">
-                            <a th:href="@{/preguntas(tags=${tag.tagName})}">
-                                <h3 th:text="${tag.tagName}"></h3>
-                            </a>
-                            <p th:text="${tag.tagDescription}"></p>
-                            <!-- Aquí puedes mostrar otros atributos del tag si lo deseas -->
-                        </div>
-
-						</div>
+    <div id="content-center">
+        <div id="mainbar">
+            <div class="user-main">
+                <div class="flex-h1">
+                    <h1>Tags</h1>
+                </div>
+                <div class="search-user">
+                    <input type="text" id="search-tag"
+                           placeholder="Buscar usuarios...">
+                </div>
+                <div class="user-list">
 
 
+                    <div th:each="tag : ${userList}" class="user-card">
+                        <a th:href="@{/preguntas(tags=${tag.tagName})}">
+                            <h3 th:text="${tag.tagName}"></h3>
+                        </a>
+                        <p th:text="${tag.tagDescription}"></p>
+                        <!-- Aquí puedes mostrar otros atributos del tag si lo deseas -->
+                    </div>
 
-				</div>
-			</div>
-
-		</div>
-
-	</div>
-
-
-	<script>
-
+                </div>
 
 
-document.addEventListener('DOMContentLoaded', function() {
-    var menuItems = document.querySelectorAll('.sidebar-content nav ul li');
+            </div>
+        </div>
+
+    </div>
+    <!-- Incluir el fragmento del chatbot -->
+    <div th:insert="fragments/chatbot :: chatbot-fragment"></div>
+</div>
+
+
+<script>
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var menuItems = document.querySelectorAll('.sidebar-content nav ul li');
 
 
 
-    document.querySelector('.sidebar-content nav ul li:first-child').classList.add('active');
+        document.querySelector('.sidebar-content nav ul li:first-child').classList.add('active');
 
-    let menu = document.querySelector('#menu-icon');
-    let navbar = document.querySelector('.sidebar');
+        let menu = document.querySelector('#menu-icon');
+        let navbar = document.querySelector('.sidebar');
 
-    menu.onclick = () => {
-        menu.classList.toggle('fa-times');
-        navbar.classList.toggle('open');
-    }
+        menu.onclick = () => {
+            menu.classList.toggle('fa-times');
+            navbar.classList.toggle('open');
+        }
 
-    const searchIcon = document.getElementById('search-icon');
-    const searchContainer = document.getElementById('search-container');
+        const searchIcon = document.getElementById('search-icon');
+        const searchContainer = document.getElementById('search-container');
 
-    searchIcon.addEventListener('click', function(event) {
-        event.preventDefault();
-        searchContainer.style.display = searchContainer.style.display === 'flex' ? 'none' : 'flex';
+        searchIcon.addEventListener('click', function(event) {
+            event.preventDefault();
+            searchContainer.style.display = searchContainer.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+
     });
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('search-tag');
+        const userCards = document.querySelectorAll('.user-card');
 
+        searchInput.addEventListener('input', function() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
 
-});
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('search-tag');
-    const userCards = document.querySelectorAll('.user-card');
-
-    searchInput.addEventListener('input', function() {
-        const searchTerm = searchInput.value.trim().toLowerCase();
-
-        userCards.forEach(function(card) {
-            const userName = card.querySelector('h3').textContent.toLowerCase();
-            if (userName.includes(searchTerm)) {
-                card.style.display = 'block';
-            } else {
-                card.style.display = 'none';
-            }
+            userCards.forEach(function(card) {
+                const userName = card.querySelector('h3').textContent.toLowerCase();
+                if (userName.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
         });
     });
-});
 
 
 </script>
-    <script>
-        function searchPosts() {
-          var query = document.getElementById('search-input').value.trim();
-          if (query.length === 0) {
-              alert('Por favor ingresa un término de búsqueda.');
-              return;
-          }
-          // Redirigir a la ruta manejada por Spring Boot
-          window.location.href = '/search?q=' + encodeURIComponent(query);
+<script>
+    function searchPosts() {
+      var query = document.getElementById('search-input').value.trim();
+      if (query.length === 0) {
+          alert('Por favor ingresa un término de búsqueda.');
+          return;
       }
+      // Redirigir a la ruta manejada por Spring Boot
+      window.location.href = '/search?q=' + encodeURIComponent(query);
+  }
 
-    </script>
-    <script th:src="@{/js/header.js}"></script>
+</script>
+<script th:src="@{/js/header.js}"></script>
 
-
+<script th:src="@{/js/chatbot.js}"></script>
 </body>
 </html>
