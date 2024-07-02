@@ -14,7 +14,7 @@ public interface LikeDislikeRepository extends JpaRepository<LikeDislike, Intege
 
     LikeDislike findByUserAndPost(User user, Post post);
 
-    void deleteByPostId(Long postId);
+    void deleteByPost(Post postId);
 
 
     long countByPostAndIsLikeIsTrue(Post post);

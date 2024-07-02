@@ -16,8 +16,10 @@ public class ChatController {
     @PostMapping("/message")
     public ResponseEntity<String> handleMessage(@RequestBody String message) {
         System.out.println("Mensaje recibido en el controlador: " + message);  // Log para verificar el mensaje recibido
+        message = message.replace("\"", "");  // Eliminar comillas del mensaje
         String response = chatbot.getResponse(message);
         System.out.println("Respuesta del chatbot: " + response);  // Log para verificar la respuesta del chatbot
         return ResponseEntity.ok(response);
     }
+
 }
