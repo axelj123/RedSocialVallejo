@@ -367,7 +367,6 @@ nav.open {
     display: flex;
     flex-direction: column;
     font-size: 0.9em;
-    color: #6a737c;
 }
 
 /* Estilo para la imagen y nombre del usuario */
@@ -398,12 +397,11 @@ nav.open {
 
 .additional-options i {
     font-size: 1.2em;
-    color: #6a737c;
     cursor: pointer;
 }
 
 .additional-options i:hover {
-    color: #007bff;
+    color:black;
 }
 
 .Answer-header{
@@ -424,10 +422,7 @@ margin-bottom:50px;
 .answer-card p{
 font-size:15px;
 }
-.additional-options i {
-color:gray;
-pointer:cursor;
-}
+
 #send-answer{
 margin-top:20px;
 }

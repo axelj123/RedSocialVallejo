@@ -49,15 +49,7 @@ public class LikeDislikeService {
             return likeDislikeRepository.save(likeDislike);
         }
     }
-    public LikeDislike likePost(User user, Post post) {
-        LikeDislike likeDislike = new LikeDislike(user, post, true);
-        return likeDislikeRepository.save(likeDislike);
-    }
 
-    public LikeDislike dislikePost(User user, Post post) {
-        LikeDislike likeDislike = new LikeDislike(user, post, false);
-        return likeDislikeRepository.save(likeDislike);
-    }
 
     public long countLikesForPost(Post post) {
         return likeDislikeRepository.countByPostAndIsLikeIsTrue(post);

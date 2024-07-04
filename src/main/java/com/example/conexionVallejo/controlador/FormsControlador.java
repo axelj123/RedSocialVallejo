@@ -7,8 +7,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.example.conexionVallejo.modelos.SavedPost;
-import com.example.conexionVallejo.repositorios.PostRepository;
-import com.example.conexionVallejo.repositorios.SavedPostRepository;
+import com.example.conexionVallejo.repositorios.*;
 import com.example.conexionVallejo.servicios.AgeCalculatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,8 +27,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.conexionVallejo.modelos.Post;
 import com.example.conexionVallejo.modelos.Tag;
 import com.example.conexionVallejo.modelos.User;
-import com.example.conexionVallejo.repositorios.TagsRepository;
-import com.example.conexionVallejo.repositorios.UserRepository;
 import com.example.conexionVallejo.servicios.EmailRequest;
 import com.example.conexionVallejo.servicios.PostService;
 
@@ -46,7 +43,8 @@ public class FormsControlador {
 
     @Autowired
     private TagsRepository tagsRepository;
-
+    @Autowired
+    private ReportRepository reportRepository;
     @Autowired
     private PostRepository postRepository;
     private final PostService postService;
@@ -76,6 +74,14 @@ public class FormsControlador {
                     Post post = optionalPost.get();
                     model.addAttribute("post", post);
 
+                    // Verificar si el post está guardado por el usuario
+                    Optional<SavedPost> savedPostOptional = savedPostRepository.findByUserAndPost(user, post);
+                    boolean isSaved = savedPostOptional.isPresent();
+                    model.addAttribute("isSaved", isSaved);
+
+                    // Verificar si el post está reportado por el usuario
+                    boolean hasReported = reportRepository.existsByUserAndPost(user, post);
+                    model.addAttribute("hasReported", hasReported);
 
                     // Convertir la fecha de creación del post a UTC
                     Instant postInstant = post.getCreatedDate().toInstant();
@@ -93,6 +99,7 @@ public class FormsControlador {
                         Instant answerInstant = answer.getCreatedDate().toInstant();
                         String answerAge = AgeCalculatorService.calculatePostAge(answerInstant);
                         answerAges.put(answer.getId().intValue(), answerAge);
+
                     }
 
                     model.addAttribute("answerAges", answerAges);

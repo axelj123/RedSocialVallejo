@@ -136,3 +136,18 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error al cargar las notificaciones:', error);
         });
 });
+
+    function searchPosts() {
+      var query = document.getElementById('search-input').value.trim();
+      if (query.length === 0) {
+          alert('Por favor ingresa un término de búsqueda.');
+          return;
+      }
+      // Redirigir a la ruta manejada por Spring Boot
+      window.location.href = '/search?q=' + encodeURIComponent(query);
+  }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var menuItems = document.querySelectorAll('.sidebar-content nav ul li');
+        document.querySelector('.sidebar-content nav ul li:first-child').classList.add('active');
+    });

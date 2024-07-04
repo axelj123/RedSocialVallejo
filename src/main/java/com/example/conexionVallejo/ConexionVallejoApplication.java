@@ -8,6 +8,8 @@
 
 		public static void main(String[] args) {
 			SpringApplication.run(ConexionVallejoApplication.class, args);
+
+
 		}
 
 	}

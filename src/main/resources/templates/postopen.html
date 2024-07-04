@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${post.postTitle}">Título predeterminado</title>
     <link rel="stylesheet" type="text/css" href="/css/postopen.css">
-    <link rel="stylesheet" type="text/css" href="/css/chatbot.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
@@ -17,22 +16,26 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+          rel="stylesheet">
     <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/super-build/ckeditor.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0" />
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"/>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,1,0"/>
     <link th:replace="fragments/header :: header">
 
 
-        <!-- Incluir Fancybox CSS -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
-        <!-- Incluir jQuery (necesario para Fancybox) -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <!-- Incluir Fancybox JS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
-        <!-- Estilos adicionales -->
+    <!-- Estilos adicionales -->
 </head>
-
+<style>
+    .saved {
+        color: black !important;
+    }
+    .reported {
+        color: black !important;
+    }
+</style>
 
 <body>
 
@@ -45,7 +48,9 @@
                     <li><a href="/foro"><i class="fas fa-home"></i> Inicio</a></li>
                     <li><a href="/preguntas"><i class="fas fa-question-circle"></i> Preguntas</a></li>
                     <li><a href="/tags"><i class="fas fa-tag"></i> Tags</a></li>
-                    <li><a th:href="@{/perfil(tab='guardados')}" th:classappend="${activeTab == 'guardados'} ? 'active' : ''"><i class="fas fa-bookmark"></i> Guardado</a></li>
+                    <li><a th:href="@{/perfil(tab='guardados')}"
+                           th:classappend="${activeTab == 'guardados'} ? 'active' : ''"><i class="fas fa-bookmark"></i>
+                        Guardado</a></li>
                     <li><a href="/users"><i class="fas fa-user"></i> Usuarios</a></li>
                 </ul>
             </nav>
@@ -70,29 +75,33 @@
                                 <li th:each="tag : ${post.tag}" class="chip" th:text="${tag.tagName}"></li>
                             </ul>
                             <!-- Botones de editar y eliminar publicación -->
-                            <div class="post-actions" th:if="${post.createdByUser != null and post.createdByUser.id == user.id}">
-                                <a th:href="@{'/posts/' + ${post.id} + '/edit'}" class="edit-post"><i class="fas fa-edit"></i></a>
+                            <div class="post-actions"
+                                 th:if="${post.createdByUser != null and post.createdByUser.id == user.id}">
+                                <a th:href="@{'/posts/' + ${post.id} + '/edit'}" class="edit-post"><i
+                                        class="fas fa-edit"></i></a>
                                 <a href="#" class="delete-post" th:attr="data-post-id=${post.id}">
                                     <i class="fas fa-trash-alt"></i>
                                 </a>
                             </div>
 
 
-
-
-
-
-                            <div class="additional-options" th:unless="${post.createdByUser != null and post.createdByUser.id == user.id}">
+                            <!-- Opciones adicionales -->
+                            <div class="additional-options"
+                                 th:unless="${post.createdByUser != null and post.createdByUser.id == user.id}">
                                 <!-- Formulario para guardar la publicación -->
                                 <form id="save-post-form" th:action="@{/save}" method="post" data-message="${message}" data-type="${type}">
-                                <!-- Agrega un campo oculto para enviar el ID de la publicación -->
-                                <input type="hidden" name="postId" th:value="${post.id}">
-                                <!-- Agrega un botón o un enlace para guardar la publicación -->
-                                <button type="submit" style="border: none; background-color: transparent; cursor: pointer;">
-                                    <i class="fas fa-bookmark"></i>
-                                </button>
-                            </form>
+                                    <input type="hidden" name="postId" th:value="${post.id}">
+                                    <button style="border: none; background-color: transparent; cursor: pointer;">
+                                        <i class="fa-bookmark" th:classappend="${isSaved} ? 'fas' : 'far'"></i>
+                                    </button>
+                                </form>
 
+
+                                <!-- Botón de denuncia -->
+                                <button class="report-post" th:attr="data-post-id=${post.id}"
+                                        style="border: none; background-color: transparent; cursor: pointer;">
+                                    <i class="far fa-flag" th:classappend="${hasReported} ? 'fas reported' : ''"></i>
+                                </button>
                             </div>
 
 
@@ -112,7 +121,8 @@
 
                             <!-- Respuestas -->
                             <div class="Answer-header">
-                                <h3 th:if="${not #lists.isEmpty(answers)}" th:text="'Respuestas (' + ${#lists.size(answers)} + ')'"></h3>
+                                <h3 th:if="${not #lists.isEmpty(answers)}"
+                                    th:text="'Respuestas (' + ${#lists.size(answers)} + ')'"></h3>
                             </div>
 
                             <!-- Itera sobre las respuestas y muestra cada una -->
@@ -132,34 +142,46 @@
                                         </a>
                                     </div>
                                     <!-- Mostrar botones de editar y eliminar solo si el usuario actual es el autor -->
-                                    <div class="post-actions" th:if="${answer.createdByUser != null and answer.createdByUser.id == user.id}">
-                                        <a th:href="@{'/answer/' + ${answer.id} + '/edit'}" class="edit-answer"><i class="fas fa-edit"></i></a>
-                                        <a href="#" class="delete-answer" th:attr="data-answer-id=${answer.id}"><i class="fas fa-trash-alt"></i></a>
+                                    <div class="post-actions"
+                                         th:if="${answer.createdByUser != null and answer.createdByUser.id == user.id}">
+                                        <a th:href="@{'/answer/' + ${answer.id} + '/edit'}" class="edit-answer"><i
+                                                class="fas fa-edit"></i></a>
+                                        <a href="#" class="delete-answer" th:attr="data-answer-id=${answer.id}"><i
+                                                class="fas fa-trash-alt"></i></a>
                                     </div>
 
                                     <!-- Mostrar botones de guardar y votar solo si el usuario actual no es el autor -->
-                                    <div class="additional-options" th:unless="${answer.createdByUser != null and answer.createdByUser.id == user.id}">
+                                    <div class="additional-options"
+                                         th:unless="${answer.createdByUser != null and answer.createdByUser.id == user.id}">
 
                                         <div class="icon-like" th:attr="data-answer-id=${answer.id}">
-                                            <i class="fas fa-thumbs-up"></i>
+                                            <i class="far fa-thumbs-up"></i>
                                             <span class="like-count">0</span>
                                         </div>
                                         <!-- Icono de dislikes -->
                                         <div class="icon-dislike" th:attr="data-answer-id=${answer.id}">
-                                            <i class="fas fa-thumbs-down"></i>
+                                            <i class="far fa-thumbs-down"></i>
                                             <span class="dislike-count">0</span>
                                         </div>
+
+                                        <button class="report-answer" th:attr="data-answer-id=${answer.id}"
+                                                style="border: none; background-color: transparent; cursor: pointer;">
+                                            <i class="far fa-flag"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="yourAnswer" th:unless="${post.createdByUser != null and post.createdByUser.id == user.id}">
+                            <div class="yourAnswer"
+                                 th:unless="${post.createdByUser != null and post.createdByUser.id == user.id}">
                                 <h1>Tu respuesta</h1>
-                                <form id="answer-form" action="/answer/new" method="post" th:action="@{/answer/new}" th:object="${post}">
+                                <form id="answer-form" action="/answer/new" method="post" th:action="@{/answer/new}"
+                                      th:object="${post}">
                                     <input type="hidden" name="parentQuestionId" th:value="${post.id}" required>
                                     <div class="question-inner">
                                         <label for="details">Detalles</label>
-                                        <textarea id="details" name="postDetails" placeholder="Presenta el problema y amplía lo que pusiste en el título. Mínimo 20 caracteres." ></textarea>
+                                        <textarea id="details" name="postDetails"
+                                                  placeholder="Presenta el problema y amplía lo que pusiste en el título. Mínimo 20 caracteres."></textarea>
                                     </div>
                                     <button id="send-answer" type="submit">Responder</button>
                                 </form>
@@ -172,32 +194,159 @@
             </div>
 
         </div>
-        <!-- Incluir el fragmento del chatbot -->
-        <div th:insert="fragments/chatbot :: chatbot-fragment"></div>
     </div>
 </div>
 </body>
-<style>
-    /* Estilos para el icono de like cuando está activado */
-    .icon-like i {
-        color: inherit; /* Color por defecto */
-    }
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        // Manejo de denuncia para publicaciones
+        document.querySelectorAll('.report-post').forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                var postId = button.getAttribute('data-post-id');
+                Swal.fire({
+                    title: '¿Quieres denunciar esta publicación?',
+                    input: 'select',
+                    inputOptions: {
+                        'spam': 'Contenido no deseado o spam',
+                        'inappropriate': 'Contenido inapropiado',
+                        'plagiarism': 'Plagio o copia no autorizada',
+                        'other': 'Otro (especificar en la siguiente ventana)'
+                    },
+                    inputPlaceholder: 'Selecciona la razón de la denuncia...',
+                    showCancelButton: true,
+                    confirmButtonText: 'Enviar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var reason = result.value;
+                        if (reason === 'other') {
+                            Swal.fire({
+                                title: 'Especifica la razón de la denuncia',
+                                input: 'textarea',
+                                inputAttributes: {
+                                    'aria-label': 'Describe la razón de la denuncia aquí...'
+                                },
+                                showCancelButton: true,
+                                confirmButtonText: 'Enviar',
+                                cancelButtonText: 'Cancelar'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    reason = result.value;
+                                    sendReport(postId, reason);
+                                }
+                            });
+                        } else {
+                            sendReport(postId, reason);
+                        }
+                    }
+                });
+            });
+        });
 
-    .icon-like.liked i {
-        color: blue; /* Color cuando está activado */
-    }
+        // Función para enviar la denuncia
+        function sendReport(postId, reason) {
+            fetch('/report/post', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    postId: postId,
+                    reason: reason
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                Swal.fire({
+                    icon: data.type === 'success' ? 'success' : 'error',
+                    title: data.message
+                });
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al enviar la denuncia',
+                    text: 'Por favor, inténtalo de nuevo más tarde. Detalles: ' + error.message
+                });
+            });
+        }
 
-    /* Estilos para el icono de dislike cuando está activado */
-    .icon-dislike i {
-        color: inherit; /* Color por defecto */
-    }
+        // Manejo de denuncia para respuestas
+        document.querySelectorAll('.report-answer').forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                var answerId = button.getAttribute('data-answer-id');
+                Swal.fire({
+                    title: '¿Quieres denunciar esta respuesta?',
+                    input: 'select',
+                    inputOptions: {
+                        'spam': 'Contenido no deseado o spam',
+                        'inappropriate': 'Contenido inapropiado',
+                        'plagiarism': 'Plagio o copia no autorizada',
+                        'other': 'Otro (especificar en la siguiente ventana)'
+                    },
+                    inputPlaceholder: 'Selecciona la razón de la denuncia...',
+                    showCancelButton: true,
+                    confirmButtonText: 'Enviar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var reason = result.value;
+                        if (reason === 'other') {
+                            Swal.fire({
+                                title: 'Especifica la razón de la denuncia',
+                                input: 'textarea',
+                                inputAttributes: {
+                                    'aria-label': 'Describe la razón de la denuncia aquí...'
+                                },
+                                showCancelButton: true,
+                                confirmButtonText: 'Enviar',
+                                cancelButtonText: 'Cancelar'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    reason = result.value;
+                                    sendAnswerReport(answerId, reason);
+                                }
+                            });
+                        } else {
+                            sendAnswerReport(answerId, reason);
+                        }
+                    }
+                });
+            });
+        });
 
-    .icon-dislike.disliked i {
-        color: red; /* Color cuando está activado */
-    }
+        // Función para enviar la denuncia de respuesta
+        function sendAnswerReport(answerId, reason) {
+            fetch('/report/answer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    answerId: answerId,
+                    reason: reason
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                Swal.fire({
+                    icon: data.type === 'success' ? 'success' : 'error',
+                    title: data.message
+                });
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al enviar la denuncia',
+                    text: 'Por favor, inténtalo de nuevo más tarde. Detalles: ' + error.message
+                });
+            });
+        }
+    });
+</script>
 
-
-</style>
 <script th:inline="javascript">
     // Función para manejar el clic en el icono de like
     function likeAnswer(answerId) {
@@ -299,169 +448,6 @@
 </script>
 
 
-
-
-<script>
-    // Verificar si hay un textarea visible con ID "details"
-    var detailsTextArea = document.getElementById('details');
-    if (detailsTextArea && window.getComputedStyle(detailsTextArea).display !== 'none') {
-        // Si hay un textarea visible con ID "details", no inicializar CKEditor
-      // This sample still does not showcase all CKEditor&nbsp;5 features (!)
-    // Visit https://ckeditor.com/docs/ckeditor5/latest/features/index.html to browse all the features.
-    CKEDITOR.ClassicEditor.create(document.getElementById("details"), {
-        // https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html#extended-toolbar-configuration-format
-        toolbar: {
-            items: [
-                'exportPDF','exportWord', '|',
-                'findAndReplace', 'selectAll', '|',
-                'heading', '|',
-                'bold', 'italic', 'strikethrough', 'underline', 'code', 'subscript', 'superscript', 'removeFormat', '|',
-                'bulletedList', 'numberedList', 'todoList', '|',
-                'outdent', 'indent', '|',
-                'undo', 'redo',
-                '-',
-                'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
-                'alignment', '|',
-                'link', 'uploadImage', 'blockQuote', 'insertTable', 'mediaEmbed', 'codeBlock', 'htmlEmbed', '|',
-                'specialCharacters', 'horizontalLine', 'pageBreak', '|',
-                'textPartLanguage', '|',
-                'sourceEditing'
-            ],
-            shouldNotGroupWhenFull: true
-        },
-        // Changing the language of the interface requires loading the language file using the <script> tag.
-        // language: 'es',
-        list: {
-            properties: {
-                styles: true,
-                startIndex: true,
-                reversed: true
-            }
-        },
-        // https://ckeditor.com/docs/ckeditor5/latest/features/headings.html#configuration
-        heading: {
-            options: [
-                { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
-                { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
-                { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' },
-                { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
-                { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
-            ]
-        },
-        // https://ckeditor.com/docs/ckeditor5/latest/features/editor-placeholder.html#using-the-editor-configuration
-        placeholder: 'Welcome to CKEditor 5!',
-        // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-family-feature
-        fontFamily: {
-            options: [
-                'default',
-                'Arial, Helvetica, sans-serif',
-                'Courier New, Courier, monospace',
-                'Georgia, serif',
-                'Lucida Sans Unicode, Lucida Grande, sans-serif',
-                'Tahoma, Geneva, sans-serif',
-                'Times New Roman, Times, serif',
-                'Trebuchet MS, Helvetica, sans-serif',
-                'Verdana, Geneva, sans-serif'
-            ],
-            supportAllValues: true
-        },
-        // https://ckeditor.com/docs/ckeditor5/latest/features/font.html#configuring-the-font-size-feature
-        fontSize: {
-            options: [ 10, 12, 14, 'default', 18, 20, 22 ],
-            supportAllValues: true
-        },
-        // Be careful with the setting below. It instructs CKEditor to accept ALL HTML markup.
-        // https://ckeditor.com/docs/ckeditor5/latest/features/general-html-support.html#enabling-all-html-features
-        htmlSupport: {
-            allow: [
-                {
-                    name: /.*/,
-                    attributes: true,
-                    classes: true,
-                    styles: true
-                }
-            ]
-        },
-        // Be careful with enabling previews
-        // https://ckeditor.com/docs/ckeditor5/latest/features/html-embed.html#content-previews
-        htmlEmbed: {
-            showPreviews: true
-        },
-        // https://ckeditor.com/docs/ckeditor5/latest/features/link.html#custom-link-attributes-decorators
-        link: {
-            decorators: {
-                addTargetToExternalLinks: true,
-                defaultProtocol: 'https://',
-                toggleDownloadable: {
-                    mode: 'manual',
-                    label: 'Downloadable',
-                    attributes: {
-                        download: 'file'
-                    }
-                }
-            }
-        },
-        // https://ckeditor.com/docs/ckeditor5/latest/features/mentions.html#configuration
-        mention: {
-            feeds: [
-                {
-                    marker: '@',
-                    feed: [
-                        '@apple', '@bears', '@brownie', '@cake', '@cake', '@candy', '@canes', '@chocolate', '@cookie', '@cotton', '@cream',
-                        '@cupcake', '@danish', '@donut', '@dragée', '@fruitcake', '@gingerbread', '@gummi', '@ice', '@jelly-o',
-                        '@liquorice', '@macaroon', '@marzipan', '@oat', '@pie', '@plum', '@pudding', '@sesame', '@snaps', '@soufflé',
-                        '@sugar', '@sweet', '@topping', '@wafer'
-                    ],
-                    minimumCharacters: 1
-                }
-            ]
-        },
-        // The "superbuild" contains more premium features that require additional configuration, disable them below.
-        // Do not turn them on unless you read the documentation and know how to configure them and setup the editor.
-        removePlugins: [
-            // These two are commercial, but you can try them out without registering to a trial.
-            // 'ExportPdf',
-            // 'ExportWord',
-            'AIAssistant',
-            'CKBox',
-            'CKFinder',
-            'EasyImage',
-            // This sample uses the Base64UploadAdapter to handle image uploads as it requires no configuration.
-            // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/base64-upload-adapter.html
-            // Storing images as Base64 is usually a very bad idea.
-            // Replace it on production website with other solutions:
-            // https://ckeditor.com/docs/ckeditor5/latest/features/images/image-upload/image-upload.html
-            // 'Base64UploadAdapter',
-            'MultiLevelList',
-            'RealTimeCollaborativeComments',
-            'RealTimeCollaborativeTrackChanges',
-            'RealTimeCollaborativeRevisionHistory',
-            'PresenceList',
-            'Comments',
-            'TrackChanges',
-            'TrackChangesData',
-            'RevisionHistory',
-            'Pagination',
-            'WProofreader',
-            // Careful, with the Mathtype plugin CKEditor will not load when loading this sample
-            // from a local file system (file://) - load this site via HTTP server if you enable MathType.
-            'MathType',
-            // The following features are part of the Productivity Pack and require additional license.
-            'SlashCommand',
-            'Template',
-            'DocumentOutline',
-            'FormatPainter',
-            'TableOfContents',
-            'PasteFromOfficeEnhanced',
-            'CaseChange'
-        ]
-    });
-    } else {
-        // Si no hay un textarea visible con ID "details", inicializar CKEditor
-    }
-</script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var answerForm = document.getElementById('answer-form');
@@ -620,6 +606,16 @@
                     const message = data.message;
                     const type = data.type;
 
+                    // Actualiza el ícono de guardado
+                    const icon = saveForm.querySelector('i');
+                    if (data.action === 'save') {
+                        icon.classList.remove('far');
+                        icon.classList.add('fas');
+                    } else if (data.action === 'delete') {
+                        icon.classList.remove('fas');
+                        icon.classList.add('far');
+                    }
+
                     // Muestra la notificación
                     Swal.fire({
                         toast: true,
@@ -647,6 +643,7 @@
         }
     });
 </script>
+
 
 <script th:inline="javascript">
     document.addEventListener('DOMContentLoaded', function() {
@@ -702,64 +699,8 @@
         });
     });
 </script>
-<script>
-    function searchPosts() {
-      var query = document.getElementById('search-input').value.trim();
-      if (query.length === 0) {
-          alert('Por favor ingresa un término de búsqueda.');
-          return;
-      }
-      // Redirigir a la ruta manejada por Spring Boot
-      window.location.href = '/search?q=' + encodeURIComponent(query);
-  }
 
-</script>
+<script th:src="@{/js/editorText.js}"></script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var menuItems = document.querySelectorAll('.sidebar-content nav ul li');
-        document.querySelector('.sidebar-content nav ul li:first-child').classList.add('active');
-    });
-
-    let menu = document.querySelector('#menu-icon');
-    let navbar = document.querySelector('.sidebar');
-
-    menu.onclick = () => {
-        menu.classList.toggle('fa-times'); // Cambia el ícono de las barras a la cruz
-        navbar.classList.toggle('open'); // Abre o cierra la barra lateral
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchIcon = document.getElementById('search-icon');
-        const searchContainer = document.getElementById('search-container');
-
-        // Agregar un controlador de eventos al icono de búsqueda
-        searchIcon.addEventListener('click', function(event) {
-            event.preventDefault(); // Evita que el enlace te lleve al inicio
-            searchContainer.style.display = searchContainer.style.display === 'none' ? 'flex' : 'none';
-        });
-    });
-</script>
-<script>
-    // Configuración de Fancybox
-    $(document).ready(function() {
-        // Selector para aplicar Fancybox a imágenes con la clase fancybox-link
-        $(".fancybox-link").fancybox({
-            // Opciones de configuración de Fancybox (puedes personalizar según tus necesidades)
-            loop: true,
-            buttons: [
-                "zoom",
-                "share",
-                "slideShow",
-                "fullScreen",
-                "download",
-                "thumbs",
-                "close"
-            ],
-            animationEffect: "zoom-in-out"
-        });
-    });
-</script>
 <script th:src="@{/js/header.js}"></script>
-<script th:src="@{/js/chatbot.js}"></script>
 </html>
