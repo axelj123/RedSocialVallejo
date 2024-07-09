@@ -5,243 +5,184 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Control</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
-    <!-- Añadir Font Awesome -->
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
-<!-- Barra superior -->
-<div class="bg-blue-500 p-4">
-    <div class="container mx-auto flex justify-between items-center flex-wrap">
-        <div class="flex items-center space-x-4">
-            <h1 class="text-white text-xl font-bold mb-2 md:mb-0">Panel de Control - <span th:text="${user.displayName}"></span></h1>
-            <img th:src="${user.profileImage}" alt="Avatar" class="rounded-full w-12 h-12">
-        </div>
-        <a href="/logout" class="text-white hover:underline mt-2 md:mt-0">Cerrar sesión</a>
-    </div>
-</div>
 
+<!-- Barra superior -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="#">Panel de Control - <span th:text="${user.displayName}"></span></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/ControlPanel">
+                        <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/usersPanel">
+                        <i class="fas fa-users mr-2"></i>Usuarios
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/denuncias">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>Denuncias
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Cerrar sesión</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
 
 <!-- Contenido principal -->
-<div class="container mx-auto px-4 py-8">
-    <div class="bg-white shadow-md rounded-lg overflow-hidden">
-        <div class="px-6 py-4">
-            <div class="flex justify-between items-center mb-6">
-                <h1 class="text-xl font-bold text-gray-800">Usuarios</h1>
-                <div class="relative">
-                    <input type="text" id="search-user"
-                           class="block w-full px-3 py-2 rounded-lg bg-gray-200 border-transparent focus:bg-white focus:border-gray-300"
-                           placeholder="Buscar usuarios..." oninput="filtrarUsuarios()">
-                    <span class="absolute right-3 top-3 text-gray-400"><i class="fas fa-search"></i></span>
-                </div>
-            </div>
-            <div id="user-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <!-- Iteración sobre la lista de usuarios -->
-                <div th:each="user : ${userList}" class="user-card bg-white rounded-lg shadow-md p-4 relative">
-                    <div class="flex justify-between items-center mb-3">
-                        <div>
-                            <img th:src="${user.profileImage}" alt="Avatar" class="rounded-full w-12 h-12">
+<div class="container mt-4">
+    <!-- Tarjetas de estadísticas -->
+    <div class="row mb-4">
+        <!-- Tarjeta de usuarios -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-primary text-white rounded-circle p-3">
+                            <i class="fas fa-users fa-2x"></i>
                         </div>
-                        <div>
-                            <button type="button" class="inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-2 py-1 bg-white text-xs text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500" onclick="toggleMenu(this)">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
+                        <div class="ml-4">
+                            <h3 class="text-lg font-semibold text-gray-700">Usuarios</h3>
+                            <p class="text-3xl font-bold text-gray-900" th:text="${totalUsuarios}">0</p>
                         </div>
                     </div>
-                    <h3 class="text-lg font-semibold text-gray-800" th:text="${user.displayName}"></h3>
-                    <p class="text-gray-600 mb-3" th:text="'Correo electrónico: ' + ${user.emailAddress}"></p>
-
-                    <!-- Menú de opciones -->
-                    <div class="hidden absolute right-0 top-14 w-30 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none menu-content z-50" role="menu">
-                        <div class="py-1" role="none">
-                            <a th:href="@{/perfil/{id}/{displayName}(id=${user.id}, displayName=${user.displayName})}"
-                               class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem">Ver perfil</a>
-                            <button onclick="eliminarUsuario('${user.id}')"
-                                    class="text-gray-700 block w-full text-left px-4 py-2 text-sm hover:bg-gray-100" role="menuitem">Eliminar</button>
-                            <button onclick="abrirModal()" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem">Enviar mensaje</button>
-                        </div>
-                    </div>
-
                 </div>
-                <!-- Fin de iteración -->
             </div>
         </div>
-    </div>
-    <!-- Modal para enviar mensaje -->
-    <div id="sendMessageModal" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog"
-         aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-
-            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
-                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
-                            <i class="far fa-envelope text-blue-500 text-3xl"></i>
+        <!-- Tarjeta de denuncias -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-warning text-yellow-500 rounded-circle p-3">
+                            <i class="fas fa-exclamation-triangle fa-2x"></i>
                         </div>
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Enviar mensaje</h3>
-                            <div class="mt-2">
-                                <form id="sendMessageForm" class="space-y-4">
-                                    <div>
-                                        <label for="to" class="block text-sm font-medium text-gray-700">Para</label>
-                                        <input type="text" id="to" name="to" th:value="'Correo electrónico: ' + ${user.emailAddress}" readonly
-                                               class="mt-1 block w-full px-3 py-2 rounded-md bg-gray-100 border-transparent focus:bg-white focus:border-gray-300">
-                                    </div>
-                                    <div>
-                                        <label for="subject" class="block text-sm font-medium text-gray-700">Asunto</label>
-                                        <input type="text" id="subject" name="subject" required
-                                               class="mt-1 block w-full px-3 py-2 rounded-md bg-gray-100 border-transparent focus:bg-white focus:border-gray-300">
-                                    </div>
-                                    <div>
-                                        <label for="message" class="block text-sm font-medium text-gray-700">Mensaje</label>
-                                        <textarea id="message" name="message" rows="4" required
-                                                  class="mt-1 block w-full px-3 py-2 rounded-md bg-gray-100 border-transparent focus:bg-white focus:border-gray-300"></textarea>
-                                    </div>
-                                </form>
-                            </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg font-semibold text-gray-700">Denuncias</h3>
+                            <p class="text-3xl font-bold text-gray-900" th:text="${totalDenuncias}">0</p>
                         </div>
                     </div>
                 </div>
-                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button type="button" onclick="enviarMensaje()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
-                        Enviar mensaje
-                    </button>
-                    <button type="button" onclick="cerrarModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                        Cancelar
-                    </button>
+            </div>
+        </div>
+        <!-- Tarjeta de usuarios restringidos -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-danger text-red-500 rounded-circle p-3">
+                            <i class="fas fa-user-lock fa-2x"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg font-semibold text-gray-700">Usuarios Restringidos</h3>
+                            <p class="text-3xl font-bold text-gray-900" th:text="${totalUsuariosRestringidos}">0</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Gráficos -->
+    <div class="row">
+        <!-- Gráfico de barras -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Gráfico de Barras</h3>
+                    <canvas id="barChart" style="max-width: 100%;"></canvas>
+                </div>
+            </div>
+        </div>
+        <!-- Gráfico circular -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4">Gráfico Circular</h3>
+                    <canvas id="pieChart" style="max-width: 100%;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<!-- Scripts de Font Awesome -->
+<!-- Bootstrap y Font Awesome JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
 
-<!-- Script para eliminar usuario (simulado) -->
+<!-- Script para inicializar gráficos -->
 <script>
-    function eliminarUsuario(userId) {
-        // Aquí puedes implementar la lógica para eliminar al usuario
-        // Por ejemplo, puedes enviar una petición AJAX al backend para eliminar al usuario
-        console.log('Eliminar usuario con ID: ' + userId);
-        // Aquí puedes agregar tu lógica para eliminar el usuario
-    }
-</script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Datos de ejemplo para los gráficos
+        var data = {
+            labels: ['Usuarios Activos', 'Usuarios Inactivos', 'Usuarios Baneados'],
+            datasets: [{
+                label: 'Cantidad',
+                data: [20, 5, 3], // Ejemplo de datos
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 206, 86, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
 
-<!-- Script para manejar el menú desplegable -->
-<script>
-    function toggleMenu(button) {
-        var menu = button.closest('.user-card').querySelector('.menu-content');
-        var isHidden = menu.classList.contains('hidden');
+        // Opciones para los gráficos
+        var options = {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        };
 
-        // Cerrar todos los menús
-        document.querySelectorAll('.menu-content').forEach(function (m) {
-            m.classList.add('hidden');
+        // Configuración del gráfico de barras
+        var ctxBar = document.getElementById('barChart').getContext('2d');
+        var barChart = new Chart(ctxBar, {
+            type: 'bar',
+            data: data,
+            options: options
         });
 
-        // Abrir el menú si estaba oculto
-        if (isHidden) {
-            menu.classList.remove('hidden');
-        }
-    }
-
-    // Filtrar usuarios por nombre
-    function filtrarUsuarios() {
-        var input, filter, cards, cardContainer, h3, i, txtValue;
-        input = document.getElementById('search-user');
-        filter = input.value.toUpperCase();
-        cardContainer = document.getElementById('user-list');
-        cards = cardContainer.getElementsByClassName('user-card');
-        for (i = 0; i < cards.length; i++) {
-            h3 = cards[i].getElementsByTagName('h3')[0];
-            txtValue = h3.textContent || h3.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                cards[i].style.display = "";
-            } else {
-                cards[i].style.display = "none";
-            }
-        }
-    }
-
-    document.addEventListener('click', function (event) {
-        var target = event.target;
-        var isMenuButton = target.closest('button[onclick="toggleMenu(this)"]') !== null || target.closest('.menu-content') !== null;
-        if (!isMenuButton) {
-            document.querySelectorAll('.menu-content').forEach(function (menu) {
-                menu.classList.add('hidden');
-            });
-        }
+        // Configuración del gráfico circular
+        var ctxPie = document.getElementById('pieChart').getContext('2d');
+        var pieChart = new Chart(ctxPie, {
+            type: 'pie',
+            data: data,
+            options: options
+        });
     });
 </script>
 
-<!-- Script para manejar el modal de enviar mensaje -->
-<script>
-    function abrirModal(email) {
-        document.getElementById('sendMessageForm').reset(); // Limpiar formulario al abrir el modal
-        document.getElementById('sendMessageModal').classList.remove('hidden');
-        document.getElementById('sendMessageModal').setAttribute('aria-hidden', 'false');
-
-        // Establecer el correo electrónico del destinatario en el formulario
-        document.getElementById('to').value = email;
-
-        // Cerrar todos los menús desplegables
-        document.querySelectorAll('.menu-content').forEach(function (menu) {
-            menu.classList.add('hidden');
-        });
-    }
-
-    function cerrarModal() {
-        document.getElementById('sendMessageModal').classList.add('hidden');
-        document.getElementById('sendMessageModal').setAttribute('aria-hidden', 'true');
-    }
-
-    function enviarMensaje() {
-        var to = document.getElementById('to').value.trim();
-        var subject = document.getElementById('subject').value.trim();
-        var message = document.getElementById('message').value.trim();
-
-        // Validar los campos
-        if (!to || !subject || !message) {
-            alert('Por favor completa todos los campos.');
-            return;
-        }
-
-        var data = {
-            to: to,
-            subject: subject,
-            message: message
-        };
-
-        // Enviar solicitud AJAX o fetch al backend para enviar el correo
-        fetch('/send-email', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        })
-        .then(function (response) {
-            if (!response.ok) {
-                throw new Error('Error al enviar el correo.');
-            }
-            return response.json();
-        })
-        .then(function (data) {
-            alert('Correo electrónico enviado correctamente.');
-            cerrarModal(); // Cerrar modal después de enviar el correo
-        })
-        .catch(function (error) {
-            console.error('Error:', error);
-            alert('Hubo un error al enviar el correo electrónico.');
-        });
-    }
-</script>
-
 </body>
+
 </html>

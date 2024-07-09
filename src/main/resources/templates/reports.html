@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Denuncias - Panel de Control</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap4.min.css">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.12.5/dist/sweetalert2.min.css">
+</head>
+
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+
+<!-- Barra superior -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="#">Panel de Control - <span th:text="${user.displayName}"></span></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/ControlPanel">
+                        <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/usersPanel">
+                        <i class="fas fa-users mr-2"></i>Usuarios
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/denuncias">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>Denuncias
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Cerrar sesión</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Contenido principal -->
+<div class="container mx-auto px-4 py-8">
+
+    <!-- Tabla de Denuncias -->
+    <div class="mb-8">
+        <h2 class="text-2xl font-semibold mb-4">Denuncias</h2>
+        <div class="table-responsive">
+            <table id="reportsTable" class="table table-striped table-bordered">
+                <thead class="thead-light">
+                <tr>
+                    <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm">ID</th>
+                    <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm">Reportó</th>
+                    <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm">Publicación</th>
+                    <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm">Razón</th>
+                    <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm">Fecha</th>
+                    <th class="px-6 py-3 border-b-2 border-gray-300 text-left text-sm">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Iterar sobre la lista de denuncias -->
+                <tr th:each="report : ${reportList}">
+                    <td class="px-6 py-4" th:text="${report.id}"></td>
+                    <td class="px-6 py-4" th:text="${report.user.displayName}"></td>
+                    <td class="px-6 py-4" th:text="${report.post.postTitle}"></td>
+                    <td class="px-6 py-4" th:text="${report.reason}"></td>
+                    <td class="px-6 py-4" th:text="${#dates.format(report.createdDate, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td class="px-6 py-4">
+                        <a th:href="@{/verPublicacion/{id}(id=${report.post.id})}" class="btn btn-info">
+                            <i class="fas fa-eye mr-1"></i>Ver Publicación
+                        </a>
+                        <button class="btn btn-success resolve-report-btn"
+                                th:data-report-id="${report.post.id}">
+                            <i class="fas fa-check mr-1"></i>Resolver
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- Paginación -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                    <a class="page-link" th:href="@{/denuncias(page=${currentPage - 1})}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${currentPage == i} ? 'active'">
+                    <a class="page-link" th:href="@{/denuncias(page=${i})}" th:text="${i + 1}">1</a>
+                </li>
+                <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                    <a class="page-link" th:href="@{/denuncias(page=${currentPage + 1})}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+</div>
+
+<!-- jQuery y SweetAlert2 JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.12.5/dist/sweetalert2.min.js"></script>
+
+<!-- Script personalizado para manejar la resolución de denuncias -->
+<script th:inline="javascript">
+    $(document).ready(function () {
+        $('.resolve-report-btn').on('click', function () {
+            var reportId = $(this).attr('data-report-id');
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: 'No podrás revertir esto',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, resolver',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Realizar la solicitud DELETE para resolver la denuncia
+                    $.ajax({
+                        type: 'DELETE',
+                        url: '/posts/delete/' + reportId,
+                        success: function (response) {
+                            console.log('Denuncia resuelta correctamente');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Denuncia resuelta',
+                                text: 'La denuncia ha sido resuelta correctamente.'
+                            }).then(() => {
+                                location.reload(); // Recargar la página después de resolver
+                            });
+                        },
+                        error: function (error) {
+                            console.error('Error al resolver la denuncia:', error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error al resolver la denuncia',
+                                text: 'Por favor, inténtalo de nuevo más tarde.'
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+</body>
+
+</html>

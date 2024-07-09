@@ -59,6 +59,53 @@ public class FormsControlador {
         return "index";
     }
 
+    @GetMapping("/usersPanel")
+    public String usersPanel(Model model, @RequestParam(defaultValue = "0") int page) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String emailAddress = authentication.getName();
+            Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                model.addAttribute("user", user);
+            } else {
+                return "redirect:/login";
+            }
+        } else {
+            return "redirect:/login";
+        }
+
+        // Configurar la paginación
+        int pageSize = 10; // Tamaño de página
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by("displayName").ascending()); // Orden por nombre de usuario
+
+        // Obtener la página de usuarios
+        Page<User> userPage = userRepository.findAll(pageable);
+        model.addAttribute("userList", userPage.getContent()); // Lista de usuarios en la página actual
+        model.addAttribute("currentPage", page); // Página actual para la paginación
+        model.addAttribute("totalPages", userPage.getTotalPages()); // Total de páginas disponibles
+
+        return "usuariosPanel";
+    }
+
+    @GetMapping("/reports")
+    public String reports(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String emailAddress = authentication.getName();
+            Optional<User> optionalUser = userRepository.findByEmailAddress(emailAddress);
+            if (optionalUser.isPresent()) {
+                User user = optionalUser.get();
+                model.addAttribute("user", user);
+            } else {
+                return "redirect:/login";
+            }
+        } else {
+            return "redirect:/login";
+        }
+        return "reports";
+    }
+
     @GetMapping("/postopen/{id}")
     public String postopen(@PathVariable Long id, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -119,9 +166,6 @@ public class FormsControlador {
     }
 
 
-
-
-
     @GetMapping("/search")
     public String search(@RequestParam("q") String query, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -151,9 +195,6 @@ public class FormsControlador {
         model.addAttribute("postAges", postAges);
         return "search"; // Nombre de la plantilla Thymeleaf para mostrar los resultados de búsqueda
     }
-
-
-
 
 
     @GetMapping("/foro")
@@ -281,7 +322,6 @@ public class FormsControlador {
                     List<SavedPost> savedPosts = savedPostRepository.findByUser(user);
 
 
-
                     // Calcular la antigüedad de cada publicación guardada y agregarla al modelo
                     Map<Long, String> savedPostAges = new HashMap<>();
                     for (SavedPost savedPost : savedPosts) {
@@ -389,6 +429,7 @@ public class FormsControlador {
             return "redirect:/users"; // Redirigir a la lista de usuarios si el usuario no existe
         }
     }
+
     @GetMapping("/users")
     public String users(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -412,7 +453,6 @@ public class FormsControlador {
 
         return "users";
     }
-
 
 
     @GetMapping("/tags")
@@ -508,7 +548,6 @@ public class FormsControlador {
 
         return "preguntas";
     }
-
 
 
     @GetMapping("/createPost")

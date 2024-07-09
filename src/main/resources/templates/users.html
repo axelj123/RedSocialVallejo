@@ -6,7 +6,6 @@
     <title>Usuarios</title>
     <link rel="stylesheet" type="text/css" href="css/users.css">
     <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}">
-    <link rel="stylesheet" type="text/css" href="css/chatbot.css">
 
     <link
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
@@ -76,8 +75,7 @@
                 </div>
             </div>
         </div>
-        <!-- Incluir el fragmento del chatbot -->
-        <div th:insert="fragments/chatbot :: chatbot-fragment"></div>
+
     </div>
 
 </div>
@@ -152,7 +150,6 @@
 
 </script>
 <script th:src="@{/js/header.js}"></script>
-<script th:src="@{/js/chatbot.js}"></script>
 
 </body>
 </html>

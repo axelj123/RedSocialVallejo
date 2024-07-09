@@ -16,7 +16,6 @@
             href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
             rel="stylesheet">
     <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}">
-    <link rel="stylesheet" type="text/css" href="css/chatbot.css">
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet"
@@ -79,8 +78,7 @@
         </div>
 
     </div>
-    <!-- Incluir el fragmento del chatbot -->
-    <div th:insert="fragments/chatbot :: chatbot-fragment"></div>
+
 </div>
 
 
@@ -146,6 +144,5 @@
 </script>
 <script th:src="@{/js/header.js}"></script>
 
-<script th:src="@{/js/chatbot.js}"></script>
 </body>
 </html>
