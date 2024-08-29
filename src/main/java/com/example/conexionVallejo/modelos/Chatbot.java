@@ -3,6 +3,7 @@ package com.example.conexionVallejo.modelos;
 import com.example.conexionVallejo.servicios.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import java.text.Normalizer;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,10 +18,18 @@ public class Chatbot {
 
     public Chatbot() {
         faq = new HashMap<>();
-        faq.put("¿Qué cursos ofrecen?", "Ofrecemos una variedad de cursos en las áreas de ciencias, humanidades, y tecnología. Visita https://tu-sitio.com/cursos para más detalles.");
+        faq.put("Cuál es el objetivo de esta red social", "Enriquecer la experiencia académica, personal y profesional de los estudiantes mediante la promoción de una cultura de aprendizaje continuo y colaboración efectiva.");
+        faq.put("Cual es el objetivo de talk?", "Enriquecer la experiencia académica, personal y profesional de los estudiantes mediante la promoción de una cultura de aprendizaje continuo y colaboración efectiva.");
+        faq.put("¿Quien eres?", "Soy Talk, una red social para los estudiantes de la Universidad César Vallejo");
+        faq.put("Quien eres", "Soy Talk, una red social para los estudiantes de la Universidad César Vallejo");
+        faq.put("Como te llamas", "Soy Talk, una red social para los estudiantes de la Universidad César Vallejo");
+        faq.put("Cual es tu nombre", "Soy Talk, una red social para los estudiantes de la Universidad César Vallejo");
+
+        faq.put("¿Cuál es el objetivo de esta red social?", "Enriquecer la experiencia académica, personal y profesional de los estudiantes mediante la promoción de una cultura de aprendizaje continuo y colaboración efectiva.");
         faq.put("¿Cómo me registro?", "Puedes registrarte en https://tu-sitio.com/registro. Si necesitas ayuda, contáctanos.");
         faq.put("¿Dónde está la biblioteca?", "La biblioteca está ubicada en el edificio principal, primer piso. Consulta el mapa en https://tu-sitio.com/mapa.");
-        faq.put("¿Quién eres?", "Soy tu asistente virtual.");
+        faq.put("¿Quién eres?", "Soy tu asistente virtual :).");
+        faq.put("quien eres", "Soy tu asistente virtual :).");
 
     }
 
@@ -38,7 +47,7 @@ public class Chatbot {
             List<Post> preguntas = postService.obtenerPreguntas();
             for (Post pregunta : preguntas) {
                 if (message.toLowerCase().contains(pregunta.getPostTitle().toLowerCase())) {
-                    String url = "http://192.168.0.108:8080/postopen/" + pregunta.getId();
+                    String url = "http://127.0.0.1:8080/postopen/" + pregunta.getId();
                     return "Aquí tienes información relevante: " + url;
                 }
             }
