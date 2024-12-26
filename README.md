@@ -62,15 +62,6 @@ mysql -u root -p < sqlBD.sql
 mvn spring-boot:run
 ```
 
-## Contribución
-
-Las contribuciones son bienvenidas. Por favor:
-
-1. Haz Fork del proyecto
-2. Crea una rama para tu funcionalidad (`git checkout -b feature/nueva-funcionalidad`)
-3. Realiza commit de tus cambios
-4. Envía un Pull Request
-
 ## Licencia
 
 [MIT](https://choosealicense.com/licenses/mit/)
